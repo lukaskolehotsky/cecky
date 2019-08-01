@@ -1,5 +1,5 @@
-import com.example.filedemo.model.DBFile;
-import com.example.filedemo.model.DBItem;
+import com.example.model.DBFile;
+import com.example.model.DBItem;
 
 import java.time.LocalDateTime;
 

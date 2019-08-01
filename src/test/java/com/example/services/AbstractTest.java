@@ -4,6 +4,7 @@ import com.example.model.DBFile;
 import com.example.payload.ItemResponse;
 import com.example.payload.UploadFileResponse;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -25,7 +26,7 @@ public abstract class AbstractTest {
 		String guid = "guid";
 		String brand = "brand";
 		String type = "type";
-		return new DBItem(brand,type,guid);
+		return new DBItem(brand,type,guid, LocalDateTime.now());
 	}
 	
 	public DBFile generateFile() {
@@ -59,6 +60,6 @@ public abstract class AbstractTest {
 	}
 
 	public DBItem generateDBItem(CreateItemRequest request) {
-		return new DBItem(request.getBrand(), request.getType(), generateRandomUUID());
+		return new DBItem(request.getBrand(), request.getType(), generateRandomUUID(), LocalDateTime.now());
 	}
 }
