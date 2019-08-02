@@ -1,6 +1,6 @@
 package com.example.controller;
 
-import com.example.payload.UploadFileResponse;
+import com.example.payload.FileResponse;
 import com.example.service.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,36 +19,36 @@ public class FileController {
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
     
     @Autowired
-    private FileService DBFileStorageService;
+    private FileService fileService;
 
     @GetMapping("/all")
-    public List<UploadFileResponse> findAll() {    	
+    public List<FileResponse> findAll() {    	
     	logger.info("findAll");
-    	return DBFileStorageService.findAll();
+    	return fileService.findAll();
     }
     
     @GetMapping("/byId")
-    public UploadFileResponse findById(@RequestParam("id") String id) {  
+    public FileResponse findById(@RequestParam("id") String id) {  
     	logger.info("findById: " + id);
-    	return DBFileStorageService.findById(id);
+    	return fileService.findById(id);
     }
     
     @PostMapping("/uploadFile")
-    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
+    public FileResponse uploadFile(@RequestParam("file") MultipartFile file) {
     	logger.info("uploadFile: " + file.toString());
-        return DBFileStorageService.uploadFile(file, "GUID");
+        return fileService.uploadFile(file, "GUID");
     }
 
     @PostMapping("/uploadMultipleFiles")
-    public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+    public List<FileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
     	logger.info("uploadMultipleFiles: " + Arrays.toString(files));
-        return DBFileStorageService.uploadMultipleFiles(files);
+        return fileService.uploadMultipleFiles(files);
     }
 
     @GetMapping("/downloadFile/{fileId}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileId) {
     	logger.info("downloadFile by fileId: " + fileId);
-        return DBFileStorageService.downloadFile(fileId);
+        return fileService.downloadFile(fileId);
     }
    
 }

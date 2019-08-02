@@ -4,9 +4,8 @@ import com.example.Utils.Utils;
 import com.example.exception.MyFileNotFoundException;
 import com.example.exception.FileStorageException;
 import com.example.model.DBFile;
-import com.example.model.DBItem;
 import com.example.payload.ItemResponse;
-import com.example.payload.UploadFileResponse;
+import com.example.payload.FileResponse;
 import com.example.repository.FileRepository;
 
 import com.example.requests.CreateItemRequest;
@@ -22,13 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,30 +35,38 @@ public class FileService extends Utils{
     
     @Autowired
     private ItemService itemService;
+    
+    public List<FileResponse> getFiles(String guid) {
+    	List<FileResponse> fileResponses = new ArrayList<>();
+    	for(DBFile file: fileRepository.findByGuid(guid)) {
+    		fileResponses.add(new FileResponse(file.getFileName(), "", file.getFileType(), 1));
+    	}
+    	return fileResponses;
+    }
 
-    public List<UploadFileResponse> findAll(){
+    public List<FileResponse> findAll(){
     	
     	List<DBFile> files;
     	files = fileRepository.findAll();
 
-        List<UploadFileResponse> responses = new ArrayList<>();
+        List<FileResponse> responses = new ArrayList<>();
     	for(DBFile f: files) {
-    		responses.add(new UploadFileResponse(f.getFileName(), "", f.getFileType(), 1));
+    		responses.add(new FileResponse(f.getFileName(), "", f.getFileType(), 1));
     	}
 
     	return responses;
     }
     
-    public UploadFileResponse findById(String id) {
+    public FileResponse findById(String id) {
     	Optional<DBFile> file = fileRepository.findById(id);
     	if(file.isPresent()){
-            return new UploadFileResponse(file.get().getFileName(), "", file.get().getFileType(), 1);
+            return new FileResponse(file.get().getFileName(), "", file.get().getFileType(), 1);
         } else{
     	    throw new IllegalArgumentException("File not found.");
         }
     }
     
-    public UploadFileResponse uploadFile(MultipartFile file, String guid) {
+    public FileResponse uploadFile(MultipartFile file, String guid) {
         DBFile dbFile = storeFile(file, guid);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -70,11 +74,11 @@ public class FileService extends Utils{
                 .path(dbFile.getId())
                 .toUriString();
 
-        return new UploadFileResponse(dbFile.getFileName(), fileDownloadUri,
+        return new FileResponse(dbFile.getFileName(), fileDownloadUri,
                 file.getContentType(), file.getSize());
     }
     
-    public List<UploadFileResponse> uploadMultipleFiles(MultipartFile[] files) {
+    public List<FileResponse> uploadMultipleFiles(MultipartFile[] files) {
         // TODO - should be taken from parameter
         CreateItemRequest createItemRequest = new CreateItemRequest("brand", "type");
 

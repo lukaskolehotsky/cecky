@@ -15,6 +15,7 @@ import org.junit.Assert;
 import com.example.model.DBItem;
 import com.example.payload.ItemResponse;
 import com.example.repository.ItemRepository;
+import static org.mockito.ArgumentMatchers.any;
 
 public class ItemServiceTest extends AbstractTest{
 
@@ -40,7 +41,7 @@ public class ItemServiceTest extends AbstractTest{
 		DBItem item = generateDBItem(createItemRequest);
 		ItemResponse itemResponse = generateItemResponse(item);
 		
-		Mockito.when(itemRepository.save(item)).thenReturn(item);
+		Mockito.when(itemRepository.save(any(DBItem.class))).thenReturn(item);
 		
 		ItemResponse response = itemService.createItem(createItemRequest);
 		
@@ -55,7 +56,7 @@ public class ItemServiceTest extends AbstractTest{
 		
 		DBItem item = generateItem();
 		
-		Mockito.when(itemRepository.findById(guid)).thenReturn(Optional.of(item));
+		Mockito.when(itemRepository.findByGuid(guid)).thenReturn(item);
 		
 		ItemResponse response = itemService.getItem(guid);
 		
@@ -63,13 +64,5 @@ public class ItemServiceTest extends AbstractTest{
 		Assert.assertEquals(response.getType(), item.getType());
 		Assert.assertEquals(response.getGuid(), item.getGuid());
 	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void getItem_itemNotFound() {
-		String guid = "guid";
-		
-		Mockito.when(itemRepository.findById("blabla")).thenReturn(Optional.empty());
-		
-		itemService.getItem(guid);
-	}
+
 }

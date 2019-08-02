@@ -7,5 +7,7 @@ import com.example.model.DBItem;
 
 @Repository
 public interface ItemRepository extends JpaRepository<DBItem, String>{
-
+	
+	public DBItem findByGuid(String guid);
+	
 }
