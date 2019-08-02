@@ -12,4 +12,6 @@ public interface FileRepository extends JpaRepository<DBFile, String> {
 
 	public List<DBFile> findByGuid(String guid);
 	
+	public void deleteByGuid(String guid);
+	
 }

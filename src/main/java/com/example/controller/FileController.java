@@ -50,5 +50,11 @@ public class FileController {
     	logger.info("downloadFile by fileId: " + fileId);
         return fileService.downloadFile(fileId);
     }
+    
+    @DeleteMapping("/removeFile")
+    public void removeFile(@RequestParam("guid") String guid) {
+    	logger.info("removeFile");
+        fileService.removeFile(guid);
+    }
    
 }
