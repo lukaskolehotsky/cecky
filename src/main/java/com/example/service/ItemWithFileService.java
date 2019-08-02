@@ -46,4 +46,10 @@ public class ItemWithFileService {
     	return itemWithFileResponses;    	
     }
 	
+	@Transactional
+	public void removeItemWithFiles(String guid) {
+		itemService.removeItem(guid);
+		fileService.removeFile(guid);
+	}
+	
 }

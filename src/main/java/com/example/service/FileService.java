@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 @Service
 public class FileService extends Utils{
 
@@ -35,6 +37,11 @@ public class FileService extends Utils{
     
     @Autowired
     private ItemService itemService;
+    
+    @Transactional
+    public void removeFile(String guid) {
+    	fileRepository.deleteByGuid(guid);
+    }
     
     public List<FileResponse> getFiles(String guid) {
     	List<FileResponse> fileResponses = new ArrayList<>();

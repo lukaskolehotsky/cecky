@@ -9,6 +9,8 @@ import com.example.requests.CreateItemRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +34,12 @@ public class ItemService extends Utils {
     	
     	return generateItemResponse(item);
     }   
+    
+    @Transactional
+    public void removeItem(String guid) {
+    	
+    	itemRepository.deleteByGuid(guid);
+    } 
     
     public List<ItemResponse> getAll(){
     	

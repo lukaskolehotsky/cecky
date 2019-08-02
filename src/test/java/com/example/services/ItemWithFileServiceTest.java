@@ -16,11 +16,11 @@ import com.example.model.DBItem;
 import com.example.payload.FileResponse;
 import com.example.payload.ItemResponse;
 import com.example.payload.ItemWithFilesResponse;
-import com.example.repository.FileRepository;
-import com.example.repository.ItemRepository;
 import com.example.service.FileService;
 import com.example.service.ItemService;
 import com.example.service.ItemWithFileService;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 
 public class ItemWithFileServiceTest extends AbstractTest{
 
@@ -82,6 +82,19 @@ public class ItemWithFileServiceTest extends AbstractTest{
 		
 		Assert.assertEquals(itemWithFilesResponse.getItemResponse().getBrand(), response.get(0).getItemResponse().getBrand());
 		
+	}
+	
+	@Test
+	public void removeItemWithFiles() {
+		String guid = "guid";
+		
+		doNothing().when(itemService).removeItem(guid);
+		doNothing().when(fileService).removeFile(guid);
+		
+		itemWithFileService.removeItemWithFiles(guid);	
+		
+		verify(itemService).removeItem(guid);
+		verify(fileService).removeFile(guid);
 	}
 	
 }
