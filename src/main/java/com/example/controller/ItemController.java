@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.payload.ItemResponse;
+import com.example.payload.ItemWithFilesResponse;
 
 @RestController
 public class ItemController {
@@ -32,5 +33,6 @@ public class ItemController {
     public ItemResponse getItem(@RequestParam("guid") String guid) {
 		logger.info("getItem by guid: " + guid);
 		return itemService.getItem(guid);
-    }
+    }	
+
 }

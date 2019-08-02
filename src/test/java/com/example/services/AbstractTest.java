@@ -2,7 +2,7 @@ package com.example.services;
 
 import com.example.model.DBFile;
 import com.example.payload.ItemResponse;
-import com.example.payload.UploadFileResponse;
+import com.example.payload.FileResponse;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -46,10 +46,10 @@ public abstract class AbstractTest {
 		return files;
 	}
 	
-	public List<UploadFileResponse> generateUploadFileResponses(List<DBFile> files) {
-		List<UploadFileResponse> uploadFileResponses = new ArrayList<UploadFileResponse>();
+	public List<FileResponse> generateUploadFileResponses(List<DBFile> files) {
+		List<FileResponse> uploadFileResponses = new ArrayList<FileResponse>();
 		for(DBFile file: files) {
-			uploadFileResponses.add(new UploadFileResponse(file.getFileName(), "", file.getFileType(), 1));
+			uploadFileResponses.add(new FileResponse(file.getFileName(), "", file.getFileType(), 1));
 		}
 		
 		return uploadFileResponses;

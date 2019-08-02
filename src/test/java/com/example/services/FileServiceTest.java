@@ -13,7 +13,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import com.example.model.DBFile;
-import com.example.payload.UploadFileResponse;
+import com.example.payload.FileResponse;
 import com.example.repository.FileRepository;
 import com.example.service.FileService;
 import com.example.service.ItemService;
@@ -47,7 +47,7 @@ public class FileServiceTest extends AbstractTest{
 		
 		Mockito.when(fileRepository.findById(guid)).thenReturn(Optional.of(file));
 		
-		UploadFileResponse response = fileService.findById(guid);
+		FileResponse response = fileService.findById(guid);
 		
 		Assert.assertEquals(response.getFileName(), file.getFileName());
 		Assert.assertEquals(response.getFileType(), file.getFileType());		
@@ -89,11 +89,11 @@ public class FileServiceTest extends AbstractTest{
 	@Test
 	public void findAll() {
 		 List<DBFile> files = generateFiles();
-		 List<UploadFileResponse> uploadFileResponses = generateUploadFileResponses(files);
+		 List<FileResponse> uploadFileResponses = generateUploadFileResponses(files);
 
 		Mockito.when(fileRepository.findAll()).thenReturn(files);
 
-		List<UploadFileResponse> response = fileService.findAll();
+		List<FileResponse> response = fileService.findAll();
 
 		Assert.assertEquals(uploadFileResponses.size(), response.size());
 		Assert.assertEquals(uploadFileResponses.get(0).getFileName(), response.get(0).getFileName());

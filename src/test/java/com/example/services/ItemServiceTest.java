@@ -56,7 +56,7 @@ public class ItemServiceTest extends AbstractTest{
 		
 		DBItem item = generateItem();
 		
-		Mockito.when(itemRepository.findById(guid)).thenReturn(Optional.of(item));
+		Mockito.when(itemRepository.findByGuid(guid)).thenReturn(item);
 		
 		ItemResponse response = itemService.getItem(guid);
 		
@@ -64,13 +64,5 @@ public class ItemServiceTest extends AbstractTest{
 		Assert.assertEquals(response.getType(), item.getType());
 		Assert.assertEquals(response.getGuid(), item.getGuid());
 	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void getItem_itemNotFound() {
-		String guid = "guid";
-		
-		Mockito.when(itemRepository.findById("blabla")).thenReturn(Optional.empty());
-		
-		itemService.getItem(guid);
-	}
+
 }

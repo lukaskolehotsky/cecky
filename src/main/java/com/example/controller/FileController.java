@@ -1,6 +1,6 @@
 package com.example.controller;
 
-import com.example.payload.UploadFileResponse;
+import com.example.payload.FileResponse;
 import com.example.service.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,25 +22,25 @@ public class FileController {
     private FileService fileService;
 
     @GetMapping("/all")
-    public List<UploadFileResponse> findAll() {    	
+    public List<FileResponse> findAll() {    	
     	logger.info("findAll");
     	return fileService.findAll();
     }
     
     @GetMapping("/byId")
-    public UploadFileResponse findById(@RequestParam("id") String id) {  
+    public FileResponse findById(@RequestParam("id") String id) {  
     	logger.info("findById: " + id);
     	return fileService.findById(id);
     }
     
     @PostMapping("/uploadFile")
-    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
+    public FileResponse uploadFile(@RequestParam("file") MultipartFile file) {
     	logger.info("uploadFile: " + file.toString());
         return fileService.uploadFile(file, "GUID");
     }
 
     @PostMapping("/uploadMultipleFiles")
-    public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+    public List<FileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
     	logger.info("uploadMultipleFiles: " + Arrays.toString(files));
         return fileService.uploadMultipleFiles(files);
     }
