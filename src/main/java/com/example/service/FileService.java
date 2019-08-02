@@ -42,7 +42,7 @@ public class FileService extends Utils{
     		fileResponses.add(new FileResponse(file.getFileName(), "", file.getFileType(), 1));
     	}
     	return fileResponses;
-    }
+    }    
 
     public List<FileResponse> findAll(){
     	
@@ -50,8 +50,8 @@ public class FileService extends Utils{
     	files = fileRepository.findAll();
 
         List<FileResponse> responses = new ArrayList<>();
-    	for(DBFile f: files) {
-    		responses.add(new FileResponse(f.getFileName(), "", f.getFileType(), 1));
+    	for(DBFile file: files) {
+    		responses.add(generateFileResponse(file));
     	}
 
     	return responses;
@@ -60,7 +60,7 @@ public class FileService extends Utils{
     public FileResponse findById(String id) {
     	Optional<DBFile> file = fileRepository.findById(id);
     	if(file.isPresent()){
-            return new FileResponse(file.get().getFileName(), "", file.get().getFileType(), 1);
+            return generateFileResponse(file.get());
         } else{
     	    throw new IllegalArgumentException("File not found.");
         }
