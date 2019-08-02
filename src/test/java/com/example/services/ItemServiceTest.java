@@ -15,6 +15,7 @@ import org.junit.Assert;
 import com.example.model.DBItem;
 import com.example.payload.ItemResponse;
 import com.example.repository.ItemRepository;
+import static org.mockito.ArgumentMatchers.any;
 
 public class ItemServiceTest extends AbstractTest{
 
@@ -40,7 +41,7 @@ public class ItemServiceTest extends AbstractTest{
 		DBItem item = generateDBItem(createItemRequest);
 		ItemResponse itemResponse = generateItemResponse(item);
 		
-		Mockito.when(itemRepository.save(item)).thenReturn(item);
+		Mockito.when(itemRepository.save(any(DBItem.class))).thenReturn(item);
 		
 		ItemResponse response = itemService.createItem(createItemRequest);
 		

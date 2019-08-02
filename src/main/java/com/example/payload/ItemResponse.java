@@ -1,5 +1,7 @@
 package com.example.payload;
 
+import java.time.LocalDateTime;
+
 public class ItemResponse {
 
 	private String brand;
@@ -8,11 +10,14 @@ public class ItemResponse {
 	
 	private String guid;
 	
-	public ItemResponse(String brand, String type, String guid) {
+	private LocalDateTime createdDateTime;
+	
+	public ItemResponse(String brand, String type, String guid, LocalDateTime createdDateTime) {
 		super();
 		this.brand = brand;
 		this.type = type;
 		this.guid = guid;
+		this.createdDateTime = createdDateTime;
 	}
 
 	public String getBrand() {
@@ -37,6 +42,14 @@ public class ItemResponse {
 
 	public void setGuid(String guid) {
 		this.guid = guid;
+	}
+
+	public LocalDateTime getCreatedDateTime() {
+		return createdDateTime;
+	}
+
+	public void setCreatedDateTime(LocalDateTime createdDateTime) {
+		this.createdDateTime = createdDateTime;
 	}	
 	
 }

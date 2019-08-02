@@ -35,7 +35,7 @@ public abstract class AbstractTest {
 
 
 	public ItemResponse generateItemResponse(DBItem item) {
-		return new ItemResponse(item.getBrand(),item.getType(),item.getGuid());
+		return new ItemResponse(item.getBrand(),item.getType(),item.getGuid(),item.getCreatedDateTime());
 	}
 	
 	public List<DBFile> generateFiles() {

@@ -20,13 +20,13 @@ public class ItemService extends Utils {
 
         DBItem savedItem = itemRepository.save(generateDBItem(request));
 
-        return new ItemResponse(savedItem.getBrand(), savedItem.getType(), savedItem.getGuid());
+        return new ItemResponse(savedItem.getBrand(), savedItem.getType(), savedItem.getGuid(), savedItem.getCreatedDateTime());
     }
 
     public ItemResponse getItem(String guid) {
         Optional<DBItem> itemOpt = itemRepository.findById(guid);
         if (itemOpt.isPresent()) {
-            return new ItemResponse(itemOpt.get().getBrand(), itemOpt.get().getType(), itemOpt.get().getGuid());
+            return new ItemResponse(itemOpt.get().getBrand(), itemOpt.get().getType(), itemOpt.get().getGuid(), itemOpt.get().getCreatedDateTime());
         } else {
             throw new IllegalArgumentException("Item not found.");
         }

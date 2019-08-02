@@ -21,7 +21,7 @@ public class ItemController {
 	private ItemService itemService;
 
 	@GetMapping("/welcome")
-	public ModelAndView createItem(CreateItemRequest request) {
+	public ModelAndView createItem(@RequestParam("request") CreateItemRequest request) {
 		logger.info("createItem: ");
 
 		itemService.createItem(request);

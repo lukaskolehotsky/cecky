@@ -14,6 +14,5 @@ id varchar(100) NULL,
  brand varchar(100) NULL,
  type varchar(100) NULL,
  guid varchar(100) NULL,
- created_date_time timestamp default NULL,
  PRIMARY KEY (id)
 );
