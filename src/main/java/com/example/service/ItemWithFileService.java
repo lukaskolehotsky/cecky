@@ -1,5 +1,6 @@
 package com.example.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -28,6 +29,21 @@ public class ItemWithFileService {
     	
     	return new ItemWithFilesResponse(itemResponse, fileResponses);
     	
+    }
+	
+	@Transactional
+    public List<ItemWithFilesResponse> getAllItemsWithFiles() {
+		
+		List<ItemWithFilesResponse> itemWithFileResponses = new ArrayList<>();
+		
+		List<ItemResponse> itemResponses = itemService.getAll();
+		
+		for(ItemResponse itemResponse: itemResponses) {
+			List<FileResponse> fileResponses = fileService.getFiles(itemResponse.getGuid());
+			itemWithFileResponses.add(new ItemWithFilesResponse(itemResponse, fileResponses));
+		}
+    	
+    	return itemWithFileResponses;    	
     }
 	
 }
