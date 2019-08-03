@@ -29,13 +29,18 @@ public abstract class AbstractTest {
 		return new DBItem(brand,type,guid, LocalDateTime.now());
 	}
 	
+	public DBItem generateDBItem(CreateItemRequest request) {
+		return new DBItem(request.getBrand(), request.getType(), generateRandomUUID(), LocalDateTime.now());
+	}	
+    
+    public List<DBItem> generateDBItems() {
+    	List<DBItem> items = new ArrayList<>();
+    	items.add(generateItem());
+        return items;
+    }
+	
 	public DBFile generateFile() {
 		return new DBFile("name", "type", new byte[1],"guid");
-	}
-
-
-	public ItemResponse generateItemResponse(DBItem item) {
-		return new ItemResponse(item.getBrand(),item.getType(),item.getGuid(),item.getCreatedDateTime());
 	}
 	
 	public List<DBFile> generateFiles() {
@@ -45,6 +50,10 @@ public abstract class AbstractTest {
 		
 		return files;
 	}
+
+	public ItemResponse generateItemResponse(DBItem item) {
+		return new ItemResponse(item.getBrand(),item.getType(),item.getGuid(),item.getCreatedDateTime());
+	}	
 	
 	public List<FileResponse> generateUploadFileResponses(List<DBFile> files) {
 		List<FileResponse> uploadFileResponses = new ArrayList<FileResponse>();
@@ -58,8 +67,5 @@ public abstract class AbstractTest {
 	public String generateRandomUUID() {
 		return UUID.randomUUID().toString();
 	}
-
-	public DBItem generateDBItem(CreateItemRequest request) {
-		return new DBItem(request.getBrand(), request.getType(), generateRandomUUID(), LocalDateTime.now());
-	}
+	
 }

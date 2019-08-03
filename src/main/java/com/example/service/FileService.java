@@ -86,15 +86,33 @@ public class FileService extends Utils{
     }
     
     public List<FileResponse> uploadMultipleFiles(MultipartFile[] files) {
-        // TODO - should be taken from parameter
         CreateItemRequest createItemRequest = new CreateItemRequest("brand", "type");
-
     	ItemResponse createdItem = itemService.createItem(createItemRequest);
     	
         return Arrays.asList(files)
                 .stream()
                 .map(file -> uploadFile(file, createdItem.getGuid()))
                 .collect(Collectors.toList());
+    }
+    
+    @Transactional
+    public List<FileResponse> saveImages(MultipartFile[] files, String guid) {    	
+        return Arrays.asList(files)
+                .stream()
+                .map(file -> saveImage(file, guid))
+                .collect(Collectors.toList());
+    }
+    
+    public FileResponse saveImage(MultipartFile file, String guid) {
+        DBFile dbFile = storeFile(file, guid);
+
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/downloadFile/")
+                .path(dbFile.getId())
+                .toUriString();
+
+        return new FileResponse(dbFile.getFileName(), fileDownloadUri,
+                file.getContentType(), file.getSize());
     }
 
     public DBFile storeFile(MultipartFile file, String guid) {
@@ -130,4 +148,11 @@ public class FileService extends Utils{
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + dbFile.getFileName() + "\"")
                 .body(new ByteArrayResource(dbFile.getData()));
     }
+    
+    @Transactional
+    public List<FileResponse> updateFiles(String guid, MultipartFile[] files) {
+    	fileRepository.deleteByGuid(guid);
+    	return saveImages(files, guid);
+    }
+
 }

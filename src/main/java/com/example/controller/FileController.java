@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class FileController {
@@ -44,6 +45,12 @@ public class FileController {
     	logger.info("uploadMultipleFiles: " + Arrays.toString(files));
         return fileService.uploadMultipleFiles(files);
     }
+    
+    @PostMapping("/saveImages")
+    public List<FileResponse> saveImages(@RequestParam("files") MultipartFile[] files, String guid) {
+    	logger.info("uploadMultipleFiles: " + Arrays.toString(files));
+        return fileService.saveImages(files, guid);
+    }
 
     @GetMapping("/downloadFile/{fileId}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileId) {
@@ -55,6 +62,12 @@ public class FileController {
     public void removeFile(@RequestParam("guid") String guid) {
     	logger.info("removeFile");
         fileService.removeFile(guid);
+    }
+    
+    @PutMapping("/updateFiles")
+    public void updateFiles(@RequestParam("guid") String guid, @RequestParam("files") MultipartFile[] files) {
+    	logger.info("updateFiles by guid: " + guid);
+        fileService.updateFiles(guid, files);
     }
    
 }

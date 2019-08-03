@@ -1,5 +1,6 @@
 package com.example.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.example.requests.CreateItemRequest;
@@ -63,6 +64,16 @@ public class ItemServiceTest extends AbstractTest{
 		Assert.assertEquals(response.getBrand(), item.getBrand());
 		Assert.assertEquals(response.getType(), item.getType());
 		Assert.assertEquals(response.getGuid(), item.getGuid());
+	}
+	
+	@Test
+	public void getAll() {		
+		List<DBItem> items = generateDBItems();
+		Mockito.when(itemRepository.findAll()).thenReturn(items);
+		
+		List<ItemResponse> response = itemService.getAll();
+		
+		Assert.assertEquals(items.size(), response.size());		
 	}
 
 }

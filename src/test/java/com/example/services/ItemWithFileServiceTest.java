@@ -46,7 +46,7 @@ public class ItemWithFileServiceTest extends AbstractTest{
 	@Test
 	public void getItemWithFiles() {
 		String guid = "guid";
-		DBItem item = new DBItem("brand", "type", "guid", LocalDateTime.now());
+		DBItem item = generateItem();
 		ItemResponse itemResponse = generateItemResponse(item);
 		List<FileResponse> fileResponses = new ArrayList<>();
 		fileResponses.add(new FileResponse("name", "", "fileType", 1));
