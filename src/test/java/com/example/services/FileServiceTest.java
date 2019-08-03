@@ -102,4 +102,16 @@ public class FileServiceTest extends AbstractTest{
 		Assert.assertEquals(uploadFileResponses.get(1).getFileType(), response.get(1).getFileType());		
 	}
 	
+	@Test
+	public void getFiles() {
+		String guid = "guid";
+		List<DBFile> files = generateFiles();
+		
+		Mockito.when(fileRepository.findByGuid(guid)).thenReturn(files);
+		
+		List<FileResponse> response = fileService.getFiles(guid);
+		
+		Assert.assertEquals(files.size(), response.size());	
+	}
+	
 }

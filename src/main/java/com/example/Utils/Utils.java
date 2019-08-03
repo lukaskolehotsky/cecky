@@ -5,6 +5,7 @@ import com.example.model.DBItem;
 import com.example.payload.FileResponse;
 import com.example.payload.ItemResponse;
 import com.example.requests.CreateItemRequest;
+import com.example.requests.UpdateItemRequest;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -21,6 +22,12 @@ public class Utils {
     
     public ItemResponse generateItemResponse(DBItem item) {
     	return new ItemResponse(item.getBrand(), item.getType(), item.getGuid(), item.getCreatedDateTime());
+    }
+    
+    public DBItem prepareModifiedItem(DBItem item, UpdateItemRequest request) {
+    	item.setBrand(request.getBrand());
+    	item.setType(request.getType());
+    	return item;
     }
     
     public FileResponse generateFileResponse(DBFile file) {

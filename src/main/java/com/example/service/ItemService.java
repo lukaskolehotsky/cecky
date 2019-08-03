@@ -5,6 +5,7 @@ import com.example.model.DBItem;
 import com.example.payload.ItemResponse;
 import com.example.repository.ItemRepository;
 import com.example.requests.CreateItemRequest;
+import com.example.requests.UpdateItemRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +51,13 @@ public class ItemService extends Utils {
     		itemResponses.add(generateItemResponse(item));
     	}
     	return itemResponses;
+    }    
+    
+    public ItemResponse updateItem(String guid, UpdateItemRequest request) {    	
+    	DBItem item = itemRepository.findByGuid(guid);
+    	DBItem updatedItem = itemRepository.save(prepareModifiedItem(item, request));    	
+    	
+    	return generateItemResponse(updatedItem);
     }
     
 }

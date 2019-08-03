@@ -7,10 +7,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.payload.ItemWithFilesResponse;
+import com.example.requests.CreateItemRequest;
+import com.example.requests.UpdateItemRequest;
 import com.example.service.ItemWithFileService;
 
 @RestController
@@ -37,6 +42,18 @@ public class ItemWithFileController {
 	public void removeItemWithFiles(@RequestParam("guid") String guid) {
 		logger.info("removeItemWithFiles");
 		itemWithFileService.removeItemWithFiles(guid);
+    }
+	
+	@PutMapping("/updateItemWithFiles")
+	public ItemWithFilesResponse updateItemWithFiles(@RequestParam("guid") String guid, UpdateItemRequest request, MultipartFile[] files) {
+		logger.info("updateItemWithFiles");
+		return itemWithFileService.updateItemWithFiles(guid, request, files);
+    }
+	
+	@PostMapping("/createItemWithFiles")
+	public ItemWithFilesResponse createItemWithFiles(CreateItemRequest request, MultipartFile[] files) {
+		logger.info("createItemWithFiles");
+		return itemWithFileService.createItemWithFiles(request, files);
     }
 	
 }
