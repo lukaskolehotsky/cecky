@@ -1,5 +1,6 @@
 package com.example.services;
 
+import java.io.FileInputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +12,19 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.model.DBItem;
 import com.example.payload.FileResponse;
 import com.example.payload.ItemResponse;
 import com.example.payload.ItemWithFilesResponse;
+import com.example.requests.CreateItemRequest;
+import com.example.requests.UpdateItemRequest;
 import com.example.service.FileService;
 import com.example.service.ItemService;
 import com.example.service.ItemWithFileService;
@@ -95,6 +104,45 @@ public class ItemWithFileServiceTest extends AbstractTest{
 		
 		verify(itemService).removeItem(guid);
 		verify(fileService).removeFile(guid);
+	}
+	
+	@Test
+	public void createItemWithFiles() {		
+		CreateItemRequest request = generateCreateItemRequest();
+		List<MultipartFile> files = generateMockedMultipartFiles();
+		DBItem item = generateDBItem(request);
+		ItemResponse itemResponse = generateItemResponse(item);
+		List<FileResponse> fileResponses = generateFileResponses(files);
+		ItemWithFilesResponse itemWithFileResponse = new ItemWithFilesResponse(itemResponse, fileResponses);
+		
+		Mockito.when(itemService.createItem(request)).thenReturn(itemResponse);
+		Mockito.when(fileService.saveImages(files, itemResponse.getGuid())).thenReturn(fileResponses);
+		
+		ItemWithFilesResponse response = itemWithFileService.createItemWithFiles(request, files);
+		
+		Assert.assertEquals(itemWithFileResponse.getItemResponse().getBrand(),response.getItemResponse().getBrand());
+		Assert.assertEquals(itemWithFileResponse.getItemResponse().getGuid(),response.getItemResponse().getGuid());
+		Assert.assertEquals(itemWithFileResponse.getFileResponses().get(0).getFileName(),response.getFileResponses().get(0).getFileName());
+	}
+	
+	@Test
+	public void updateItemWithFiles() {
+		String guid = "guid";
+		DBItem item = generateItem();
+		UpdateItemRequest request = generateUpdateItemRequest(item);
+		List<MultipartFile> files = generateMockedMultipartFiles();
+		ItemResponse itemResponse = generateItemResponse(item);
+		List<FileResponse> fileResponses = generateFileResponses(files);
+		ItemWithFilesResponse itemWithFileResponse = new ItemWithFilesResponse(itemResponse, fileResponses);
+		
+		Mockito.when(itemService.updateItem(guid, request)).thenReturn(itemResponse);
+		Mockito.when(fileService.updateFiles(guid, files)).thenReturn(fileResponses);
+		
+		ItemWithFilesResponse response = itemWithFileService.updateItemWithFiles(item.getGuid(), request, files);
+		
+		Assert.assertEquals(itemWithFileResponse.getItemResponse().getBrand(),response.getItemResponse().getBrand());
+		Assert.assertEquals(itemWithFileResponse.getItemResponse().getGuid(),response.getItemResponse().getGuid());
+		Assert.assertEquals(itemWithFileResponse.getFileResponses().get(0).getFileName(),response.getFileResponses().get(0).getFileName());
 	}
 	
 }
