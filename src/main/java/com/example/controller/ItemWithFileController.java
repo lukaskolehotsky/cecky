@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.example.payload.ItemWithFilesResponse;
 import com.example.requests.CreateItemRequest;
@@ -33,9 +34,10 @@ public class ItemWithFileController {
     }
 	
 	@GetMapping("/getAllItemsWithFiles")
-	public List<ItemWithFilesResponse> getAllItemsWithFiles() {
+	public ModelAndView getAllItemsWithFiles() {
 		logger.info("getAllItemsWithFiles");
-		return itemWithFileService.getAllItemsWithFiles();
+		List<ItemWithFilesResponse> response = itemWithFileService.getAllItemsWithFiles();		
+		return new ModelAndView("main", "itemsWithFiles", response);
     }
 	
 	@DeleteMapping("/removeItemWithFiles")
