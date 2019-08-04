@@ -45,13 +45,13 @@ public class ItemWithFileController {
     }
 	
 	@PutMapping("/updateItemWithFiles")
-	public ItemWithFilesResponse updateItemWithFiles(@RequestParam("guid") String guid, UpdateItemRequest request, MultipartFile[] files) {
+	public ItemWithFilesResponse updateItemWithFiles(@RequestParam("guid") String guid, UpdateItemRequest request, List<MultipartFile> files) {
 		logger.info("updateItemWithFiles");
 		return itemWithFileService.updateItemWithFiles(guid, request, files);
     }
 	
 	@PostMapping("/createItemWithFiles")
-	public ItemWithFilesResponse createItemWithFiles(CreateItemRequest request, MultipartFile[] files) {
+	public ItemWithFilesResponse createItemWithFiles(CreateItemRequest request, List<MultipartFile> files) {
 		logger.info("createItemWithFiles");
 		return itemWithFileService.createItemWithFiles(request, files);
     }

@@ -47,8 +47,8 @@ public class FileController {
     }
     
     @PostMapping("/saveImages")
-    public List<FileResponse> saveImages(@RequestParam("files") MultipartFile[] files, String guid) {
-    	logger.info("uploadMultipleFiles: " + Arrays.toString(files));
+    public List<FileResponse> saveImages(@RequestParam("files") List<MultipartFile> files, String guid) {
+    	logger.info("uploadMultipleFiles: " + files);
         return fileService.saveImages(files, guid);
     }
 
@@ -65,7 +65,7 @@ public class FileController {
     }
     
     @PutMapping("/updateFiles")
-    public void updateFiles(@RequestParam("guid") String guid, @RequestParam("files") MultipartFile[] files) {
+    public void updateFiles(@RequestParam("guid") String guid, @RequestParam("files") List<MultipartFile> files) {
     	logger.info("updateFiles by guid: " + guid);
         fileService.updateFiles(guid, files);
     }

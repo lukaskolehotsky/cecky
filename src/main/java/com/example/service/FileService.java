@@ -96,9 +96,8 @@ public class FileService extends Utils{
     }
     
     @Transactional
-    public List<FileResponse> saveImages(MultipartFile[] files, String guid) {    	
-        return Arrays.asList(files)
-                .stream()
+    public List<FileResponse> saveImages(List<MultipartFile> files, String guid) {    	
+        return files.stream()
                 .map(file -> saveImage(file, guid))
                 .collect(Collectors.toList());
     }
@@ -150,7 +149,7 @@ public class FileService extends Utils{
     }
     
     @Transactional
-    public List<FileResponse> updateFiles(String guid, MultipartFile[] files) {
+    public List<FileResponse> updateFiles(String guid, List<MultipartFile> files) {
     	fileRepository.deleteByGuid(guid);
     	return saveImages(files, guid);
     }

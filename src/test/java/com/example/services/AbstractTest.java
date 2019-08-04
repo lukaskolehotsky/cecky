@@ -10,10 +10,14 @@ import java.util.List;
 import java.util.UUID;
 
 import com.example.requests.CreateItemRequest;
+import com.example.requests.UpdateItemRequest;
+
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.model.DBItem;
 
@@ -66,6 +70,29 @@ public abstract class AbstractTest {
 
 	public String generateRandomUUID() {
 		return UUID.randomUUID().toString();
+	}
+	
+	public UpdateItemRequest generateUpdateItemRequest(DBItem item) {
+		return new UpdateItemRequest(item.getBrand(), item.getType());
+	}
+	
+	public List<FileResponse> generateFileResponses(List<MultipartFile> files) {
+		List<FileResponse> fileResponses = new ArrayList<>();
+		for(MultipartFile multipartFile: files) {
+			fileResponses.add(new FileResponse(multipartFile.getName(), "",multipartFile.getContentType(), 1));
+		}
+		return fileResponses;
+	}
+	
+	public CreateItemRequest generateCreateItemRequest() {
+		return new CreateItemRequest("brand", "type");
+	}
+	
+	public List<MultipartFile> generateMockedMultipartFiles() {
+		List<MultipartFile> files = new ArrayList<>();
+		MultipartFile file = new MockMultipartFile("name", new byte[1]);
+		files.add(file);
+		return files;
 	}
 	
 }
