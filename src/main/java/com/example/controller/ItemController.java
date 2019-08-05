@@ -75,12 +75,23 @@ public class ItemController {
 		logger.info("updateItem1: ");
 
 		ItemResponse response = itemService.getItem(guid);
+		if(response == null){
+			logger.info("ITEM_RESPONSE IS NULL: ");
+		} else {
+			logger.info("ITEM_RESPONSE: " + response.toString());
+		}
 		return new ModelAndView("updateItem1", "item", response);
 	}
 
 	@PostMapping("/updateItem2")
 	public ModelAndView updateItem2(@RequestParam("guid") String guid, UpdateItemRequest request) {
 		logger.info("updateItem by guid: " +guid+ " with update request: " +request);
+
+		if(request == null){
+			logger.info("REQUEST IS NULL: ");
+		} else {
+			logger.info("REQUEST: " + request.toString());
+		}
 
 		ItemResponse response = itemService.updateItem(guid, request);
 		return new ModelAndView("updateItem2", "item", response);
