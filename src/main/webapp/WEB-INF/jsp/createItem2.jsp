@@ -5,7 +5,7 @@
 
 <html lang="en">
 <head>
-	<title>Spring Boot JSP example</title>
+	<title>CreateItem2</title>
 	<link rel="stylesheet" type="text/css" href="/style.css">
 </head>
 <body>

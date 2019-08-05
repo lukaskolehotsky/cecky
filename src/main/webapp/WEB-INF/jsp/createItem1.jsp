@@ -6,20 +6,18 @@
 
 <html lang="en">
 <head>
-	<title>Spring Boot JSP example</title>
+	<title>CreateItem1</title>
 	<link rel="stylesheet" type="text/css" href="/style.css">
 </head>
 <body>
 
-	<form:form method="get" modelAttribute="item" action="https://cecky.herokuapp.com/createItem2">
+	<form:form method="post" modelAttribute="item" action="https://cecky.herokuapp.com/createItem2">
 		<form:input path="brand" type="text" /> <!-- bind to user.name-->
 		<form:errors path="brand" />
 		<form:input path="type" type="text" /> <!-- bind to user.name-->
 		<form:errors path="type" />
 		<input type="submit" value="Submit" /></form>
 	</form:form>
-	
-	
 
 </body>
 </html>
