@@ -11,7 +11,7 @@
 </head>
 <body>
 
-    <form:form method="put" modelAttribute="item" action="https://cecky.herokuapp.com/updateItem2?guid=${item.getGuid()}">
+    <form:form method="post" modelAttribute="item" action="https://cecky.herokuapp.com/updateItem2?guid=${item.getGuid()}">
 		<form:input path="brand" type="text" placeholder="${item.getBrand()}"/>
 		<form:errors path="brand" />
 		<form:input path="type" type="text" placeholder="${item.getType()}"/>

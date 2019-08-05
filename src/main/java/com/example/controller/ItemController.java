@@ -78,7 +78,7 @@ public class ItemController {
 		return new ModelAndView("updateItem1", "item", response);
 	}
 
-	@PutMapping("/updateItem2")
+	@PostMapping("/updateItem2")
 	public ModelAndView updateItem2(@RequestParam("guid") String guid, UpdateItemRequest request) {
 		logger.info("updateItem by guid: " +guid+ " with update request: " +request);
 
