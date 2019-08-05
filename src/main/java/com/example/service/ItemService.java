@@ -1,7 +1,6 @@
 package com.example.service;
 
 import com.example.Utils.Utils;
-import com.example.controller.ItemWithFileController;
 import com.example.model.DBItem;
 import com.example.payload.ItemResponse;
 import com.example.repository.ItemRepository;
@@ -21,8 +20,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ItemService extends Utils {
-
-    private static final Logger logger = LoggerFactory.getLogger(ItemService.class);
 
     @Autowired
     private ItemRepository itemRepository;
@@ -58,15 +55,11 @@ public class ItemService extends Utils {
     	return itemResponses;
     }    
     
-    public ItemResponse updateItem(String guid, UpdateItemRequest request) {    	
+    @Transactional
+    public ItemResponse updateItem(String guid, UpdateItemRequest request) {   
+    	
     	DBItem item = itemRepository.findByGuid(guid);
-        logger.info("GUID: " + item.getGuid());
-        logger.info("BRAND: " + item.getBrand());
-        logger.info("TYPE: " + item.getType());
-        logger.info("CreatedDateTime: " + item.getCreatedDateTime());
     	DBItem updatedItem = itemRepository.save(prepareModifiedItem(item, request));
-
-
 
     	return generateItemResponse(updatedItem);
     }

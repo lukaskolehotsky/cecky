@@ -15,8 +15,6 @@ import java.util.UUID;
 
 public class Utils {
 
-    private static final Logger logger = LoggerFactory.getLogger(Utils.class);
-
     public String generateRandomUUID() {
         return UUID.randomUUID().toString();
     }
@@ -30,30 +28,26 @@ public class Utils {
     }
     
     public DBItem prepareModifiedItem(DBItem item, UpdateItemRequest request) {
-
-        if(item != null) {
-            if(request.getBrand() != null){
-                item.setBrand(request.getBrand());
-            } else {
-                item.setBrand("daj na opt");
-            }
-
-            if(request.getType() != null){
-                item.setType(request.getType());
-            } else {
-                item.setType("daj na opt");
-            }
-
-            if(item.getGuid() != null){
-                item.setGuid(item.getGuid());
-            } else {
-                item.setGuid("guid");
-            }
-
-            item.setCreatedDateTime(LocalDateTime.now());
+    	
+        if(request.getBrand() != null){
+            item.setBrand(request.getBrand());
         } else {
-            logger.info("ITEM IS NULL: ");
+            item.setBrand("daj na opt");
         }
+
+        if(request.getType() != null){
+            item.setType(request.getType());
+        } else {
+            item.setType("daj na opt");
+        }
+
+        if(item.getGuid() != null){
+            item.setGuid(item.getGuid());
+        } else {
+            item.setGuid("guid");
+        }
+
+        item.setCreatedDateTime(LocalDateTime.now());
 
     	return item;
     }

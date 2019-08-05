@@ -3,6 +3,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<c:set var="req" value="${pageContext.request}" />
+<c:set var="url">${req.requestURL}</c:set>
+<c:set var="uri" value="${req.requestURI}" />
 
 <html lang="en">
 <head>
@@ -11,13 +15,11 @@
 </head>
 <body>
 
-    <form:form method="post" modelAttribute="item" action="https://cecky.herokuapp.com/updateItem2?guid=${item.getGuid()}">
+    <form:form method="post" modelAttribute="item" action="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/updateItem2?guid=${item.getGuid()}">
 		<form:input path="brand" type="text" placeholder="${item.getBrand()}"/>
 		<form:errors path="brand" />
 		<form:input path="type" type="text" placeholder="${item.getType()}"/>
 		<form:errors path="type" />
-		<form:input path="guid" type="text" placeholder="${item.getGuid()}"/>
-        <form:errors path="guid" />
 		<input type="submit" value="Submit" /></form>
 	</form:form>
 	
