@@ -3,15 +3,19 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<c:set var="req" value="${pageContext.request}" />
+<c:set var="url">${req.requestURL}</c:set>
+<c:set var="uri" value="${req.requestURI}" />
 
 <html lang="en">
 <head>
-	<title>Spring Boot JSP example</title>
+	<title>CreateItem1</title>
 	<link rel="stylesheet" type="text/css" href="/style.css">
 </head>
 <body>
 
-	<form:form method="post" modelAttribute="item" action="http://localhost:8080/createItem2">
+    <form:form method="post" modelAttribute="item" action="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/createItem2">
 		<form:input path="brand" type="text" /> <!-- bind to user.name-->
 		<form:errors path="brand" />
 		<form:input path="type" type="text" /> <!-- bind to user.name-->

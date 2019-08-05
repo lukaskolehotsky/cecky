@@ -48,8 +48,8 @@ public class ItemController {
 	public ModelAndView createItem2(CreateItemRequest request) {
 		logger.info("createItem2: ");
 
-		itemService.createItem(request);
-		return new ModelAndView("createItem2");
+		ItemResponse response = itemService.createItem(request);
+		return new ModelAndView("createItem2", "item", response);
 	}
 	
 	@GetMapping("/getItem")
@@ -68,6 +68,24 @@ public class ItemController {
 	public void updateItem(@RequestParam("guid") String guid, UpdateItemRequest request) {
 		logger.info("updateItem by guid: " +guid+ " with update request: " +request);
 		itemService.updateItem(guid, request);
+	}
+
+	@GetMapping("/updateItem1")
+	public ModelAndView updateItem1(@RequestParam("guid") String guid) {
+		logger.info("updateItem1: ");
+
+		ItemResponse response = itemService.getItem(guid);
+
+		return new ModelAndView("updateItem1", "item", response);
+	}
+
+	@PostMapping("/updateItem2")
+	public ModelAndView updateItem2(@RequestParam("guid") String guid, UpdateItemRequest request) {
+		logger.info("updateItem by guid: " +guid+ " with update request: " +request);
+
+		ItemResponse response = itemService.updateItem(guid, request);
+		
+		return new ModelAndView("updateItem2", "item", response);
 	}
 
 }
