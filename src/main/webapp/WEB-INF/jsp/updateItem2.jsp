@@ -11,7 +11,7 @@
 <body>
 
 	<b>UpdateItem2</b>
-	<br> Message: ${item.brand}
+	<br> Message: ${item.getBrand()}
 	
 	<form:form method="put" enctype="multipart/form-data" modelAttribute="files" action="https://cecky.herokuapp.com/updateFiles?guid=${item.getGuid()}">
     		<input id="multipleFileUploadInput" type="file" name="files" class="file-input" multiple required />
