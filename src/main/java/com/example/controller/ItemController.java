@@ -48,8 +48,8 @@ public class ItemController {
 	public ModelAndView createItem2(CreateItemRequest request) {
 		logger.info("createItem2: ");
 
-		itemService.createItem(request);
-		return new ModelAndView("createItem2");
+		ItemResponse response = itemService.createItem(request);
+		return new ModelAndView("createItem2", "item", response);
 	}
 	
 	@GetMapping("/getItem")
