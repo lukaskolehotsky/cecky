@@ -47,7 +47,7 @@ public class FileController {
         return fileService.uploadMultipleFiles(files);
     }
     
-    @GetMapping(value = ("/saveImages"), consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = ("/saveImages"), consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public List<FileResponse> saveImages(List<MultipartFile> files, String guid) {
     	logger.info("uploadMultipleFiles: " + files);
         return fileService.saveImages(files, guid);
