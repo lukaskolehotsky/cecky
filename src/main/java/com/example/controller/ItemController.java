@@ -3,11 +3,16 @@ package com.example.controller;
 import com.example.requests.CreateItemRequest;
 import com.example.requests.UpdateItemRequest;
 import com.example.service.ItemService;
+
+import java.time.LocalDateTime;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,11 +30,26 @@ public class ItemController {
 	private ItemService itemService;
 
 	@GetMapping("/welcome")
-	public ModelAndView createItem(@RequestParam("request") CreateItemRequest request) {
+	public ModelAndView createItem123456(@RequestParam("request") CreateItemRequest request) {
 		logger.info("createItem: ");
 
 		itemService.createItem(request);
 		return new ModelAndView("welcome", "item", request);
+	}
+	
+	@GetMapping("/createItem1")
+	public ModelAndView createItem1() {
+		logger.info("createItem1: ");
+		
+		return new ModelAndView("createItem1", "item", new ItemResponse("", "", "", LocalDateTime.now()));
+	}
+	
+	@GetMapping("/createItem2")
+	public ModelAndView createItem2(CreateItemRequest request) {
+		logger.info("createItem2: ");
+
+		itemService.createItem(request);
+		return new ModelAndView("createItem2");
 	}
 	
 	@GetMapping("/getItem")
