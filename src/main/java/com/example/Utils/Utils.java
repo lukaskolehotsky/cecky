@@ -25,9 +25,26 @@ public class Utils {
     }
     
     public DBItem prepareModifiedItem(DBItem item, UpdateItemRequest request) {
-    	item.setBrand(request.getBrand());
-    	item.setType(request.getType());
-    	item.setGuid(item.getGuid());
+        if(request.getBrand() != null){
+            item.setBrand(request.getBrand());
+        } else {
+            item.setBrand("daj na opt");
+        }
+
+        if(request.getType() != null){
+            item.setType(request.getType());
+        } else {
+            item.setType("daj na opt");
+        }
+
+        if(item.getGuid() != null){
+            item.setGuid(item.getGuid());
+        } else {
+            item.setGuid("guid");
+        }
+
+        item.setCreatedDateTime(LocalDateTime.now());
+
     	return item;
     }
     
