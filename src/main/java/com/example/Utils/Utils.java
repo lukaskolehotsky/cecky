@@ -7,9 +7,12 @@ import com.example.payload.FileResponse;
 import com.example.payload.ItemResponse;
 import com.example.requests.CreateItemRequest;
 import com.example.requests.UpdateItemRequest;
+
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -52,7 +55,13 @@ public class Utils {
     	return item;
     }
     
-    public FileResponse generateFileResponse(DBFile file) {
-    	return new FileResponse(file.getFileName(), "", file.getFileType(), 1);
+    public FileResponse generateFileResponse(DBFile file) throws UnsupportedEncodingException {
+    	return new FileResponse(file.getFileName(), "", file.getFileType(), 1, encodeBytes(file.getData()));
+    }
+    
+    public String encodeBytes(byte[] bytes) throws UnsupportedEncodingException {
+        byte[] encodeBase64 = Base64.encodeBase64(bytes);
+        String base64Encoded = new String(encodeBase64, "UTF-8"); 
+        return base64Encoded;
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -24,31 +25,31 @@ public class FileController {
     private FileService fileService;
 
     @GetMapping("/all")
-    public List<FileResponse> findAll() {    	
+    public List<FileResponse> findAll() throws UnsupportedEncodingException {    	
     	logger.info("findAll");
     	return fileService.findAll();
     }
     
     @GetMapping("/byId")
-    public FileResponse findById(@RequestParam("id") String id) {  
+    public FileResponse findById(@RequestParam("id") String id) throws UnsupportedEncodingException {  
     	logger.info("findById: " + id);
     	return fileService.findById(id);
     }
     
     @PostMapping("/uploadFile")
-    public FileResponse uploadFile(@RequestParam("file") MultipartFile file) {
+    public FileResponse uploadFile(@RequestParam("file") MultipartFile file) throws UnsupportedEncodingException {
     	logger.info("uploadFile: " + file.toString());
         return fileService.uploadFile(file, "GUID");
     }
 
     @PostMapping("/uploadMultipleFiles")
-    public List<FileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+    public List<FileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) throws UnsupportedEncodingException {
     	logger.info("uploadMultipleFiles: " + Arrays.toString(files));
         return fileService.uploadMultipleFiles(files);
     }
     
     @PostMapping(value = ("/saveImages"), consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public List<FileResponse> saveImages(List<MultipartFile> files, String guid) {
+    public List<FileResponse> saveImages(List<MultipartFile> files, String guid) throws UnsupportedEncodingException {
     	logger.info("uploadMultipleFiles: " + files);
         return fileService.saveImages(files, guid);
     }
@@ -66,7 +67,7 @@ public class FileController {
     }
     
     @PutMapping("/updateFiles")
-    public void updateFiles(@RequestParam("guid") String guid, @RequestParam("files") List<MultipartFile> files) {
+    public void updateFiles(@RequestParam("guid") String guid, @RequestParam("files") List<MultipartFile> files) throws UnsupportedEncodingException {
     	logger.info("updateFiles by guid: " + guid);
         fileService.updateFiles(guid, files);
     }

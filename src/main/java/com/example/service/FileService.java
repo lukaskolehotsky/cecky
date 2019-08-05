@@ -9,6 +9,8 @@ import com.example.payload.FileResponse;
 import com.example.repository.FileRepository;
 
 import com.example.requests.CreateItemRequest;
+
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -21,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,15 +46,15 @@ public class FileService extends Utils{
     	fileRepository.deleteByGuid(guid);
     }
     
-    public List<FileResponse> getFiles(String guid) {
+    public List<FileResponse> getFiles(String guid) throws UnsupportedEncodingException {
     	List<FileResponse> fileResponses = new ArrayList<>();
-    	for(DBFile file: fileRepository.findByGuid(guid)) {
-    		fileResponses.add(new FileResponse(file.getFileName(), "", file.getFileType(), 1));
+    	for(DBFile file: fileRepository.findByGuid(guid)) {       		                        
+    		fileResponses.add(new FileResponse(file.getFileName(), "", file.getFileType(), 1, encodeBytes(file.getData())));
     	}
     	return fileResponses;
     }    
 
-    public List<FileResponse> findAll(){
+    public List<FileResponse> findAll() throws UnsupportedEncodingException{
     	
     	List<DBFile> files;
     	files = fileRepository.findAll();
@@ -64,7 +67,7 @@ public class FileService extends Utils{
     	return responses;
     }
     
-    public FileResponse findById(String id) {
+    public FileResponse findById(String id) throws UnsupportedEncodingException {
     	Optional<DBFile> file = fileRepository.findById(id);
     	if(file.isPresent()){
             return generateFileResponse(file.get());
@@ -73,7 +76,7 @@ public class FileService extends Utils{
         }
     }
     
-    public FileResponse uploadFile(MultipartFile file, String guid) {
+    public FileResponse uploadFile(MultipartFile file, String guid) throws UnsupportedEncodingException {
         DBFile dbFile = storeFile(file, guid);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -82,27 +85,31 @@ public class FileService extends Utils{
                 .toUriString();
 
         return new FileResponse(dbFile.getFileName(), fileDownloadUri,
-                file.getContentType(), file.getSize());
+                file.getContentType(), file.getSize(), encodeBytes(dbFile.getData()));
     }
     
-    public List<FileResponse> uploadMultipleFiles(MultipartFile[] files) {
+    public List<FileResponse> uploadMultipleFiles(MultipartFile[] files) throws UnsupportedEncodingException {
         CreateItemRequest createItemRequest = new CreateItemRequest("brand", "type");
     	ItemResponse createdItem = itemService.createItem(createItemRequest);
     	
-        return Arrays.asList(files)
-                .stream()
-                .map(file -> uploadFile(file, createdItem.getGuid()))
-                .collect(Collectors.toList());
+    	List<FileResponse> fileResponses = new ArrayList<>();
+    	for(MultipartFile file: files) {
+    		fileResponses.add(uploadFile(file, createdItem.getGuid()));
+    	}
+        return fileResponses;
     }
     
     @Transactional
-    public List<FileResponse> saveImages(List<MultipartFile> files, String guid) {    	
-        return files.stream()
-                .map(file -> saveImage(file, guid))
-                .collect(Collectors.toList());
+    public List<FileResponse> saveImages(List<MultipartFile> files, String guid) throws UnsupportedEncodingException {   
+    	
+    	List<FileResponse> fileResponses = new ArrayList<>();
+    	for(MultipartFile file: files) {
+    		fileResponses.add(saveImage(file, guid));
+    	}
+    	return fileResponses;
     }
     
-    public FileResponse saveImage(MultipartFile file, String guid) {
+    public FileResponse saveImage(MultipartFile file, String guid) throws UnsupportedEncodingException {
         DBFile dbFile = storeFile(file, guid);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -111,7 +118,7 @@ public class FileService extends Utils{
                 .toUriString();
 
         return new FileResponse(dbFile.getFileName(), fileDownloadUri,
-                file.getContentType(), file.getSize());
+                file.getContentType(), file.getSize(), encodeBytes(dbFile.getData()));
     }
 
     public DBFile storeFile(MultipartFile file, String guid) {
@@ -149,7 +156,7 @@ public class FileService extends Utils{
     }
     
     @Transactional
-    public List<FileResponse> updateFiles(String guid, List<MultipartFile> files) {
+    public List<FileResponse> updateFiles(String guid, List<MultipartFile> files) throws UnsupportedEncodingException {
     	fileRepository.deleteByGuid(guid);
     	return saveImages(files, guid);
     }

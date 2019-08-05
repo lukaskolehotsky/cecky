@@ -1,5 +1,6 @@
 package com.example.services;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +41,7 @@ public class FileServiceTest extends AbstractTest{
 	}
 	
 	@Test
-	public void findById() {		
+	public void findById() throws UnsupportedEncodingException {		
 		String guid = "guid";
 		
 		DBFile file = generateFile();
@@ -54,7 +55,7 @@ public class FileServiceTest extends AbstractTest{
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void findById_fileNotFound() {		
+	public void findById_fileNotFound() throws UnsupportedEncodingException {		
 		String guid = "guid";
 		
 		Mockito.when(fileRepository.findById(guid)).thenReturn(Optional.empty());
@@ -87,7 +88,7 @@ public class FileServiceTest extends AbstractTest{
 	}
 	
 	@Test
-	public void findAll() {
+	public void findAll() throws UnsupportedEncodingException {
 		 List<DBFile> files = generateFiles();
 		 List<FileResponse> uploadFileResponses = generateUploadFileResponses(files);
 
@@ -103,7 +104,7 @@ public class FileServiceTest extends AbstractTest{
 	}
 	
 	@Test
-	public void getFiles() {
+	public void getFiles() throws UnsupportedEncodingException {
 		String guid = "guid";
 		List<DBFile> files = generateFiles();
 		

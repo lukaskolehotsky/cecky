@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -28,13 +29,13 @@ public class ItemWithFileController {
 	private static final Logger logger = LoggerFactory.getLogger(ItemWithFileController.class);
 	
 	@GetMapping("/getItemWithFiles")
-	public ItemWithFilesResponse getItemWithFiles(@RequestParam("guid") String guid) {
+	public ItemWithFilesResponse getItemWithFiles(@RequestParam("guid") String guid) throws UnsupportedEncodingException {
 		logger.info("getItemWithFiles by guid: " + guid);
 		return itemWithFileService.getItemWithFiles(guid);
     }
 	
 	@GetMapping("/getAllItemsWithFiles")
-	public ModelAndView getAllItemsWithFiles() {
+	public ModelAndView getAllItemsWithFiles() throws UnsupportedEncodingException {
 		logger.info("getAllItemsWithFiles");
 		List<ItemWithFilesResponse> response = itemWithFileService.getAllItemsWithFiles();		
 		return new ModelAndView("main", "itemsWithFiles", response);
@@ -47,13 +48,13 @@ public class ItemWithFileController {
     }
 	
 	@PutMapping("/updateItemWithFiles")
-	public ItemWithFilesResponse updateItemWithFiles(@RequestParam("guid") String guid, UpdateItemRequest request, List<MultipartFile> files) {
+	public ItemWithFilesResponse updateItemWithFiles(@RequestParam("guid") String guid, UpdateItemRequest request, List<MultipartFile> files) throws UnsupportedEncodingException {
 		logger.info("updateItemWithFiles");
 		return itemWithFileService.updateItemWithFiles(guid, request, files);
     }
 	
 	@PostMapping("/createItemWithFiles")
-	public ItemWithFilesResponse createItemWithFiles(CreateItemRequest request, List<MultipartFile> files) {
+	public ItemWithFilesResponse createItemWithFiles(CreateItemRequest request, List<MultipartFile> files) throws UnsupportedEncodingException {
 		logger.info("createItemWithFiles");
 		return itemWithFileService.createItemWithFiles(request, files);
     }

@@ -1,6 +1,8 @@
 package com.example.services;
 
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,12 +55,12 @@ public class ItemWithFileServiceTest extends AbstractTest{
 	}
 	
 	@Test
-	public void getItemWithFiles() {
+	public void getItemWithFiles() throws UnsupportedEncodingException {
 		String guid = "guid";
 		DBItem item = generateItem();
 		ItemResponse itemResponse = generateItemResponse(item);
 		List<FileResponse> fileResponses = new ArrayList<>();
-		fileResponses.add(new FileResponse("name", "", "fileType", 1));
+		fileResponses.add(new FileResponse("name", "", "fileType", 1, encodeBytes(new byte[1])));
 		
 		ItemWithFilesResponse itemWithFileResponse = new ItemWithFilesResponse(itemResponse, fileResponses);
 		    	
@@ -72,13 +74,13 @@ public class ItemWithFileServiceTest extends AbstractTest{
 	}
 	
 	@Test
-	public void getAllItemsWithFiles() {
+	public void getAllItemsWithFiles() throws UnsupportedEncodingException {
 		DBItem item = generateItem();		
 		ItemResponse itemResponse = generateItemResponse(item);
 		List<ItemResponse> itemResponses = new ArrayList<>();
 		itemResponses.add(itemResponse);
 		
-		FileResponse fileResponse = new FileResponse("fileName","fileDownloadUri", "fileType", 1);
+		FileResponse fileResponse = new FileResponse("fileName","fileDownloadUri", "fileType", 1, encodeBytes(new byte[1]));
 		List<FileResponse> fileResponses = new ArrayList<>();
 		fileResponses.add(fileResponse);
 		
@@ -107,7 +109,7 @@ public class ItemWithFileServiceTest extends AbstractTest{
 	}
 	
 	@Test
-	public void createItemWithFiles() {		
+	public void createItemWithFiles() throws IOException {		
 		CreateItemRequest request = generateCreateItemRequest();
 		List<MultipartFile> files = generateMockedMultipartFiles();
 		DBItem item = generateDBItem(request);
@@ -126,7 +128,7 @@ public class ItemWithFileServiceTest extends AbstractTest{
 	}
 	
 	@Test
-	public void updateItemWithFiles() {
+	public void updateItemWithFiles() throws IOException {
 		String guid = "guid";
 		DBItem item = generateItem();
 		UpdateItemRequest request = generateUpdateItemRequest(item);
