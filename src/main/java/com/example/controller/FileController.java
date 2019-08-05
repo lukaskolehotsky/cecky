@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,8 +47,8 @@ public class FileController {
         return fileService.uploadMultipleFiles(files);
     }
     
-    @PostMapping("/saveImages")
-    public List<FileResponse> saveImages(@RequestParam("files") List<MultipartFile> files, String guid) {
+    @GetMapping(value = ("/saveImages"), consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public List<FileResponse> saveImages(List<MultipartFile> files, String guid) {
     	logger.info("uploadMultipleFiles: " + files);
         return fileService.saveImages(files, guid);
     }
