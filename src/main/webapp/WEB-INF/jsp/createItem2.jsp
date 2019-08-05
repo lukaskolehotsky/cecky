@@ -13,7 +13,7 @@
 	<b>create 2</b>
 	<br> Message: ${item.brand}
 	
-	<form:form method="post" enctype="multipart/form-data" modelAttribute="files" action="https://cecky.herokuapp.com/saveImages?guid=${item.brand}">
+	<form:form method="post" enctype="multipart/form-data" modelAttribute="files" action="https://cecky.herokuapp.com/saveImages?guid=${item.guid}">
 		<input id="multipleFileUploadInput" type="file" name="files" class="file-input" multiple required />
 		<input type="submit" value="Submit" /></form>
 	</form:form>	
