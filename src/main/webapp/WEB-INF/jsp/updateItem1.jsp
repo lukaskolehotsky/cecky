@@ -12,9 +12,9 @@
 <body>
 
     <form:form method="put" modelAttribute="item" action="https://cecky.herokuapp.com/updateItem2">
-		<form:input path="brand" type="text" placeholder="${item.getBrand()"/> <!-- bind to user.name-->
+		<form:input path="brand" type="text" placeholder="${item.getBrand()}"/> <!-- bind to user.name-->
 		<form:errors path="brand" />
-		<form:input path="type" type="text" placeholder="${item.getType()"/> <!-- bind to user.name-->
+		<form:input path="type" type="text" placeholder="${item.getType()}"/> <!-- bind to user.name-->
 		<form:errors path="type" />
 		<input type="submit" value="Submit" /></form>
 	</form:form>
