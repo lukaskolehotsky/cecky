@@ -20,10 +20,14 @@ public class ItemService extends Utils {
 
     @Autowired
     private ItemRepository itemRepository;
+    
+    @Autowired
+    private EmailSender emailSender;
 
     public ItemResponse createItem(CreateItemRequest request) {
 
         DBItem savedItem = itemRepository.save(generateDBItem(request));
+        emailSender.sendEmail();
 
         return generateItemResponse(savedItem);
     }
