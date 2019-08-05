@@ -24,10 +24,10 @@ public class Utils {
     	return new ItemResponse(item.getBrand(), item.getType(), item.getGuid(), item.getCreatedDateTime());
     }
     
-    public DBItem prepareModifiedItem(String guid, DBItem item, UpdateItemRequest request) {
+    public DBItem prepareModifiedItem(DBItem item, UpdateItemRequest request) {
     	item.setBrand(request.getBrand());
     	item.setType(request.getType());
-    	item.setGuid(guid);
+    	item.setGuid(item.getGuid());
     	return item;
     }
     
