@@ -55,7 +55,7 @@ public class ItemService extends Utils {
     
     public ItemResponse updateItem(String guid, UpdateItemRequest request) {    	
     	DBItem item = itemRepository.findByGuid(guid);
-    	DBItem updatedItem = itemRepository.save(prepareModifiedItem(item, request));    	
+    	DBItem updatedItem = itemRepository.save(prepareModifiedItem(guid, item, request));
     	
     	return generateItemResponse(updatedItem);
     }
