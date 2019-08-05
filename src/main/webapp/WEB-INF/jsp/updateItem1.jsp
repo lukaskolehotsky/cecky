@@ -11,11 +11,13 @@
 </head>
 <body>
 
-    <form:form method="put" modelAttribute="item" action="https://cecky.herokuapp.com/updateItem2">
-		<form:input path="brand" type="text" placeholder="${item.getBrand()}"/> <!-- bind to user.name-->
+    <form:form method="put" modelAttribute="item" action="https://cecky.herokuapp.com/updateItem2?guid=${item.getGuid()}">
+		<form:input path="brand" type="text" placeholder="${item.getBrand()}"/>
 		<form:errors path="brand" />
-		<form:input path="type" type="text" placeholder="${item.getType()}"/> <!-- bind to user.name-->
+		<form:input path="type" type="text" placeholder="${item.getType()}"/>
 		<form:errors path="type" />
+		<form:input path="guid" type="text" placeholder="${item.getGuid()}"/>
+        <form:errors path="guid" />
 		<input type="submit" value="Submit" /></form>
 	</form:form>
 	
