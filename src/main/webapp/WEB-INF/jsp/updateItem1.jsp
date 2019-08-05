@@ -15,15 +15,21 @@
 </head>
 <body>
 
-    <form:form method="post" modelAttribute="item" action="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/updateItem2?guid=${item.getGuid()}">
-		<form:input path="brand" type="text" placeholder="${item.getBrand()}"/>
-		<form:errors path="brand" />
-		<form:input path="type" type="text" placeholder="${item.getType()}"/>
-		<form:errors path="type" />
-		<input type="submit" value="Submit" /></form>
-	</form:form>
-	
-	
+	<center>
+		<table width="400" bgcolor="yellow" border="1">
+			<tr>
+					<td>
+						<form:form method="post" modelAttribute="item" action="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/updateItem2?guid=${item.getGuid()}">
+							<form:input path="brand" type="text" placeholder="${item.getBrand()}"/>
+							<form:errors path="brand" />
+							<form:input path="type" type="text" placeholder="${item.getType()}"/>
+							<form:errors path="type" />
+							<input type="submit" value="Submit" /></form>
+						</form:form>
+					</td>
+			</tr>
+		</table>
+	</center>	
 
 </body>
 </html>

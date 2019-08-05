@@ -17,10 +17,18 @@
 	<b>create 2</b>
 	<br> Message: ${item.brand}
 	
-	<form:form method="post" enctype="multipart/form-data" modelAttribute="files" action="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/saveImages?guid=${item.getGuid()}">
-		<input id="multipleFileUploadInput" type="file" name="files" class="file-input" multiple required />
-		<input type="submit" value="Submit" /></form>
-	</form:form>	
+	<center>
+		<table width="400" bgcolor="yellow" border="1">
+			<tr>
+					<td>
+						<form:form method="post" enctype="multipart/form-data" modelAttribute="files" action="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/saveImages?guid=${item.getGuid()}">
+							<input id="multipleFileUploadInput" type="file" name="files" class="file-input" multiple required />
+							<input type="submit" value="Submit" /></form>
+						</form:form>
+					</td>
+			</tr>
+		</table>
+	</center>	
 
 </body>
 </html>

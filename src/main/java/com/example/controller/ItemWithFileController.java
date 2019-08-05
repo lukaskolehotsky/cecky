@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.example.payload.ItemWithFilesResponse;
 import com.example.requests.CreateItemRequest;
@@ -37,14 +38,15 @@ public class ItemWithFileController {
 	@GetMapping("/getAllItemsWithFiles")
 	public ModelAndView getAllItemsWithFiles() throws UnsupportedEncodingException {
 		logger.info("getAllItemsWithFiles");
-		List<ItemWithFilesResponse> response = itemWithFileService.getAllItemsWithFiles();		
+		List<ItemWithFilesResponse> response = itemWithFileService.getAllItemsWithFiles();
 		return new ModelAndView("main", "itemsWithFiles", response);
     }
 	
-	@DeleteMapping("/removeItemWithFiles")
-	public void removeItemWithFiles(@RequestParam("guid") String guid) {
+	@GetMapping("/removeItemWithFiles")
+	public RedirectView removeItemWithFiles(@RequestParam("guid") String guid) {
 		logger.info("removeItemWithFiles");
 		itemWithFileService.removeItemWithFiles(guid);
+		return new RedirectView("/getAllItemsWithFiles");
     }
 	
 	@PutMapping("/updateItemWithFiles")

@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<c:set var="req" value="${pageContext.request}" />
+<c:set var="url">${req.requestURL}</c:set>
+<c:set var="uri" value="${req.requestURI}" />
+
 <html lang="en">
 <head>
 	<title>Spring Boot JSP example</title>
@@ -12,7 +17,9 @@
 		<c:forEach items="${itemsWithFiles}" var="itemWithFiles">
 			<table width="400" bgcolor="yellow" border="1">	
 			    <tr>
-			        <td>Item brand: <c:out value="${itemWithFiles.getItemResponse().getBrand()}"/></td>	        
+			        <td>Item brand: <c:out value="${itemWithFiles.getItemResponse().getBrand()}"/></td>	 
+			        <td><a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/updateItem1?guid=${itemWithFiles.getItemResponse().getGuid()}"> Update item </a></td>       
+			    	<td><a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/removeItemWithFiles?guid=${itemWithFiles.getItemResponse().getGuid()}"> Remove item </a></td> 
 			    </tr>
 			    
 			    <br>
