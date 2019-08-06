@@ -38,16 +38,16 @@ public class ItemWithFileService {
 	@Transactional
     public List<ItemWithFilesResponse> getAllItemsWithFiles() throws UnsupportedEncodingException {
 		
-		List<ItemWithFilesResponse> itemWithFileResponses = new ArrayList<>();
+		List<ItemWithFilesResponse> itemsWithFileResponses = new ArrayList<>();
 		
 		List<ItemResponse> itemResponses = itemService.getAll();
 		
 		for(ItemResponse itemResponse: itemResponses) {
 			List<FileResponse> fileResponses = fileService.getFiles(itemResponse.getGuid());
-			itemWithFileResponses.add(new ItemWithFilesResponse(itemResponse, fileResponses));
+			itemsWithFileResponses.add(new ItemWithFilesResponse(itemResponse, fileResponses));
 		}
     	
-    	return itemWithFileResponses;    	
+    	return itemsWithFileResponses;    	
     }
 	
 	@Transactional
