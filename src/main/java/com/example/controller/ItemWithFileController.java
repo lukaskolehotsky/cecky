@@ -2,6 +2,7 @@ package com.example.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,9 +38,10 @@ public class ItemWithFileController {
     }
 	
 	@GetMapping("/getAllItemsWithFiles")
-	public ModelAndView getAllItemsWithFiles() throws UnsupportedEncodingException {
+	public ModelAndView getAllItemsWithFiles(@RequestParam("page") Optional<Integer> page) throws UnsupportedEncodingException {
 		logger.info("getAllItemsWithFiles");
-		List<ItemWithFilesResponse> response = itemWithFileService.getAllItemsWithFiles();
+		 
+		List<ItemWithFilesResponse> response = itemWithFileService.getAllItemsWithFiles((page.isPresent()) ? page.get() : 1);
 		return new ModelAndView("main", "itemsWithFiles", response);
     }
 	

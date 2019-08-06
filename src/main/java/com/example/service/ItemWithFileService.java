@@ -3,6 +3,7 @@ package com.example.service;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -36,11 +37,11 @@ public class ItemWithFileService {
     }
 	
 	@Transactional
-    public List<ItemWithFilesResponse> getAllItemsWithFiles() throws UnsupportedEncodingException {
+    public List<ItemWithFilesResponse> getAllItemsWithFiles(int pageNumber) throws UnsupportedEncodingException {
 		
 		List<ItemWithFilesResponse> itemsWithFileResponses = new ArrayList<>();
 		
-		List<ItemResponse> itemResponses = itemService.getAll();
+		List<ItemResponse> itemResponses = itemService.getAll(pageNumber);
 		
 		for(ItemResponse itemResponse: itemResponses) {
 			List<FileResponse> fileResponses = fileService.getFiles(itemResponse.getGuid());

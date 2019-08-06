@@ -77,7 +77,7 @@ public class ItemServiceTest extends AbstractTest{
 		List<DBItem> items = generateDBItems();
 		Mockito.when(itemRepository.findAll()).thenReturn(items);
 		
-		List<ItemResponse> response = itemService.getAll();
+		List<ItemResponse> response = itemService.getAll(1);
 		
 		Assert.assertEquals(items.size(), response.size());		
 	}

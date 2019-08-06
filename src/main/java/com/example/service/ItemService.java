@@ -14,6 +14,10 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
@@ -50,12 +54,13 @@ public class ItemService extends Utils {
     	itemRepository.deleteByGuid(guid);
     } 
     
-    public List<ItemResponse> getAll(){
+    public List<ItemResponse> getAll(int pageNumber){
+    	Pageable paging = PageRequest.of(pageNumber, 5, Sort.by("createdDateTime").ascending());
     	
-    	List<DBItem> items = itemRepository.findAll();
+    	Page<DBItem> items = itemRepository.findAll(paging);
     	List<ItemResponse> itemResponses = new ArrayList<>();
     	
-    	for(DBItem item: items) {
+    	for(DBItem item: items.getContent()) {
     		itemResponses.add(generateItemResponse(item));
     	}
     	return itemResponses;

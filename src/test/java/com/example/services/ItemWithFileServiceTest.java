@@ -79,10 +79,10 @@ public class ItemWithFileServiceTest extends AbstractTest{
 		
 		ItemWithFilesResponse itemWithFilesResponse = new ItemWithFilesResponse(itemResponse, fileResponses);
 		
-		Mockito.when(itemService.getAll()).thenReturn(itemResponses);
+		Mockito.when(itemService.getAll(1)).thenReturn(itemResponses);
 		Mockito.when(fileService.getFiles(itemResponse.getGuid())).thenReturn(fileResponses);
 		
-		List<ItemWithFilesResponse> response = itemWithFileService.getAllItemsWithFiles();
+		List<ItemWithFilesResponse> response = itemWithFileService.getAllItemsWithFiles(1);
 		
 		Assert.assertEquals(itemWithFilesResponse.getItemResponse().getBrand(), response.get(0).getItemResponse().getBrand());
 		
