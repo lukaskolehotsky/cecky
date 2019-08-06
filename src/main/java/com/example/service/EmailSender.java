@@ -8,18 +8,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailSender {
 
-		@Autowired
-	    private JavaMailSender javaMailSender;
-		
-		void sendEmail(String authenticationCode, String email) {
-	        SimpleMailMessage msg = new SimpleMailMessage();
-	        msg.setFrom("lukaskolehotsky@gmail.com");
-	        msg.setTo(email);
+	@Autowired
+    private JavaMailSender javaMailSender;
+	
+	public void sendEmail(String authenticationCode, String email) {
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setFrom("lukaskolehotsky@gmail.com");
+        msg.setTo(email);
 
-	        msg.setSubject("Item Created");
-	        msg.setText("Hello, \n Your authentication code for modification has been created - " + authenticationCode);
+        msg.setSubject("Item Created");
+        msg.setText("Hello, \n Your authentication code for modification has been created - " + authenticationCode);
 
-	        javaMailSender.send(msg);
-	    }
+        javaMailSender.send(msg);
+    }
 
 }

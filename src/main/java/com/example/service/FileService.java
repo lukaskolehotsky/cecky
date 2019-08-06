@@ -4,19 +4,13 @@ import com.example.Utils.Utils;
 import com.example.exception.MyFileNotFoundException;
 import com.example.exception.FileStorageException;
 import com.example.model.DBFile;
-import com.example.payload.ItemResponse;
 import com.example.payload.FileResponse;
 import com.example.repository.FileRepository;
-
-import com.example.requests.CreateItemRequest;
-
-import org.apache.tomcat.util.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,23 +26,24 @@ import javax.transaction.Transactional;
 
 @Service
 public class FileService extends Utils{
+	
+	private static final Logger logger = LoggerFactory.getLogger(FileService.class);
 
     @Autowired
     private FileRepository fileRepository;
-    
-    @Autowired
-    private ItemService itemService;
     
     @Transactional
     public void removeFile(String guid) {
     	fileRepository.deleteByGuid(guid);
     }
     
+    @Cacheable(value = "files", key = "#guid")
     public List<FileResponse> getFiles(String guid) throws UnsupportedEncodingException {
     	List<FileResponse> fileResponses = new ArrayList<>();
     	for(DBFile file: fileRepository.findByGuid(guid)) {       		                        
     		fileResponses.add(new FileResponse(file.getFileName(), "", file.getFileType(), 1, encodeBytes(file.getData())));
     	}
+    	logger.info("!!!!!!!!!!!!!!!!!!FROM DATABASE!!!!!!!!!!!!!!!!!!!!!!!!!");
     	return fileResponses;
     }    
 
@@ -73,31 +68,9 @@ public class FileService extends Utils{
     	    throw new IllegalArgumentException("File not found.");
         }
     }
-    
-    public FileResponse uploadFile(MultipartFile file, String guid) throws UnsupportedEncodingException {
-        DBFile dbFile = storeFile(file, guid);
-
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
-                .path(dbFile.getId())
-                .toUriString();
-
-        return new FileResponse(dbFile.getFileName(), fileDownloadUri,
-                file.getContentType(), file.getSize(), encodeBytes(dbFile.getData()));
-    }
-    
-    public List<FileResponse> uploadMultipleFiles(MultipartFile[] files) throws UnsupportedEncodingException {
-        CreateItemRequest createItemRequest = new CreateItemRequest("brand", "type", "email", Optional.of("authenticationCode"));
-    	ItemResponse createdItem = itemService.createItem(createItemRequest);
-    	
-    	List<FileResponse> fileResponses = new ArrayList<>();
-    	for(MultipartFile file: files) {
-    		fileResponses.add(uploadFile(file, createdItem.getGuid()));
-    	}
-        return fileResponses;
-    }
-    
+     
     @Transactional
+    @CachePut(value = "files", key = "#guid")
     public List<FileResponse> saveImages(List<MultipartFile> files, String guid) throws UnsupportedEncodingException {   
     	
     	List<FileResponse> fileResponses = new ArrayList<>();
@@ -141,19 +114,9 @@ public class FileService extends Utils{
         return fileRepository.findById(fileId)
                 .orElseThrow(() -> new MyFileNotFoundException("File not found with id " + fileId));
     }
-
-    // TODO - we don't need in the future
-    public ResponseEntity<Resource> downloadFile(String fileId) {
-        // Load file from database
-        DBFile dbFile = getFile(fileId);
-
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(dbFile.getFileType()))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + dbFile.getFileName() + "\"")
-                .body(new ByteArrayResource(dbFile.getData()));
-    }
     
     @Transactional
+    @CachePut(value = "files", key = "#guid")
     public List<FileResponse> updateFiles(String guid, List<MultipartFile> files) throws UnsupportedEncodingException {
     	fileRepository.deleteByGuid(guid);
     	return saveImages(files, guid);

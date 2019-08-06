@@ -13,6 +13,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 
@@ -59,7 +60,7 @@ public class ItemService extends Utils {
     	}
     	return itemResponses;
     }    
-    
+        
     public ItemResponse updateItem(String guid, UpdateItemRequest request) {   
     	
     	DBItem item = itemRepository.findByGuid(guid);

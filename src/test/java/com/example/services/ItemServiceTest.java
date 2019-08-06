@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.requests.CreateItemRequest;
+import com.example.service.EmailSender;
 import com.example.service.ItemService;
 import org.junit.After;
 import org.junit.Before;
@@ -17,6 +18,7 @@ import com.example.model.DBItem;
 import com.example.payload.ItemResponse;
 import com.example.repository.ItemRepository;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 
 public class ItemServiceTest extends AbstractTest{
 
@@ -25,6 +27,9 @@ public class ItemServiceTest extends AbstractTest{
 	
 	@Mock
 	private ItemRepository itemRepository;
+	
+	@Mock
+	private EmailSender emailSender;
 	
 	@Before
 	public void setUp() {
@@ -43,6 +48,7 @@ public class ItemServiceTest extends AbstractTest{
 		ItemResponse itemResponse = generateItemResponse(item);
 		
 		Mockito.when(itemRepository.save(any(DBItem.class))).thenReturn(item);
+		doNothing().when(emailSender).sendEmail("ABCDE", createItemRequest.getEmail());
 		
 		ItemResponse response = itemService.createItem(createItemRequest);
 		

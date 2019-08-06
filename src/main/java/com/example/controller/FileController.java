@@ -5,17 +5,13 @@ import com.example.service.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class FileController {
@@ -37,29 +33,11 @@ public class FileController {
     	return fileService.findById(id);
     }
     
-    @PostMapping("/uploadFile")
-    public FileResponse uploadFile(@RequestParam("file") MultipartFile file) throws UnsupportedEncodingException {
-    	logger.info("uploadFile: " + file.toString());
-        return fileService.uploadFile(file, "GUID");
-    }
-
-    @PostMapping("/uploadMultipleFiles")
-    public List<FileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) throws UnsupportedEncodingException {
-    	logger.info("uploadMultipleFiles: " + Arrays.toString(files));
-        return fileService.uploadMultipleFiles(files);
-    }
-    
     @PostMapping(value = ("/saveImages"), consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public RedirectView saveImages(List<MultipartFile> files, String guid) throws UnsupportedEncodingException {
     	logger.info("uploadMultipleFiles: " + files);
         fileService.saveImages(files, guid);
     	return new RedirectView("/getAllItemsWithFiles");
-    }
-
-    @GetMapping("/downloadFile/{fileId}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileId) {
-    	logger.info("downloadFile by fileId: " + fileId);
-        return fileService.downloadFile(fileId);
     }
     
     @DeleteMapping("/removeFile")
