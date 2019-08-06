@@ -17,13 +17,9 @@ public class EmailSender {
 	        msg.setTo(email);
 
 	        msg.setSubject("Item Created");
-	        msg.setText("Hello, \n Your authentication key for modification has been created - " + authenticationCode);
+	        msg.setText("Hello, \n Your authentication code for modification has been created - " + authenticationCode);
 
 	        javaMailSender.send(msg);
 	    }
-
-	    public void authenticateEmail(String email, String key){
-
-		}
 
 }

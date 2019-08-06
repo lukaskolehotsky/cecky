@@ -26,8 +26,8 @@
 							<form:errors path="type" />
 							<form:input path="email" type="text" placeholder="${item.getEmail()}"/>
                             <form:errors path="email" />
-                            <form:input path="key" type="text" placeholder="${item.getAuthenticationCode().get()}"/>
-                            <form:errors path="key" />
+                            <form:input path="authenticationCode" type="text" placeholder="${item.getAuthenticationCode().get()}"/>
+                            <form:errors path="authenticationCode" />
 							<input type="submit" value="Submit" /></form>
 						</form:form>
 					</td>

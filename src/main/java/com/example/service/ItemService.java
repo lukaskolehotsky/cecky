@@ -27,7 +27,7 @@ public class ItemService extends Utils {
 
     public ItemResponse createItem(CreateItemRequest request) {
 
-        String authenticationCode = generateAuthenticationKey(10);
+        String authenticationCode = generateAuthenticationCode(10);
         request.setAuthenticationCode(Optional.of(authenticationCode));
 
         DBItem savedItem = itemRepository.save(generateDBItem(request));

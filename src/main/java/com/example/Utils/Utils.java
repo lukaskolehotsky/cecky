@@ -76,7 +76,7 @@ public class Utils {
         return new String(encodeBase64, "UTF-8");
     }
 
-    public String generateAuthenticationKey(int count){
+    public String generateAuthenticationCode(int count){
         StringBuilder builder = new StringBuilder();
         while (count-- != 0) {
             int character = (int)(Math.random()*ALPHA_NUMERIC_STRING.length());
