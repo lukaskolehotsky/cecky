@@ -5,6 +5,7 @@ import com.example.service.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,6 +52,18 @@ public class FileController {
     	logger.info("updateFiles by guid: " + guid);
         fileService.updateFiles(guid, files);
         return new RedirectView("/getAllItemsWithFiles");
+    }
+    
+    @GetMapping("/clearCache")
+    @CacheEvict(value = "fileResponses", allEntries = true)
+    public void clearCache() {    	
+    	logger.info("clearCache");
+    }
+    
+    @GetMapping("/clearCache2")
+    @CacheEvict(value = "files", allEntries = true)
+    public void clearCache2() {    	
+    	logger.info("clearCache2");
     }
    
 }
