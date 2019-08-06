@@ -63,9 +63,17 @@ public class ItemService extends Utils {
     public ItemResponse updateItem(String guid, UpdateItemRequest request) {   
     	
     	DBItem item = itemRepository.findByGuid(guid);
-    	DBItem updatedItem = itemRepository.save(prepareModifiedItem(item, request));
 
-    	return generateItemResponse(updatedItem);
+    	if(request.getAuthenticationCode().isPresent()){
+    	    if(item.getAuthenticationCode().equals(request.getAuthenticationCode().get())) {
+                DBItem updatedItem = itemRepository.save(prepareModifiedItem(item, request));
+                return generateItemResponse(updatedItem);
+            } else {
+                throw new IllegalArgumentException("You have no permissions for modification.");
+            }
+        }
+
+        return null;
     }
-    
+
 }

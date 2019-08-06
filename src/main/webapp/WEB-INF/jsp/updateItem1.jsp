@@ -24,6 +24,10 @@
 							<form:errors path="brand" />
 							<form:input path="type" type="text" placeholder="${item.getType()}"/>
 							<form:errors path="type" />
+							<form:input path="email" type="text" placeholder="${item.getEmail()}"/>
+                            <form:errors path="email" />
+                            <form:input path="key" type="text" placeholder="${item.getAuthenticationCode()}"/>
+                            <form:errors path="key" />
 							<input type="submit" value="Submit" /></form>
 						</form:form>
 					</td>
