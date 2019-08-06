@@ -5,6 +5,7 @@ import com.example.requests.UpdateItemRequest;
 import com.example.service.ItemService;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +42,7 @@ public class ItemController {
 	public ModelAndView createItem1() {
 		logger.info("createItem1: ");
 		
-		return new ModelAndView("createItem1", "item", new ItemResponse("", "", "", LocalDateTime.now(), ""));
+		return new ModelAndView("createItem1", "item", new ItemResponse("", "", "", LocalDateTime.now(), "", Optional.of("")));
 	}
 	
 	@PostMapping("/createItem2")

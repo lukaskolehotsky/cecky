@@ -1,6 +1,7 @@
 package com.example.payload;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public class ItemResponse {
 
@@ -13,14 +14,17 @@ public class ItemResponse {
 	private LocalDateTime createdDateTime;
 
 	private String email;
+
+	private Optional<String> authenticationCode;
 	
-	public ItemResponse(String brand, String type, String guid, LocalDateTime createdDateTime, String email) {
+	public ItemResponse(String brand, String type, String guid, LocalDateTime createdDateTime, String email, Optional<String> authenticationCode) {
 		super();
 		this.brand = brand;
 		this.type = type;
 		this.guid = guid;
 		this.createdDateTime = createdDateTime;
 		this.email = email;
+		this.authenticationCode = authenticationCode;
 	}
 
 	public String getBrand() {
@@ -61,5 +65,13 @@ public class ItemResponse {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public Optional<String> getAuthenticationCode() {
+		return authenticationCode;
+	}
+
+	public void setAuthenticationCode(Optional<String> authenticationCode) {
+		this.authenticationCode = authenticationCode;
 	}
 }
