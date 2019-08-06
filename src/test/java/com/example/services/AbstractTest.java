@@ -86,7 +86,7 @@ public abstract class AbstractTest {
 	}
 	
 	public UpdateItemRequest generateUpdateItemRequest(DBItem item) {
-		return new UpdateItemRequest(item.getBrand(), item.getType());
+		return new UpdateItemRequest(item.getBrand(), item.getType(), item.getEmail(), Optional.of(item.getAuthenticationCode()));
 	}
 	
 	public List<FileResponse> generateFileResponses(List<MultipartFile> files) throws IOException {
