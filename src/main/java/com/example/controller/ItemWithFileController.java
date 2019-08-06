@@ -30,9 +30,10 @@ public class ItemWithFileController {
 	private static final Logger logger = LoggerFactory.getLogger(ItemWithFileController.class);
 	
 	@GetMapping("/getItemWithFiles")
-	public ItemWithFilesResponse getItemWithFiles(@RequestParam("guid") String guid) throws UnsupportedEncodingException {
+	public ModelAndView getItemWithFiles(@RequestParam("guid") String guid) throws UnsupportedEncodingException {
 		logger.info("getItemWithFiles by guid: " + guid);
-		return itemWithFileService.getItemWithFiles(guid);
+		ItemWithFilesResponse response = itemWithFileService.getItemWithFiles(guid);
+		return new ModelAndView("viewItem", "itemWithFiles", response);
     }
 	
 	@GetMapping("/getAllItemsWithFiles")
