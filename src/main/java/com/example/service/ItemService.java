@@ -76,4 +76,18 @@ public class ItemService extends Utils {
         return null;
     }
 
+    public String changeAuthenticationCode(String guid, String email){
+        DBItem item = itemRepository.findByGuidAndEmail(guid, email);
+        String authenticationCode;
+        if(item != null){
+            authenticationCode = generateAuthenticationCode(10);
+            item.setAuthenticationCode(authenticationCode);
+            itemRepository.save(item);
+            emailSender.sendEmail(authenticationCode, email);
+            return authenticationCode;
+        } else {
+            throw new IllegalArgumentException("For your email does not exist any item.");
+        }
+    }
+
 }

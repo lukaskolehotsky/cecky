@@ -57,7 +57,13 @@ public class ItemController {
     public ItemResponse getItem(@RequestParam("guid") String guid) {
 		logger.info("getItem by guid: " + guid);
 		return itemService.getItem(guid);
-    }	
+    }
+
+	@GetMapping("/changeAuthenticationCode")
+	public String changeAuthenticationCode(@RequestParam("guid") String guid, @RequestParam("email") String email) {
+		logger.info("changeAuthenticationCode by guid: " + guid + " and email: " + email);
+		return itemService.changeAuthenticationCode(guid, email);
+	}
 	
 	@DeleteMapping("/removeItem")
     public void removeItem(@RequestParam("guid") String guid) {

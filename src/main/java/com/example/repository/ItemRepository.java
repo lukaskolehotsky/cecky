@@ -11,5 +11,7 @@ public interface ItemRepository extends JpaRepository<DBItem, String>{
 	public DBItem findByGuid(String guid);
 	
 	public void deleteByGuid(String guid);
+
+	public DBItem findByGuidAndEmail(String guid, String email);
 	
 }

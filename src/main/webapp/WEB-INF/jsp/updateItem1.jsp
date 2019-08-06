@@ -20,13 +20,13 @@
 			<tr>
 					<td>
 						<form:form method="post" modelAttribute="item" action="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/updateItem2?guid=${item.getGuid()}">
-							<form:input path="brand" type="text" placeholder="${item.getBrand()}"/>
+							<form:input name="Brand:" path="brand" type="text" placeholder="${item.getBrand()}"/>
 							<form:errors path="brand" />
-							<form:input path="type" type="text" placeholder="${item.getType()}"/>
+							<form:input name="Type:" path="type" type="text" placeholder="${item.getType()}"/>
 							<form:errors path="type" />
-							<form:input path="email" type="text" placeholder="${item.getEmail()}"/>
+							<form:input name="Email:" path="email" type="text" placeholder="${item.getEmail()}"/>
                             <form:errors path="email" />
-                            <form:input path="authenticationCode" type="text" placeholder="${item.getAuthenticationCode().get()}"/>
+                            <form:input name="Code:" path="authenticationCode" type="text" placeholder="${item.getAuthenticationCode().get()}"/>
                             <form:errors path="authenticationCode" />
 							<input type="submit" value="Submit" /></form>
 						</form:form>

@@ -13,11 +13,9 @@
 	<link rel="stylesheet" type="text/css" href="/style.css">
 </head>
 <body>
-
-	<b>UpdateItem2</b>
-	<br> Message: ${item.getBrand()}
 	
 	<center>
+	<b>Nahraj obrazok</b>
 		<table width="400" bgcolor="yellow" border="1">
 			<tr>
 					<td>
