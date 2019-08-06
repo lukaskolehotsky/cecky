@@ -15,5 +15,7 @@ id varchar(100) NULL,
  type varchar(100) NULL,
  guid varchar(100) NULL,
  created_date_time timestamp default NULL,
+ email varchar(100) NULL,
+ authentication_code varchar(100) NULL,
  PRIMARY KEY (id)
 );
