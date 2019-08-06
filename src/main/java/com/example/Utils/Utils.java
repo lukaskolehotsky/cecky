@@ -57,9 +57,9 @@ public class Utils {
         }
 
         if (item.getEmail() != null) {
-            item.setGuid(item.getEmail());
+            item.setEmail(item.getEmail());
         } else {
-            item.setGuid("email");
+            item.setEmail("email");
         }
 
         item.setCreatedDateTime(LocalDateTime.now());
