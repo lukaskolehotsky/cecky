@@ -11,13 +11,16 @@ public class ItemResponse {
 	private String guid;
 	
 	private LocalDateTime createdDateTime;
+
+	private String email;
 	
-	public ItemResponse(String brand, String type, String guid, LocalDateTime createdDateTime) {
+	public ItemResponse(String brand, String type, String guid, LocalDateTime createdDateTime, String email) {
 		super();
 		this.brand = brand;
 		this.type = type;
 		this.guid = guid;
 		this.createdDateTime = createdDateTime;
+		this.email = email;
 	}
 
 	public String getBrand() {
@@ -50,6 +53,13 @@ public class ItemResponse {
 
 	public void setCreatedDateTime(LocalDateTime createdDateTime) {
 		this.createdDateTime = createdDateTime;
-	}	
-	
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 }

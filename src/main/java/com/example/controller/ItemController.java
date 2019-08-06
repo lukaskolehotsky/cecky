@@ -41,7 +41,7 @@ public class ItemController {
 	public ModelAndView createItem1() {
 		logger.info("createItem1: ");
 		
-		return new ModelAndView("createItem1", "item", new ItemResponse("", "", "", LocalDateTime.now()));
+		return new ModelAndView("createItem1", "item", new ItemResponse("", "", "", LocalDateTime.now(), ""));
 	}
 	
 	@PostMapping("/createItem2")

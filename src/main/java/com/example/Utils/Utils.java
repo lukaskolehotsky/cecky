@@ -33,7 +33,7 @@ public class Utils {
     }
 
     public ItemResponse generateItemResponse(DBItem item) {
-        return new ItemResponse(item.getBrand(), item.getType(), item.getGuid(), item.getCreatedDateTime());
+        return new ItemResponse(item.getBrand(), item.getType(), item.getGuid(), item.getCreatedDateTime(), item.getEmail());
     }
 
     public DBItem prepareModifiedItem(DBItem item, UpdateItemRequest request) {
