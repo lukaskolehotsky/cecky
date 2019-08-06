@@ -38,7 +38,7 @@ public class ItemServiceTest extends AbstractTest{
 	
 	@Test
 	public void createItem() {
-		CreateItemRequest createItemRequest = new CreateItemRequest("brand", "type");
+		CreateItemRequest createItemRequest = generateCreateItemRequest();
 		DBItem item = generateDBItem(createItemRequest);
 		ItemResponse itemResponse = generateItemResponse(item);
 		

@@ -14,6 +14,7 @@
 <body>
 
 	<center>
+	    <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/createItem1"> Create item </a>
 		<c:forEach items="${itemsWithFiles}" var="itemWithFiles">
 			<table width="400" bgcolor="yellow" border="1">	
 			    <tr>

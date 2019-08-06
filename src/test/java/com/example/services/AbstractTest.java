@@ -9,6 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import com.example.requests.CreateItemRequest;
@@ -33,11 +34,20 @@ public abstract class AbstractTest {
 		String guid = "guid";
 		String brand = "brand";
 		String type = "type";
-		return new DBItem(brand,type,guid, LocalDateTime.now());
+		String email = "email";
+		String authenticationCode = "authenticationCode";
+		return new DBItem(brand,type,guid, LocalDateTime.now(), email, authenticationCode);
 	}
-	
+
 	public DBItem generateDBItem(CreateItemRequest request) {
-		return new DBItem(request.getBrand(), request.getType(), generateRandomUUID(), LocalDateTime.now());
+		return new DBItem(
+			request.getBrand(),
+			request.getType(),
+			generateRandomUUID(),
+			LocalDateTime.now(),
+			request.getEmail(),
+			request.getAuthenticationCode().get()
+		);
 	}	
     
     public List<DBItem> generateDBItems() {
@@ -88,7 +98,7 @@ public abstract class AbstractTest {
 	}
 	
 	public CreateItemRequest generateCreateItemRequest() {
-		return new CreateItemRequest("brand", "type");
+		return new CreateItemRequest("brand", "type", "email", Optional.of("authenticationCode"));
 	}
 	
 	public List<MultipartFile> generateMockedMultipartFiles() {

@@ -9,6 +9,7 @@ import com.example.requests.UpdateItemRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,11 @@ public class ItemService extends Utils {
 
     public ItemResponse createItem(CreateItemRequest request) {
 
+        String authenticationCode = generateAuthenticationKey(10);
+        request.setAuthenticationCode(Optional.of(authenticationCode));
+
         DBItem savedItem = itemRepository.save(generateDBItem(request));
-        emailSender.sendEmail();
+        emailSender.sendEmail(authenticationCode, request.getEmail());
 
         return generateItemResponse(savedItem);
     }

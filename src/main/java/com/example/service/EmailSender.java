@@ -11,17 +11,19 @@ public class EmailSender {
 		@Autowired
 	    private JavaMailSender javaMailSender;
 		
-		void sendEmail() {
-
+		void sendEmail(String authenticationCode, String email) {
 	        SimpleMailMessage msg = new SimpleMailMessage();
 	        msg.setFrom("lukaskolehotsky@gmail.com");
-	        msg.setTo("lukaskolehotsky@gmail.com");
+	        msg.setTo(email);
 
-	        msg.setSubject("Testing from Spring Boot");
-	        msg.setText("Hello World \n Spring Boot Email");
+	        msg.setSubject("Item Created");
+	        msg.setText("Hello, \n Your authentication key for modification has been created - " + authenticationCode);
 
 	        javaMailSender.send(msg);
-
 	    }
+
+	    public void authenticateEmail(String email, String key){
+
+		}
 
 }

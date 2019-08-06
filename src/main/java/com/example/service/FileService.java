@@ -89,7 +89,7 @@ public class FileService extends Utils{
     }
     
     public List<FileResponse> uploadMultipleFiles(MultipartFile[] files) throws UnsupportedEncodingException {
-        CreateItemRequest createItemRequest = new CreateItemRequest("brand", "type");
+        CreateItemRequest createItemRequest = new CreateItemRequest("brand", "type", "email", Optional.of("authenticationCode"));
     	ItemResponse createdItem = itemService.createItem(createItemRequest);
     	
     	List<FileResponse> fileResponses = new ArrayList<>();

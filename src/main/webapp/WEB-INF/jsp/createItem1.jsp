@@ -20,10 +20,12 @@
 			<tr>
 					<td>
 						<form:form method="post" modelAttribute="item" action="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/createItem2">
-							<form:input path="brand" type="text" /> <!-- bind to user.name-->
+							<form:input path="brand" type="text" />
 							<form:errors path="brand" />
-							<form:input path="type" type="text" /> <!-- bind to user.name-->
+							<form:input path="type" type="text" />
 							<form:errors path="type" />
+							<form:input path="email" type="text" />
+                            <form:errors path="email" />
 							<input type="submit" value="Submit" /></form>
 						</form:form>
 					</td>

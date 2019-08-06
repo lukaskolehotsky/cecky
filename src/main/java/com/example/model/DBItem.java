@@ -25,15 +25,21 @@ public class DBItem {
 	private String guid;
 
 	private LocalDateTime createdDateTime;
+
+	private String email;
+
+	private String authenticationCode;
 	
 	public DBItem() {
 	}
 	
-	public DBItem(String brand, String type, String guid, LocalDateTime createdDateTime) {
+	public DBItem(String brand, String type, String guid, LocalDateTime createdDateTime, String email, String authenticationCode) {
 		this.brand = brand;
 		this.type = type;
 		this.guid = guid;
 		this.createdDateTime = createdDateTime;
+		this.email = email;
+		this.authenticationCode = authenticationCode;
 	}
 
 	public String getId() {
@@ -74,5 +80,21 @@ public class DBItem {
 
 	public void setCreatedDateTime(LocalDateTime createdDateTime) {
 		this.createdDateTime = createdDateTime;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getAuthenticationCode() {
+		return authenticationCode;
+	}
+
+	public void setAuthenticationCode(String authenticationCode) {
+		this.authenticationCode = authenticationCode;
 	}
 }
