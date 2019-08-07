@@ -112,10 +112,7 @@ public class FileService extends Utils{
 
             URL url = this.getClass().getClassLoader().getResource("/images");
             logger.info("!!!!!!!!!!!!!!!!!!URL!!!!!!!!!!!!!!!!!!!!!!!!!" + url.getPath());
-            URL url2 = this.getClass().getClassLoader().getResource("/resources/images");
-            logger.info("!!!!!!!!!!!!!!!!!!URL 2!!!!!!!!!!!!!!!!!!!!!!!!!"+url2.getPath());
-            URL url3 = this.getClass().getClassLoader().getResource("/resources");
-            logger.info("!!!!!!!!!!!!!!!!!!URL 3!!!!!!!!!!!!!!!!!!!!!!!!!"+url3.getPath());
+            
             try {
 
                 byte[] bytes = file.getBytes();
