@@ -70,7 +70,7 @@ public class FileService extends Utils{
     }
      
     @Transactional
-    @CachePut(value = "fileResponses", key = "#guid")
+//    @CachePut(value = "fileResponses", key = "#guid")
     public List<FileResponse> saveImages(List<MultipartFile> files, String guid) throws UnsupportedEncodingException {   
     	
     	List<FileResponse> fileResponses = new ArrayList<>();
