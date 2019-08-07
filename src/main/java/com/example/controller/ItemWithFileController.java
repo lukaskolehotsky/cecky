@@ -40,10 +40,8 @@ public class ItemWithFileController {
 	@GetMapping("/getAllItemsWithFiles")
 	public ModelAndView getAllItemsWithFiles(Optional<Integer> page) throws UnsupportedEncodingException {
 		logger.info("getAllItemsWithFiles");
-
-		logger.info("+++++++++ PAGE = " + page + " +++++++++++");
 		 
-		List<ItemWithFilesResponse> response = itemWithFileService.getAllItemsWithFiles((page.isPresent()) ? page.get() : 1);
+		List<ItemWithFilesResponse> response = itemWithFileService.getAllItemsWithFiles((page.isPresent()) ? page.get() : 0);
 		return new ModelAndView("main", "itemsWithFiles", response);
     }
 	

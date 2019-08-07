@@ -13,21 +13,15 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class ItemService extends Utils {
-
-    private static final Logger logger = LoggerFactory.getLogger(ItemService.class);
 
     @Autowired
     private ItemRepository itemRepository;
@@ -65,10 +59,7 @@ public class ItemService extends Utils {
     	Page<DBItem> items = itemRepository.findAll(paging);
     	List<ItemResponse> itemResponses = new ArrayList<>();
 
-        logger.info("!!!!!!!!!!!!!!!!!! ITEMS - "+ items.getContent() +"!!!!!!!!!!!!!!!!!!!!!!!!");
-
     	for(DBItem item: items.getContent()) {
-            logger.info("!!!!!!!!!!!!!!!!!! ITEMS - "+ items.getSize() +"!!!!!!!!!!!!!!!!!!!!!!!!");
     		itemResponses.add(generateItemResponse(item));
     	}
     	return itemResponses;

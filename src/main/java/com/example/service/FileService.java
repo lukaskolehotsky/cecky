@@ -37,7 +37,7 @@ public class FileService extends Utils{
     	fileRepository.deleteByGuid(guid);
     }
     
-//    @Cacheable(value = "fileResponses", key = "#guid")
+    @Cacheable(value = "fileResponses", key = "#guid")
     public List<FileResponse> getFiles(String guid) throws UnsupportedEncodingException {
     	List<FileResponse> fileResponses = new ArrayList<>();
     	for(DBFile file: fileRepository.findByGuid(guid)) {       		                        
@@ -70,7 +70,7 @@ public class FileService extends Utils{
     }
      
     @Transactional
-//    @CachePut(value = "fileResponses", key = "#guid")
+    @CachePut(value = "fileResponses", key = "#guid")
     public List<FileResponse> saveImages(List<MultipartFile> files, String guid) throws UnsupportedEncodingException {   
     	
     	List<FileResponse> fileResponses = new ArrayList<>();
@@ -116,7 +116,7 @@ public class FileService extends Utils{
     }
     
     @Transactional
-//    @CachePut(value = "fileResponses", key = "#guid")
+    @CachePut(value = "fileResponses", key = "#guid")
     public List<FileResponse> updateFiles(String guid, List<MultipartFile> files) throws UnsupportedEncodingException {
     	fileRepository.deleteByGuid(guid);
     	return saveImages(files, guid);
