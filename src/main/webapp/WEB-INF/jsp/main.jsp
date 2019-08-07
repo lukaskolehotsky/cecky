@@ -20,7 +20,7 @@
     .item {
       background: tomato;
       padding: 5px;
-      width: 200px;
+      width: 150px;
       height: 150px;
       margin: 10px;
 
@@ -56,7 +56,7 @@
 
     <ul class="container float">
         <c:forEach items="${itemsWithFiles}" var="itemWithFiles">
-            <li class="item float-item"><img alt="img" height="150" width="200" src="data:image/jpeg;base64,${itemWithFiles.getFileResponses().get(0).getData()}"/></li>
+            <li class="item float-item"><img alt="img" height="150" width="150" src="data:image/jpeg;base64,${itemWithFiles.getFileResponses().get(0).getData()}"/></li>
         </c:forEach>
     </ul>
 
