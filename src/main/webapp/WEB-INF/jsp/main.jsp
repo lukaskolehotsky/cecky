@@ -109,7 +109,7 @@
                         <!--
                         <img  src="data:image/jpeg;base64,${itemWithFiles.getFileResponses().get(0).getData()}" class="zoom img-fluid "  alt="">
                         -->
-                        <img src="<%=renderRequest.getContextPath()%>/images/obr.jpg"
+                        <img src="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/images/obr.jpg"
                     </a>
                 </div>
             </c:forEach>
