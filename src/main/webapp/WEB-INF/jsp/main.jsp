@@ -108,8 +108,8 @@
                     <a href="${itemWithFiles.getFileResponses().get(0).getData()}" class="fancybox" rel="ligthbox">
                         <!--
                         <img  src="data:image/jpeg;base64,${itemWithFiles.getFileResponses().get(0).getData()}" class="zoom img-fluid "  alt="">
-                        -->
-                        <img src="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/images/obr.jpg"
+                        --> 
+                        <img src="IMG_20190216_115848.jpg" class="zoom img-fluid "  alt=""/>                         
                     </a>
                 </div>
             </c:forEach>
