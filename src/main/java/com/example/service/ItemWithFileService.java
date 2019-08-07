@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,8 +18,6 @@ import com.example.requests.UpdateItemRequest;
 @Service
 public class ItemWithFileService {
 
-	private static final Logger logger = LoggerFactory.getLogger(ItemWithFileService.class);
-	
 	@Autowired
     private ItemService itemService;
 	
@@ -43,14 +38,10 @@ public class ItemWithFileService {
     public List<ItemWithFilesResponse> getAllItemsWithFiles(int pageNumber) throws UnsupportedEncodingException {
 		
 		List<ItemWithFilesResponse> itemsWithFileResponses = new ArrayList<>();
-		
 		List<ItemResponse> itemResponses = itemService.getAll(pageNumber);
-		logger.info("+++++++++ ITEM_RESPONSES SIZE = " + itemResponses.size() + " +++++++++++");
 
 		for(ItemResponse itemResponse: itemResponses) {
-			logger.info("+++++++++ ITEM_RESPONSE = " + itemResponse.toString() + " +++++++++++");
 			List<FileResponse> fileResponses = fileService.getFiles(itemResponse.getGuid());
-			logger.info("+++++++++ FILE_RESPONSES SIZE = " + fileResponses.size() + " +++++++++++");
 			itemsWithFileResponses.add(new ItemWithFilesResponse(itemResponse, fileResponses));
 		}
     	

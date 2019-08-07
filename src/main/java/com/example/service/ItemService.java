@@ -54,7 +54,7 @@ public class ItemService extends Utils {
     } 
     
     public List<ItemResponse> getAll(int pageNumber){
-    	Pageable paging = PageRequest.of(pageNumber, 5, Sort.by("createdDateTime").ascending());
+    	Pageable paging = PageRequest.of(pageNumber, 15, Sort.by("createdDateTime").ascending());
     	
     	Page<DBItem> items = itemRepository.findAll(paging);
     	List<ItemResponse> itemResponses = new ArrayList<>();
