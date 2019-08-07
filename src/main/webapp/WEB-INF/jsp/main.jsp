@@ -106,7 +106,10 @@
             <c:forEach items="${itemsWithFiles}" var="itemWithFiles">
                 <div class="col-lg-3 col-md-4 col-xs-6 thumb">
                     <a href="${itemWithFiles.getFileResponses().get(0).getData()}" class="fancybox" rel="ligthbox">
+                        <!--
                         <img  src="data:image/jpeg;base64,${itemWithFiles.getFileResponses().get(0).getData()}" class="zoom img-fluid "  alt="">
+                        -->
+                        <img src="<%=renderRequest.getContextPath()%>/images/obr.jpg"
                     </a>
                 </div>
             </c:forEach>
