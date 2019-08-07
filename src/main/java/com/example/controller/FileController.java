@@ -59,11 +59,5 @@ public class FileController {
     public void clearCache() {    	
     	logger.info("clearCache");
     }
-    
-    @GetMapping("/clearCache2")
-    @CacheEvict(value = "files", allEntries = true)
-    public void clearCache2() {    	
-    	logger.info("clearCache2");
-    }
-   
+
 }
