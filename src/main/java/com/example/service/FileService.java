@@ -18,15 +18,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.StringJoiner;
 
 import javax.transaction.Transactional;
 
@@ -102,6 +101,7 @@ public class FileService extends Utils{
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
+        StringJoiner sj = new StringJoiner(" , ");
         try {
             // Check if the file's name contains invalid characters
             if(fileName.contains("..")) {
@@ -110,20 +110,29 @@ public class FileService extends Utils{
 
             DBFile dbFile = new DBFile(fileName, file.getContentType(), file.getBytes(), guid);
 
+            URL url = this.getClass().getClassLoader().getResource("/images");
+            logger.info("!!!!!!!!!!!!!!!!!!URL!!!!!!!!!!!!!!!!!!!!!!!!!" + url.getPath());
+            URL url2 = this.getClass().getClassLoader().getResource("/resources/images");
+            logger.info("!!!!!!!!!!!!!!!!!!URL 2!!!!!!!!!!!!!!!!!!!!!!!!!"+url2.getPath());
+            URL url3 = this.getClass().getClassLoader().getResource("/resources");
+            logger.info("!!!!!!!!!!!!!!!!!!URL 3!!!!!!!!!!!!!!!!!!!!!!!!!"+url3.getPath());
+            try {
+
+                byte[] bytes = file.getBytes();
+                Path path = Paths.get(url.getPath() + file.getOriginalFilename());
+                Files.write(path, bytes);
+
+                sj.add(file.getOriginalFilename());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             return fileRepository.save(dbFile);
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
         }
     }
-
-//    public BufferedImage resize(BufferedImage img, int height, int width) {
-//        Image tmp = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-//        BufferedImage resized = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-//        Graphics2D g2d = resized.createGraphics();
-//        g2d.drawImage(tmp, 0, 0, null);
-//        g2d.dispose();
-//        return resized;
-//    }
 
     public DBFile getFile(String fileId) {
         return fileRepository.findById(fileId)
