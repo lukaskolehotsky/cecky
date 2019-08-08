@@ -112,8 +112,10 @@ public class FileService extends Utils{
             DBFile dbFile = new DBFile(fileName, file.getContentType(), file.getBytes(), guid);
             saveToDirectory(file, guid);
 
-            getFromDirectoryByGuid(guid);
-            getFromDirectory();
+            String path = "/" + FileService.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+            logger.info("PICEEEEEEEEEE " + path);
+//            getFromDirectoryByGuid(guid);
+//            getFromDirectory();
 
             return fileRepository.save(dbFile);
         } catch (IOException ex) {
@@ -155,9 +157,7 @@ public class FileService extends Utils{
         OutputStream outputStream = null;
         try {
             inputStream = file.getInputStream();
-            String filePath = "src/main/webapp/WEB-INF/";
-            logger.info("filePath founded");
-            File newFile = new File(filePath + "/images/" + guid + fileName);
+            File newFile = new File("/images/" + guid + fileName);
             if (!newFile.exists()) {
                 newFile.createNewFile();
             }
