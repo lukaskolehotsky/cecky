@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.ExampleApplication;
 import com.example.Utils.Utils;
 import com.example.exception.MyFileNotFoundException;
 import com.example.exception.FileStorageException;
@@ -21,7 +22,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -110,18 +113,37 @@ public class FileService extends Utils{
             }
 
             DBFile dbFile = new DBFile(fileName, file.getContentType(), file.getBytes(), guid);
-            saveToDirectory(file, guid);
+
 
             String path = "/" + FileService.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-            logger.info("PICEEEEEEEEEE " + path);
+            logger.info("PICEEEEEEEEEE1 " + path);
+            String path2 = new File(".").getCanonicalPath();
+            logger.info("PICEEEEEEEEEE2 " + path2);
+            logger.info("PICEEEEEEEEEE3 " + getApplicatonPath());
 //            getFromDirectoryByGuid(guid);
 //            getFromDirectory();
-
+            saveToDirectory(file, guid);
             return fileRepository.save(dbFile);
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
         }
     }
+
+    /*****************************************************************************
+     * return application path
+     * @return
+     *****************************************************************************/
+    public String getApplicatonPath(){
+        CodeSource codeSource = ExampleApplication.class.getProtectionDomain().getCodeSource();
+        File rootPath = null;
+        try {
+            rootPath = new File(codeSource.getLocation().toURI().getPath());
+        } catch (URISyntaxException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return rootPath.getParentFile().getPath();
+    }//end of getApplcatonPath()
 
     private List<String> getFromDirectoryByGuid(String guid) {
         try (Stream<Path> walk = Files.walk(Paths.get("/images/"))) {
@@ -158,6 +180,8 @@ public class FileService extends Utils{
         try {
             inputStream = file.getInputStream();
             File newFile = new File("/images/" + guid + fileName);
+            String absolutePath = newFile.getAbsolutePath();
+            logger.info("PICEEEEEEEEEE4 " + absolutePath);
             if (!newFile.exists()) {
                 newFile.createNewFile();
             }
