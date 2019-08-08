@@ -155,7 +155,9 @@ public class FileService extends Utils{
         OutputStream outputStream = null;
         try {
             inputStream = file.getInputStream();
-            File newFile = new File("/images/" + guid + fileName);
+            String filePath = "src/main/webapp/WEB-INF/";
+            logger.info("filePath founded");
+            File newFile = new File(filePath + "/images/" + guid + fileName);
             if (!newFile.exists()) {
                 newFile.createNewFile();
             }
