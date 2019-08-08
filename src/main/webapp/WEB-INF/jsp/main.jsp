@@ -117,6 +117,9 @@
            </div>
         </div>
 
+        <img src="<c:url value="/images/449191dc-9ff4-4fad-b2b2-d1fc9934c155IMG_20190216_115812.jpg" />"/>
+        <img src="449191dc-9ff4-4fad-b2b2-d1fc9934c155IMG_20190216_115812.jpg" class="zoom img-fluid "  alt=""/>
+
     <center>
           <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAllItemsWithFiles?page=0"> 0 </a>
           <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAllItemsWithFiles?page=1"> 1 </a>
