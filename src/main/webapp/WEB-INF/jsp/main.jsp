@@ -106,9 +106,6 @@
             <c:forEach items="${itemsWithFiles}" var="itemWithFiles">
                 <div class="col-lg-3 col-md-4 col-xs-6 thumb">
                     <a href="${itemWithFiles.getFileResponses().get(0).getData()}" class="fancybox" rel="ligthbox">
-                        <!--
-                        <img  src="data:image/jpeg;base64,${itemWithFiles.getFileResponses().get(0).getData()}" class="zoom img-fluid "  alt="">
-                        --> 
                         <img src="449191dc-9ff4-4fad-b2b2-d1fc9934c155IMG_20190216_115812.jpg" class="zoom img-fluid "  alt=""/>
                     </a>
                 </div>
@@ -118,7 +115,7 @@
         </div>
 
         <img src="<c:url value="/images/449191dc-9ff4-4fad-b2b2-d1fc9934c155IMG_20190216_115812.jpg" />"/>
-        <img src="449191dc-9ff4-4fad-b2b2-d1fc9934c155IMG_20190216_115812.jpg" class="zoom img-fluid "  alt=""/>
+        <img src="src/main/webapp/WEB-INF/images/449191dc-9ff4-4fad-b2b2-d1fc9934c155IMG_20190216_115812.jpg" class="zoom img-fluid "  alt=""/>
 
     <center>
           <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAllItemsWithFiles?page=0"> 0 </a>
