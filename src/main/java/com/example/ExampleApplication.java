@@ -13,9 +13,15 @@ public class ExampleApplication {
 		SpringApplication.run(ExampleApplication.class, args);
 	}
 
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        registry.addResourceHandler("/**")
+//        .addResourceLocations("classpath:/images/")
+//        .setCachePeriod(0);
+//    }
+
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**")
-        .addResourceLocations("classpath:/images/")
-        .setCachePeriod(0);
+        registry.addResourceHandler("/images/**")
+                .addResourceLocations("file:/webapp/WEB-INF/images/")
+                .setCachePeriod(0);
     }
 }
