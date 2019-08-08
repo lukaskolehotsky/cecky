@@ -109,7 +109,7 @@
                         <!--
                         <img  src="data:image/jpeg;base64,${itemWithFiles.getFileResponses().get(0).getData()}" class="zoom img-fluid "  alt="">
                         --> 
-                        <img src="IMG_20190216_115848.jpg" class="zoom img-fluid "  alt=""/>                         
+                        <img src="449191dc-9ff4-4fad-b2b2-d1fc9934c155IMG_20190216_115812.jpg" class="zoom img-fluid "  alt=""/>
                     </a>
                 </div>
             </c:forEach>
