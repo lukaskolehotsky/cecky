@@ -122,7 +122,7 @@ public class FileService extends Utils{
     }
 
     private List<String> getFromDirectoryByGuid(String guid) {
-        try (Stream<Path> walk = Files.walk(Paths.get("../../images/"))) {
+        try (Stream<Path> walk = Files.walk(Paths.get("/images/"))) {
 
             List<String> result = walk.map(x -> x.toString())
                     .filter(f -> f.contains(guid))
@@ -137,7 +137,7 @@ public class FileService extends Utils{
     }
 
     private void getFromDirectory() {
-        try (Stream<Path> walk = Files.walk(Paths.get("../../images/"))) {
+        try (Stream<Path> walk = Files.walk(Paths.get("/images/"))) {
 
             List<String> result = walk.filter(Files::isRegularFile)
                     .map(x -> x.toString()).collect(Collectors.toList());
@@ -155,7 +155,7 @@ public class FileService extends Utils{
         OutputStream outputStream = null;
         try {
             inputStream = file.getInputStream();
-            File newFile = new File("../../images/" + guid + fileName);
+            File newFile = new File("/images/" + guid + fileName);
             if (!newFile.exists()) {
                 newFile.createNewFile();
             }
