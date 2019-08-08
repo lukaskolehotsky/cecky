@@ -114,12 +114,6 @@ public class FileService extends Utils{
 
             DBFile dbFile = new DBFile(fileName, file.getContentType(), file.getBytes(), guid);
 
-
-            String path = "/" + FileService.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-            logger.info("PICEEEEEEEEEE1 " + path);
-            String path2 = new File(".").getCanonicalPath();
-            logger.info("PICEEEEEEEEEE2 " + path2);
-            logger.info("PICEEEEEEEEEE3 " + getApplicatonPath());
 //            getFromDirectoryByGuid(guid);
 //            getFromDirectory();
             saveToDirectory(file, guid);
