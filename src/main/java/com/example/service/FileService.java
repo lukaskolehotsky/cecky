@@ -111,6 +111,10 @@ public class FileService extends Utils{
 
             DBFile dbFile = new DBFile(fileName, file.getContentType(), file.getBytes(), guid);
             saveToDirectory(file, guid);
+
+            getFromDirectoryByGuid(guid);
+            getFromDirectory();
+
             return fileRepository.save(dbFile);
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
