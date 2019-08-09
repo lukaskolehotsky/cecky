@@ -167,29 +167,19 @@ public class FileService extends Utils{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println("image should be CREATED - " + finalPath);
 		return finalPath;
 	} 
     
 	public List<String> getAllFilesFromDirectory(String guid) {
-		
-//		Path absolutePath2 = FileSystems.getDefault().getPath("src").toAbsolutePath();
-//		logger.info("1 " + absolutePath2);
-//		String path2 = (absolutePath2.toString()+ "/main/webapp/WEB-INF/images/").replace("/","\\");
-//		logger.info("2 " + path2);
-//		Path absolutePath3 = FileSystems.getDefault().getPath("app").toAbsolutePath();
-//		logger.info("3 " + absolutePath3);
-//		String path3 = (absolutePath3.toString()+ "/main/webapp/WEB-INF/images/").replace("/","\\");
-//		logger.info("4 " + path3);
-//		Path absolutePath4 = FileSystems.getDefault().getPath("app").toAbsolutePath();
-//		logger.info("5 " + absolutePath4);
-//		String path4 = (absolutePath4.toString()+ "/main/webapp/WEB-INF/").replace("/","\\");
-//		logger.info("6 " + path4);
 		
 		try (Stream<Path> walk = Files.walk(Paths.get(path))) {
 			List<String> result = walk.map(x -> x.toString()).map(p -> p.replace(path, ""))
 //    				.filter(f -> f.contains(guid))
 					.collect(Collectors.toList());
 			result.forEach(System.out::println);
+			
+			System.out.println("DAVAS PREC - " + path);
 
 			return result;
 		} catch (IOException e) {
