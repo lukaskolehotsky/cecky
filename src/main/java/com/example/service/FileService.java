@@ -134,6 +134,18 @@ public class FileService extends Utils{
 	}   
     
 	private String saveImageToDirectory(MultipartFile file, String guid, String fileName) {
+		
+		File fff = new File(path);
+        if (!fff.exists()) {
+            if (fff.mkdir()) {
+            	System.out.println(path);
+                System.out.println("Directory images is created!");
+            } else {
+            	System.out.println(path);
+                System.out.println("Failed to create images directory!");
+            }
+        }
+		
 		InputStream inputStream = null;
 		OutputStream outputStream = null;
 		String finalPath = path + guid + fileName;
@@ -156,22 +168,22 @@ public class FileService extends Utils{
 			e.printStackTrace();
 		}
 		return finalPath;
-	}    
+	} 
     
 	public List<String> getAllFilesFromDirectory(String guid) {
 		
-		Path absolutePath2 = FileSystems.getDefault().getPath("src").toAbsolutePath();
-		logger.info("1 " + absolutePath2);
-		String path2 = (absolutePath2.toString()+ "/main/webapp/WEB-INF/images/").replace("/","\\");
-		logger.info("2 " + path2);
-		Path absolutePath3 = FileSystems.getDefault().getPath("app").toAbsolutePath();
-		logger.info("3 " + absolutePath3);
-		String path3 = (absolutePath3.toString()+ "/main/webapp/WEB-INF/images/").replace("/","\\");
-		logger.info("4 " + path3);
-		Path absolutePath4 = FileSystems.getDefault().getPath("app").toAbsolutePath();
-		logger.info("5 " + absolutePath4);
-		String path4 = (absolutePath4.toString()+ "/main/webapp/WEB-INF/").replace("/","\\");
-		logger.info("6 " + path4);
+//		Path absolutePath2 = FileSystems.getDefault().getPath("src").toAbsolutePath();
+//		logger.info("1 " + absolutePath2);
+//		String path2 = (absolutePath2.toString()+ "/main/webapp/WEB-INF/images/").replace("/","\\");
+//		logger.info("2 " + path2);
+//		Path absolutePath3 = FileSystems.getDefault().getPath("app").toAbsolutePath();
+//		logger.info("3 " + absolutePath3);
+//		String path3 = (absolutePath3.toString()+ "/main/webapp/WEB-INF/images/").replace("/","\\");
+//		logger.info("4 " + path3);
+//		Path absolutePath4 = FileSystems.getDefault().getPath("app").toAbsolutePath();
+//		logger.info("5 " + absolutePath4);
+//		String path4 = (absolutePath4.toString()+ "/main/webapp/WEB-INF/").replace("/","\\");
+//		logger.info("6 " + path4);
 		
 		try (Stream<Path> walk = Files.walk(Paths.get(path))) {
 			List<String> result = walk.map(x -> x.toString()).map(p -> p.replace(path, ""))
