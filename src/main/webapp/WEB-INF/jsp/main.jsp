@@ -100,16 +100,16 @@
       </center>
 
     <!-- Page Content -->
+       
+        
+        <!-- Page Content -->
        <div class="container page-top">
             <div class="row">
 
             <c:forEach items="${itemsWithFiles}" var="itemWithFiles">
                 <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                    <a href="${itemWithFiles.getFileResponses().get(0).getData()}" class="fancybox" rel="ligthbox">
-                        <!--
-                        <img  src="data:image/jpeg;base64,${itemWithFiles.getFileResponses().get(0).getData()}" class="zoom img-fluid "  alt="">
-                        --> 
-                        <img src="IMG_20190216_115848.jpg" class="zoom img-fluid "  alt=""/>                         
+                    <a href="${itemWithFiles}" class="fancybox" rel="ligthbox"> 
+                        <img src="${itemWithFiles}" class="zoom img-fluid "  alt=""/> 
                     </a>
                 </div>
             </c:forEach>

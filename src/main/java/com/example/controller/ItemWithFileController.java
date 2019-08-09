@@ -45,6 +45,14 @@ public class ItemWithFileController {
 		return new ModelAndView("main", "itemsWithFiles", response);
     }
 	
+	@GetMapping("/getAll_v2")
+	public ModelAndView getAll_v2() throws UnsupportedEncodingException {
+		logger.info("getAll2");
+		 
+		List<String> response = itemWithFileService.getAll_v2();
+		return new ModelAndView("main", "itemsWithFiles", response);
+    }
+	
 	@GetMapping("/removeItemWithFiles")
 	public RedirectView removeItemWithFiles(@RequestParam("guid") String guid) {
 		logger.info("removeItemWithFiles");

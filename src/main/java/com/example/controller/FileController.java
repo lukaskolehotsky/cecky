@@ -38,7 +38,7 @@ public class FileController {
     public RedirectView saveImages(List<MultipartFile> files, String guid) throws UnsupportedEncodingException {
     	logger.info("uploadMultipleFiles: " + files);
         fileService.saveImages(files, guid);
-    	return new RedirectView("/getAllItemsWithFiles");
+    	return new RedirectView("/getAll_v2");
     }
     
     @DeleteMapping("/removeFile")

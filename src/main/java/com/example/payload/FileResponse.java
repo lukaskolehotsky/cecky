@@ -7,13 +7,15 @@ public class FileResponse {
     private String fileType;
     private long size;
     private String data;
+    private String imgPath;
 
-    public FileResponse(String fileName, String fileDownloadUri, String fileType, long size, String data) {
+    public FileResponse(String fileName, String fileDownloadUri, String fileType, long size, String data, String imgPath) {
         this.fileName = fileName;
         this.fileDownloadUri = fileDownloadUri;
         this.fileType = fileType;
         this.size = size;
         this.data = data;
+        this.imgPath = imgPath;
     }
 
     public String getFileName() {
@@ -54,6 +56,14 @@ public class FileResponse {
 
 	public void setData(String data) {
 		this.data = data;
+	}
+
+	public String getImgPath() {
+		return imgPath;
+	}
+
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
 	}
 	    
 }

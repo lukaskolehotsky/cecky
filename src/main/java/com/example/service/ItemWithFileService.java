@@ -48,6 +48,11 @@ public class ItemWithFileService {
     	return itemsWithFileResponses;    	
     }
 	
+	
+    public List<String> getAll_v2() throws UnsupportedEncodingException {		
+    	return fileService.getAllFilesFromDirectory("MOZES VYMAZAT TENTO PARAMETER");    	   	
+    }
+	
 	@Transactional
 	public void removeItemWithFiles(String guid) {
 		itemService.removeItem(guid);

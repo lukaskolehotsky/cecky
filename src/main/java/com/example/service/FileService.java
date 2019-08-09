@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,9 @@ import javax.transaction.Transactional;
 public class FileService extends Utils{
 	
 	private static final Logger logger = LoggerFactory.getLogger(FileService.class);
+	
+	private Path absolutePath = FileSystems.getDefault().getPath("src").toAbsolutePath();
+	private String path = (absolutePath.toString()+ "/main/webapp/WEB-INF/images/").replace("/","\\");
 
     @Autowired
     private FileRepository fileRepository;
@@ -61,9 +65,12 @@ public class FileService extends Utils{
     public List<FileResponse> getFiles(String guid) throws UnsupportedEncodingException {
     	List<FileResponse> fileResponses = new ArrayList<>();
     	for(DBFile file: fileRepository.findByGuid(guid)) {       		                        
-    		fileResponses.add(new FileResponse(file.getFileName(), "", file.getFileType(), 1, encodeBytes(file.getData())));
+    		fileResponses.add(new FileResponse(file.getFileName(), "", file.getFileType(), 1, encodeBytes(file.getData()), file.getImgPath()));
     	}
     	logger.info("!!!!!!!!!!!!!!!!!!FROM DATABASE!!!!!!!!!!!!!!!!!!!!!!!!!");
+    	
+    	getAllFilesFromDirectory(guid);
+    	logger.info("!!!!!!!!!!!!!!!!!!FROM IMAGES FOLDER!!!!!!!!!!!!!!!!!!!!!!!!!");
     	return fileResponses;
     }    
 
@@ -109,67 +116,77 @@ public class FileService extends Utils{
                 .toUriString();
 
         return new FileResponse(dbFile.getFileName(), fileDownloadUri,
-                file.getContentType(), file.getSize(), encodeBytes(dbFile.getData()));
+                file.getContentType(), file.getSize(), encodeBytes(dbFile.getData()), dbFile.getImgPath());
     }
 
-    public DBFile storeFile(MultipartFile file, String guid) {
-        // Normalize file name
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+	public DBFile storeFile(MultipartFile file, String guid) {
+		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
-        StringJoiner sj = new StringJoiner(" , ");
-        try {
-            // Check if the file's name contains invalid characters
-            if(fileName.contains("..")) {
-                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
-            }
+		try {
+			validateFileName(fileName);
+			String imgPath = saveImageToDirectory(file, guid, fileName);
+			DBFile dbFile = new DBFile(imgPath, fileName, file.getContentType(), file.getBytes(), guid);
 
-            DBFile dbFile = new DBFile(fileName, file.getContentType(), file.getBytes(), guid);
-
-            saveToDirectory(file, guid);
-            getFileFromDirectory();
-            
-            return fileRepository.save(dbFile);
-        } catch (IOException ex) {
-            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
-        }
-    }
+			return fileRepository.save(dbFile);
+		} catch (IOException ex) {
+			throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
+		}
+	}   
     
-    private void getFileFromDirectory() {
-    	try (Stream<Path> walk = Files.walk(Paths.get("C:/javaprojects/Heroku/cecky/src/main/webapp/WEB-INF/images/"))) {
+	private String saveImageToDirectory(MultipartFile file, String guid, String fileName) {
+		InputStream inputStream = null;
+		OutputStream outputStream = null;
+		String finalPath = path + guid + fileName;
 
-    		List<String> result = walk.filter(Files::isRegularFile)
-    				.map(x -> x.toString()).collect(Collectors.toList());
+		try {
+			inputStream = file.getInputStream();
 
-    		result.forEach(System.out::println);
+			File newFile = new File(finalPath);
+			if (!newFile.exists()) {
+				newFile.createNewFile();
+			}
+			outputStream = new FileOutputStream(newFile);
+			int read = 0;
+			byte[] bytes = new byte[1024];
 
-    	} catch (IOException e) {
-    		e.printStackTrace();
-    	}
-    }
+			while ((read = inputStream.read(bytes)) != -1) {
+				outputStream.write(bytes, 0, read);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return finalPath;
+	}    
     
-    private void saveToDirectory(MultipartFile file, String guid) { 	
-    	String fileName = file.getOriginalFilename();  
-    	InputStream inputStream = null;
-    	OutputStream outputStream = null;
-    	try {        		
-    		   inputStream = file.getInputStream();    
-    		   File newFile = new File("C:/javaprojects/Heroku/cecky/src/main/webapp/WEB-INF/images/" + guid +fileName);    
-    		   if (!newFile.exists()) {    
-    		    newFile.createNewFile();    
-    		   }    
-    		   outputStream = new FileOutputStream(newFile);    
-    		   int read = 0;    
-    		   byte[] bytes = new byte[1024];    
-    		    
-    		   while ((read = inputStream.read(bytes)) != -1) {    
-    		    outputStream.write(bytes, 0, read);    
-    		   }    
-    		  } catch (IOException e) {    
-    		   // TODO Auto-generated catch block    
-    		   e.printStackTrace();    
-    		  }
-    }
+	public List<String> getAllFilesFromDirectory(String guid) {
+		try (Stream<Path> walk = Files.walk(Paths.get(path))) {
+			List<String> result = walk.map(x -> x.toString()).map(p -> p.replace(path, ""))
+//    				.filter(f -> f.contains(guid))
+					.collect(Collectors.toList());
+			result.forEach(System.out::println);
+
+			return result;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
     
+//    private void getFileFromDirectory() {
+//    	Path path22 = FileSystems.getDefault().getPath("src").toAbsolutePath();
+//    	String path = (path22.toString()+ "/main/webapp/WEB-INF/images/").replace("/","\\");
+//    	System.out.println("XXXXXXXXXXXX - " + path);
+//    	try (Stream<Path> walk = Files.walk(Paths.get(path))) {
+//
+//    		List<String> result = walk.filter(Files::isRegularFile)
+//    				.map(x -> x.toString()).collect(Collectors.toList());
+//
+//    		result.forEach(System.out::println);    		
+//
+//    	} catch (IOException e) {
+//    		e.printStackTrace();
+//    	}
+//    }    
 
     public DBFile getFile(String fileId) {
         return fileRepository.findById(fileId)

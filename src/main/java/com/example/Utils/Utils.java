@@ -1,5 +1,6 @@
 package com.example.Utils;
 
+import com.example.exception.FileStorageException;
 import com.example.model.DBFile;
 import com.example.model.DBItem;
 import com.example.payload.FileResponse;
@@ -23,12 +24,12 @@ public class Utils {
 
     public DBItem generateDBItem(CreateItemRequest request) {
         return new DBItem(
-            request.getBrand(),
-            request.getType(),
-            generateRandomUUID(),
-            LocalDateTime.now(),
-            request.getEmail(),
-            request.getAuthenticationCode().get()
+        		request.getBrand(),
+        		request.getType(),
+        		generateRandomUUID(),
+        		LocalDateTime.now(),
+        		request.getEmail(),
+        		generateAuthenticationCode(10)
         );
     }
 
@@ -68,7 +69,7 @@ public class Utils {
     }
 
     public FileResponse generateFileResponse(DBFile file) throws UnsupportedEncodingException {
-        return new FileResponse(file.getFileName(), "", file.getFileType(), 1, encodeBytes(file.getData()));
+        return new FileResponse(file.getFileName(), "", file.getFileType(), 1, encodeBytes(file.getData()), file.getImgPath());
     }
 
     public String encodeBytes(byte[] bytes) throws UnsupportedEncodingException {
@@ -83,5 +84,12 @@ public class Utils {
             builder.append(ALPHA_NUMERIC_STRING.charAt(character));
         }
         return builder.toString();
+    }
+    
+    public void validateFileName(String fileName) {
+    	// Check if the file's name contains invalid characters
+        if(fileName.contains("..")) {
+            throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+        }
     }
 }

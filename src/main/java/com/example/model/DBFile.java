@@ -11,6 +11,8 @@ public class DBFile {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
+    
+    private String imgPath;
 
     private String fileName;
 
@@ -25,7 +27,8 @@ public class DBFile {
 
     }
 
-    public DBFile(String fileName, String fileType, byte[] data, String guid) {
+    public DBFile(String imgPath, String fileName, String fileType, byte[] data, String guid) {
+    	this.imgPath = imgPath;
         this.fileName = fileName;
         this.fileType = fileType;
         this.data = data;
@@ -34,6 +37,14 @@ public class DBFile {
 
 	public String getId() {
 		return id;
+	}
+	
+	public String getImgPath() {
+		return imgPath;
+	}
+
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
 	}
 
 	public void setId(String id) {

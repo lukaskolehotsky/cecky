@@ -10,13 +10,13 @@ public class CreateItemRequest {
     private Optional<String> authenticationCode;
 
     public CreateItemRequest(String brand, String type, String email, Optional<String> authenticationCode) {
-        this.brand = brand;
+    	this.brand = brand;
         this.type = type;
         this.email = email;
         this.authenticationCode = authenticationCode;
-    }
+    }    
 
-    public String getBrand() {
+	public String getBrand() {
         return brand;
     }
 
