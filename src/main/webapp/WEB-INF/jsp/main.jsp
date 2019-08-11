@@ -118,10 +118,10 @@
         </div>
 
     <center>
-          <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAllItemsWithFiles?page=0"> 0 </a>
-          <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAllItemsWithFiles?page=1"> 1 </a>
-          <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAllItemsWithFiles?page=2"> 2 </a>
-          <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAllItemsWithFiles?page=3"> 3 </a>
+          <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAll_v2?page=0"> 0 </a>
+          <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAll_v2?page=1"> 1 </a>
+          <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAll_v2?page=2"> 2 </a>
+          <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAll_v2?page=3"> 3 </a>
     </center>
 
   </body>

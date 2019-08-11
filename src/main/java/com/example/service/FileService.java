@@ -175,7 +175,7 @@ public class FileService extends Utils{
 		
 		try (Stream<Path> walk = Files.walk(Paths.get(path))) {
 			List<String> result = walk.map(x -> x.toString()).map(p -> p.replace(path, ""))
-//    				.filter(f -> f.contains(guid))
+    				.filter(f -> f.contains(guid))
 					.collect(Collectors.toList());
 			result.forEach(System.out::println);
 			

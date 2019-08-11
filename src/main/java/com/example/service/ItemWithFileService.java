@@ -48,9 +48,18 @@ public class ItemWithFileService {
     	return itemsWithFileResponses;    	
     }
 	
-	
-    public List<String> getAll_v2() throws UnsupportedEncodingException {		
-    	return fileService.getAllFilesFromDirectory("MOZES VYMAZAT TENTO PARAMETER");    	   	
+	public List<String> getAll_v2(int pageNumber) throws UnsupportedEncodingException {	    	
+    	List<ItemResponse> itemResponses = itemService.getAll(pageNumber);    	
+    	List<String> firstImages = new ArrayList<>();
+    	
+    	for(ItemResponse itemResponse: itemResponses) {
+    		String imgPath = fileService.getAllFilesFromDirectory(itemResponse.getGuid()).get(0);
+    		if(imgPath != null) {
+    			firstImages.add(imgPath);
+    		}   		
+    	}
+    	
+    	return firstImages;    	   	
     }
 	
 	@Transactional
