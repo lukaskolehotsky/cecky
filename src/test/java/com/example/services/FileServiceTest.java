@@ -73,7 +73,6 @@ public class FileServiceTest extends AbstractTest{
 		DBFile response = fileService.getFile(fileId);
 
 		Assert.assertEquals(file.getFileName(), response.getFileName());
-		Assert.assertEquals(file.getData(), response.getData());
 		Assert.assertEquals(file.getFileType(), response.getFileType());
 		Assert.assertEquals(file.getGuid(), response.getGuid());
 	}

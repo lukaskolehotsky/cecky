@@ -57,13 +57,13 @@ public abstract class AbstractTest {
     }
 	
 	public DBFile generateFile() {
-		return new DBFile("imgPath", "name", "type", new byte[1],"guid");
+		return new DBFile("imgPath", "name", "type", "guid");
 	}
 	
 	public List<DBFile> generateFiles() {
 		List<DBFile> files = new ArrayList<>();
-		files.add(new DBFile("imgPath", "name1", "type1", new byte[1],"guid"));
-		files.add(new DBFile("imgPath", "name2", "type2", new byte[2],"guid"));
+		files.add(new DBFile("imgPath", "name1", "type1", "guid"));
+		files.add(new DBFile("imgPath", "name2", "type2", "guid"));
 		
 		return files;
 	}
@@ -75,7 +75,7 @@ public abstract class AbstractTest {
 	public List<FileResponse> generateUploadFileResponses(List<DBFile> files) throws UnsupportedEncodingException {
 		List<FileResponse> uploadFileResponses = new ArrayList<FileResponse>();
 		for(DBFile file: files) {
-			uploadFileResponses.add(new FileResponse(file.getFileName(), "", file.getFileType(), 1, encodeBytes(file.getData()), file.getImgPath()));
+			uploadFileResponses.add(new FileResponse(file.getFileName(), "", file.getFileType(), 1, file.getImgPath()));
 		}
 		
 		return uploadFileResponses;
@@ -92,7 +92,7 @@ public abstract class AbstractTest {
 	public List<FileResponse> generateFileResponses(List<MultipartFile> files) throws IOException {
 		List<FileResponse> fileResponses = new ArrayList<>();
 		for(MultipartFile multipartFile: files) {
-			fileResponses.add(new FileResponse(multipartFile.getName(), "",multipartFile.getContentType(), 1, encodeBytes(multipartFile.getBytes()), "DOROBIT"));
+			fileResponses.add(new FileResponse(multipartFile.getName(), "",multipartFile.getContentType(), 1, "DOROBIT"));
 		}
 		return fileResponses;
 	}

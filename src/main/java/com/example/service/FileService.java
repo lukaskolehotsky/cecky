@@ -2,7 +2,6 @@ package com.example.service;
 
 import com.example.Utils.Utils;
 import com.example.exception.MyFileNotFoundException;
-import com.example.exception.FileStorageException;
 import com.example.model.DBFile;
 import com.example.payload.FileResponse;
 import com.example.repository.FileRepository;
@@ -16,34 +15,35 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.StringJoiner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
 import javax.transaction.Transactional;
+
 
 @Service
 public class FileService extends Utils{
@@ -65,7 +65,7 @@ public class FileService extends Utils{
     public List<FileResponse> getFiles(String guid) throws UnsupportedEncodingException {
     	List<FileResponse> fileResponses = new ArrayList<>();
     	for(DBFile file: fileRepository.findByGuid(guid)) {       		                        
-    		fileResponses.add(new FileResponse(file.getFileName(), "", file.getFileType(), 1, encodeBytes(file.getData()), file.getImgPath()));
+    		fileResponses.add(new FileResponse(file.getFileName(), "", file.getFileType(), 1, file.getImgPath()));
     	}
     	logger.info("!!!!!!!!!!!!!!!!!!FROM DATABASE!!!!!!!!!!!!!!!!!!!!!!!!!");
     	
@@ -98,7 +98,7 @@ public class FileService extends Utils{
      
     @Transactional
     @CachePut(value = "fileResponses", key = "#guid")
-    public List<FileResponse> saveImages(List<MultipartFile> files, String guid) throws UnsupportedEncodingException {   
+    public List<FileResponse> saveImages(List<MultipartFile> files, String guid) throws IOException {   
     	
     	List<FileResponse> fileResponses = new ArrayList<>();
     	for(MultipartFile file: files) {
@@ -107,7 +107,7 @@ public class FileService extends Utils{
     	return fileResponses;
     }
     
-    public FileResponse saveImage(MultipartFile file, String guid) throws UnsupportedEncodingException {
+    public FileResponse saveImage(MultipartFile file, String guid) throws IOException {
         DBFile dbFile = storeFile(file, guid);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -116,24 +116,56 @@ public class FileService extends Utils{
                 .toUriString();
 
         return new FileResponse(dbFile.getFileName(), fileDownloadUri,
-                file.getContentType(), file.getSize(), encodeBytes(dbFile.getData()), dbFile.getImgPath());
+                file.getContentType(), file.getSize(), dbFile.getImgPath());
     }
 
-	public DBFile storeFile(MultipartFile file, String guid) {
+	public DBFile storeFile(MultipartFile file, String guid) throws IOException {
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
-		try {
-			validateFileName(fileName);
-			String imgPath = saveImageToDirectory(file, guid, fileName);
-			DBFile dbFile = new DBFile(imgPath, fileName, file.getContentType(), file.getBytes(), guid);
+		validateFileName(fileName);
+		String imgPath = saveImageToDirectory(file, guid, fileName);
+		DBFile dbFile = new DBFile(imgPath, fileName, file.getContentType(), guid);
 
-			return fileRepository.save(dbFile);
-		} catch (IOException ex) {
-			throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
-		}
-	}   
-    
-	private String saveImageToDirectory(MultipartFile file, String guid, String fileName) {
+		removeImageFromDirectory(imgPath);
+		
+		return fileRepository.save(dbFile);
+	}
+	
+	public String getReasonForFileDeletionFailureInPlainEnglish(File file) {
+	    try {
+	        if (!file.exists())
+	            return "It doesn't exist in the first place.";
+	        else if (file.isDirectory() && file.list().length > 0)
+	            return "It's a directory and it's not empty.";
+	        else
+	            return "Somebody else has it open, we don't have write permissions, or somebody stole my disk.";
+	    } catch (SecurityException e) {
+	        return "We're sandboxed and don't have filesystem access.";
+	    }
+	}
+	
+	private void removeImageFromDirectory(String path) {
+		try{
+    		String cesta = path.replace("\\", "\\\\");
+    		File file = new File(cesta);
+    		System.out.println("MAZES Z - " + cesta);
+    		
+    		System.out.println(getReasonForFileDeletionFailureInPlainEnglish(file));
+    		
+    		if(file.delete()){
+    			System.out.println(file.getName() + " IS DELETED!");
+    		}else{
+    			System.out.println("DELETE OPERATION IS FAILED.");
+    		}
+    	   
+    	}catch(Exception e){
+    		
+    		e.printStackTrace();
+    		
+    	}
+	}
+   
+	private String saveImageToDirectory(MultipartFile file, String guid, String fileName) throws IOException {
 		
 		File fff = new File(path);
         if (!fff.exists()) {
@@ -164,12 +196,70 @@ public class FileService extends Utils{
 			while ((read = inputStream.read(bytes)) != -1) {
 				outputStream.write(bytes, 0, read);
 			}
+			
+			compressImg(finalPath);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}	finally {
+			outputStream.flush();
+			outputStream.close();
+			outputStream = null;
+            System.gc();
+		}	
+		
 		System.out.println("image should be CREATED - " + finalPath);
 		return finalPath;
 	} 
+	
+	
+	
+
+	
+	public void compressImg(String path) throws IOException {
+		File imageFile = new File(path);
+//        File compressedImageFile = new File("myimage_compressed.jpg");
+        File compressedImageFile = new File(path+"COMPRESSED");
+ 
+        InputStream is = new FileInputStream(imageFile);
+        OutputStream os = new FileOutputStream(compressedImageFile);
+ 
+        float quality = 0.5f;
+ 
+        // create a BufferedImage as the result of decoding the supplied InputStream
+        BufferedImage image = ImageIO.read(is);
+ 
+        // get all image writers for JPG format
+        Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpg");
+ 
+        if (!writers.hasNext())
+            throw new IllegalStateException("No writers found");
+ 
+        
+        
+        ImageWriter writer = (ImageWriter) writers.next();
+        ImageOutputStream ios = ImageIO.createImageOutputStream(os);
+        writer.setOutput(ios);
+ 
+        ImageWriteParam param = writer.getDefaultWriteParam();
+ 
+        // compress to a given quality
+        param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+        param.setCompressionQuality(quality);
+    
+        removeImageFromDirectory(path);
+        
+        // appends a complete image stream containing a single image and
+        //associated stream and image metadata and thumbnails to the output
+        writer.write(null, new IIOImage(image, null, null), param);
+ 
+        // close all streams
+        is.close();
+        os.close();
+        ios.close();
+        writer.dispose();
+        System.gc();
+	}
     
 	public List<String> getAllFilesFromDirectory(String guid) {
 		
@@ -211,7 +301,7 @@ public class FileService extends Utils{
     
     @Transactional
     @CachePut(value = "fileResponses", key = "#guid")
-    public List<FileResponse> updateFiles(String guid, List<MultipartFile> files) throws UnsupportedEncodingException {
+    public List<FileResponse> updateFiles(String guid, List<MultipartFile> files) throws IOException {
     	fileRepository.deleteByGuid(guid);
     	return saveImages(files, guid);
     }

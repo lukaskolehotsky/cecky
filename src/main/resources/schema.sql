@@ -5,7 +5,6 @@ id varchar(100) NULL,
  file_name varchar(100) NULL,
  file_type varchar(100) NULL,
  guid varchar(100) NULL,
- data BIGINT,
  PRIMARY KEY (id)
 );
 

@@ -20,18 +20,14 @@ public class DBFile {
     
     private String guid;
 
-    @Lob
-    private byte[] data;
-
     public DBFile() {
 
     }
 
-    public DBFile(String imgPath, String fileName, String fileType, byte[] data, String guid) {
+    public DBFile(String imgPath, String fileName, String fileType, String guid) {
     	this.imgPath = imgPath;
         this.fileName = fileName;
         this.fileType = fileType;
-        this.data = data;
         this.guid = guid;
     }
 
@@ -65,14 +61,6 @@ public class DBFile {
 
 	public void setFileType(String fileType) {
 		this.fileType = fileType;
-	}
-
-	public byte[] getData() {
-		return data;
-	}
-
-	public void setData(byte[] data) {
-		this.data = data;
 	}
 
 	public String getGuid() {

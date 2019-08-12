@@ -69,12 +69,7 @@ public class Utils {
     }
 
     public FileResponse generateFileResponse(DBFile file) throws UnsupportedEncodingException {
-        return new FileResponse(file.getFileName(), "", file.getFileType(), 1, encodeBytes(file.getData()), file.getImgPath());
-    }
-
-    public String encodeBytes(byte[] bytes) throws UnsupportedEncodingException {
-        byte[] encodeBase64 = Base64.encodeBase64(bytes);
-        return new String(encodeBase64, "UTF-8");
+        return new FileResponse(file.getFileName(), "", file.getFileType(), 1, file.getImgPath());
     }
 
     public String generateAuthenticationCode(int count){

@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
@@ -61,13 +62,13 @@ public class ItemWithFileController {
     }
 	
 	@PutMapping("/updateItemWithFiles")
-	public ItemWithFilesResponse updateItemWithFiles(@RequestParam("guid") String guid, UpdateItemRequest request, List<MultipartFile> files) throws UnsupportedEncodingException {
+	public ItemWithFilesResponse updateItemWithFiles(@RequestParam("guid") String guid, UpdateItemRequest request, List<MultipartFile> files) throws IOException {
 		logger.info("updateItemWithFiles");
 		return itemWithFileService.updateItemWithFiles(guid, request, files);
     }
 	
 	@PostMapping("/createItemWithFiles")
-	public ItemWithFilesResponse createItemWithFiles(CreateItemRequest request, List<MultipartFile> files) throws UnsupportedEncodingException {
+	public ItemWithFilesResponse createItemWithFiles(CreateItemRequest request, List<MultipartFile> files) throws IOException {
 		logger.info("createItemWithFiles");
 		return itemWithFileService.createItemWithFiles(request, files);
     }

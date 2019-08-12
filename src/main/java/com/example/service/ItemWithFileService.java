@@ -1,5 +1,6 @@
 package com.example.service;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,13 +69,13 @@ public class ItemWithFileService {
 		fileService.removeFile(guid);
 	}
 	
-	public ItemWithFilesResponse updateItemWithFiles(String guid, UpdateItemRequest request, List<MultipartFile> files) throws UnsupportedEncodingException {
+	public ItemWithFilesResponse updateItemWithFiles(String guid, UpdateItemRequest request, List<MultipartFile> files) throws IOException {
 		ItemResponse itemResponse = itemService.updateItem(guid, request);
 		List<FileResponse> fileResponses = fileService.updateFiles(guid, files);
 		return new ItemWithFilesResponse(itemResponse, fileResponses);
 	}
 	
-	public ItemWithFilesResponse createItemWithFiles(CreateItemRequest request, List<MultipartFile> files) throws UnsupportedEncodingException {
+	public ItemWithFilesResponse createItemWithFiles(CreateItemRequest request, List<MultipartFile> files) throws IOException {
 		ItemResponse itemResponse = itemService.createItem(request);
 		List<FileResponse> fileResponses = fileService.saveImages(files, itemResponse.getGuid());
 		return new ItemWithFilesResponse(itemResponse, fileResponses);

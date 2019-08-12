@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class FileController {
     }
     
     @PostMapping(value = ("/saveImages"), consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public RedirectView saveImages(List<MultipartFile> files, String guid) throws UnsupportedEncodingException {
+    public RedirectView saveImages(List<MultipartFile> files, String guid) throws IOException {
     	logger.info("uploadMultipleFiles: " + files);
         fileService.saveImages(files, guid);
     	return new RedirectView("/getAll_v2");
@@ -48,7 +49,7 @@ public class FileController {
     }
     
     @PutMapping("/updateFiles")
-    public RedirectView updateFiles(@RequestParam("guid") String guid, @RequestParam("files") List<MultipartFile> files) throws UnsupportedEncodingException {
+    public RedirectView updateFiles(@RequestParam("guid") String guid, @RequestParam("files") List<MultipartFile> files) throws IOException {
     	logger.info("updateFiles by guid: " + guid);
         fileService.updateFiles(guid, files);
         return new RedirectView("/getAllItemsWithFiles");

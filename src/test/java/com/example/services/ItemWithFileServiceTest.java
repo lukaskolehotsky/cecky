@@ -53,7 +53,7 @@ public class ItemWithFileServiceTest extends AbstractTest{
 		DBItem item = generateItem();
 		ItemResponse itemResponse = generateItemResponse(item);
 		List<FileResponse> fileResponses = new ArrayList<>();
-		fileResponses.add(new FileResponse("name", "", "fileType", 1, encodeBytes(new byte[1]), "imgPath"));
+		fileResponses.add(new FileResponse("name", "", "fileType", 1, "imgPath"));
 		
 		ItemWithFilesResponse itemWithFileResponse = new ItemWithFilesResponse(itemResponse, fileResponses);
 		    	
@@ -73,7 +73,7 @@ public class ItemWithFileServiceTest extends AbstractTest{
 		List<ItemResponse> itemResponses = new ArrayList<>();
 		itemResponses.add(itemResponse);
 		
-		FileResponse fileResponse = new FileResponse("fileName","fileDownloadUri", "fileType", 1, encodeBytes(new byte[1]), "imgPath");
+		FileResponse fileResponse = new FileResponse("fileName","fileDownloadUri", "fileType", 1, "imgPath");
 		List<FileResponse> fileResponses = new ArrayList<>();
 		fileResponses.add(fileResponse);
 		
