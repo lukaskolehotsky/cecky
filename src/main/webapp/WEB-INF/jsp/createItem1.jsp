@@ -71,22 +71,20 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <form:input type="text" class="form-control" placeholder="Značka *" value=""/>
+                            <form:input type="text" path="brand" class="form-control" placeholder="Značka *" value=""/>
                         </div>
                         <div class="form-group">
-                            <form:input type="text" class="form-control" placeholder="Email *" value=""/>
+                            <form:input type="text" path="email" class="form-control" placeholder="Email *" value=""/>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <form:input type="text" class="form-control" placeholder="Model *" value=""/>
+                            <form:input type="text" path="type" class="form-control" placeholder="Model *" value=""/>
                         </div>
-                        <div class="form-group">
-                            <form:input type="text" class="form-control" placeholder="Cena *" value=""/>
-                        </div>
+                        
                     </div>
                 </div>
-                <button type="button" class="btnSubmit">Hotovo</button>
+                <button type="submit" class="btnSubmit">Hotovo</button>
             </div>
         </div>
     </form:form>
