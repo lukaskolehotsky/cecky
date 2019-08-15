@@ -46,7 +46,7 @@ public class ItemWithFileService {
 			itemsWithFileResponses.add(new ItemWithFilesResponse(itemResponse, fileResponses));
 		}
     	
-    	return itemsWithFileResponses;    	
+    	return itemsWithFileResponses;   	
     }
 	
 	public List<String> getAll_v2(int pageNumber) throws UnsupportedEncodingException {	    	

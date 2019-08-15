@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.ServletContext;
+
 import com.example.exception.MyFileNotFoundException;
 import org.junit.After;
 import org.junit.Assert;
@@ -19,47 +21,50 @@ import com.example.repository.FileRepository;
 import com.example.service.FileService;
 import com.example.service.ItemService;
 
-public class FileServiceTest extends AbstractTest{
+public class FileServiceTest extends AbstractTest {
 
 	@InjectMocks
 	private FileService fileService;
-	
+
 	@Mock
 	private FileRepository fileRepository;
-	
+
 	@Mock
 	private ItemService itemService;
-	
+
+	@Mock
+	private ServletContext context;
+
 	@Before
 	public void setUp() {
-		//itemService.evictCache();
+		// itemService.evictCache();
 	}
-	
+
 	@After
 	public void tearDown() {
 		// Clean up after each test method.
 	}
-	
+
 	@Test
-	public void findById() throws UnsupportedEncodingException {		
+	public void findById() throws UnsupportedEncodingException {
 		String guid = "guid";
-		
+
 		DBFile file = generateFile();
-		
+
 		Mockito.when(fileRepository.findById(guid)).thenReturn(Optional.of(file));
-		
+
 		FileResponse response = fileService.findById(guid);
-		
+
 		Assert.assertEquals(response.getFileName(), file.getFileName());
-		Assert.assertEquals(response.getFileType(), file.getFileType());		
+		Assert.assertEquals(response.getFileType(), file.getFileType());
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
-	public void findById_fileNotFound() throws UnsupportedEncodingException {		
+	public void findById_fileNotFound() throws UnsupportedEncodingException {
 		String guid = "guid";
-		
+
 		Mockito.when(fileRepository.findById(guid)).thenReturn(Optional.empty());
-		
+
 		fileService.findById(guid);
 	}
 
@@ -85,11 +90,11 @@ public class FileServiceTest extends AbstractTest{
 
 		fileService.getFile(fileId);
 	}
-	
+
 	@Test
 	public void findAll() throws UnsupportedEncodingException {
-		 List<DBFile> files = generateFiles();
-		 List<FileResponse> uploadFileResponses = generateUploadFileResponses(files);
+		List<DBFile> files = generateFiles();
+		List<FileResponse> uploadFileResponses = generateUploadFileResponses(files);
 
 		Mockito.when(fileRepository.findAll()).thenReturn(files);
 
@@ -99,19 +104,41 @@ public class FileServiceTest extends AbstractTest{
 		Assert.assertEquals(uploadFileResponses.get(0).getFileName(), response.get(0).getFileName());
 		Assert.assertEquals(uploadFileResponses.get(0).getFileType(), response.get(0).getFileType());
 		Assert.assertEquals(uploadFileResponses.get(1).getFileName(), response.get(1).getFileName());
-		Assert.assertEquals(uploadFileResponses.get(1).getFileType(), response.get(1).getFileType());		
+		Assert.assertEquals(uploadFileResponses.get(1).getFileType(), response.get(1).getFileType());
 	}
-	
-	@Test
-	public void getFiles() throws UnsupportedEncodingException {
-		String guid = "guid";
-		List<DBFile> files = generateFiles();
-		
-		Mockito.when(fileRepository.findByGuid(guid)).thenReturn(files);
-		
-		List<FileResponse> response = fileService.getFiles(guid);
-		
-		Assert.assertEquals(files.size(), response.size());	
-	}
-	
+
+//	@Test
+//	public void saveImageToDirectory() throws IOException {
+//		String path = "C:/javaprojects/Heroku/cecky/src/main/webapp/";
+//		
+//		Mockito.when(context.getRealPath("/")).thenReturn(path);
+//		
+//		MultipartFile file = new MockMultipartFile("fileName.jpg", new byte[1]);
+//		
+//		String response = fileService.saveImageToDirectory(file,"guid","fileName.jpg");
+//		
+//		Assert.assertEquals(path + "guid" + "fileName" + "COMPRESSED",response);
+//		
+//	}
+
+//	@Test
+//	public void getFiles() throws UnsupportedEncodingException {
+//		String guid = "guid";
+//		List<DBFile> files = generateFiles();
+//		files.add(generateFile("guid2"));
+//		List<FileResponse> fileResponses = generateFileResponsesFromFiles(files);
+//		
+//		Mockito.when(fileRepository.findByGuid(guid)).thenReturn(files);
+//		
+//		List<FileResponse> response = fileService.getFiles(guid);
+//		
+//		Assert.assertEquals(fileResponses.size(), 2);	
+//		Assert.assertEquals(response.size(), 1);
+//		
+//		Assert.assertEquals(fileResponses.get(0).getFileName(), response.get(0).getFileName());
+//		Assert.assertEquals(fileResponses.get(0).getFileType(), response.get(0).getFileType());
+//		Assert.assertEquals(fileResponses.get(0).getImgPath(), response.get(0).getImgPath());
+//		
+//	}
+
 }

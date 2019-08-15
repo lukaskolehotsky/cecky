@@ -42,6 +42,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
+import javax.servlet.ServletContext;
 import javax.transaction.Transactional;
 
 
@@ -50,8 +51,8 @@ public class FileService extends Utils{
 	
 	private static final Logger logger = LoggerFactory.getLogger(FileService.class);
 	
-	private Path absolutePath = FileSystems.getDefault().getPath("src").toAbsolutePath();
-	private String path = (absolutePath.toString()+ "/main/webapp/WEB-INF/images/").replace("/","\\");
+	@Autowired
+	ServletContext context;
 
     @Autowired
     private FileRepository fileRepository;
@@ -134,53 +135,51 @@ public class FileService extends Utils{
 	public String getReasonForFileDeletionFailureInPlainEnglish(File file) {
 	    try {
 	        if (!file.exists())
-	            return "It doesn't exist in the first place.";
+	            return "IT DOESN'T EXIST IN THE FIRST PLACE.";
 	        else if (file.isDirectory() && file.list().length > 0)
-	            return "It's a directory and it's not empty.";
+	            return "IT'S A DIRECTORY AND IT'S NOT EMPTY.";
 	        else
-	            return "Somebody else has it open, we don't have write permissions, or somebody stole my disk.";
+	            return "SOMEBODY ELSE HAS IT OPEN, WE DON'T HAVE WRITE PERMISSIONS, OR SOMEBODY STOLE MY DISK.";
 	    } catch (SecurityException e) {
-	        return "We're sandboxed and don't have filesystem access.";
+	        return "WE'RE SANDBOXED AND DON'T HAVE FILESYSTEM ACCESS.";
 	    }
 	}
 	
 	private void removeImageFromDirectory(String path) {
-		try{
-    		String cesta = path.replace("\\", "\\\\");
-    		File file = new File(cesta);
-    		System.out.println("MAZES Z - " + cesta);
-    		
-    		System.out.println(getReasonForFileDeletionFailureInPlainEnglish(file));
+		try{    		
+    		File file = new File(path);
+    		logger.info("YOU ARE TRYING TO DELETE IMAGE FROM - " + path);    		
+    		logger.info(getReasonForFileDeletionFailureInPlainEnglish(file));
     		
     		if(file.delete()){
-    			System.out.println(file.getName() + " IS DELETED!");
+    			logger.info("IMAGE WAS DELETED! " + file.getName());
     		}else{
-    			System.out.println("DELETE OPERATION IS FAILED.");
-    		}
-    	   
-    	}catch(Exception e){
-    		
-    		e.printStackTrace();
-    		
+    			logger.info("DELETE OPERATION IS FAILED.");
+    		}    	   
+    	}catch(Exception e){    		
+    		e.printStackTrace();    		
     	}
 	}
    
-	private String saveImageToDirectory(MultipartFile file, String guid, String fileName) throws IOException {
+	public String saveImageToDirectory(MultipartFile file, String guid, String fileName) throws IOException {
 		
-		File fff = new File(path);
+		String path = context.getRealPath("/");
+		String imagesPath = path + "images";
+		
+		File fff = new File(imagesPath);
         if (!fff.exists()) {
             if (fff.mkdir()) {
-            	System.out.println(path);
-                System.out.println("Directory images is created!");
+            	logger.info("DIRECTORY IMAGES IS CREATED!" + imagesPath);
             } else {
-            	System.out.println(path);
-                System.out.println("Failed to create images directory!");
+            	logger.info("FAILED TO CREATE IMAGES DIRECTORY!" + imagesPath);
             }
         }
 		
 		InputStream inputStream = null;
 		OutputStream outputStream = null;
-		String finalPath = path + guid + fileName;
+		String finalPath = imagesPath + "/" + guid + fileName;
+
+		logger.info("FINAL PATH"+finalPath);
 
 		try {
 			inputStream = file.getInputStream();
@@ -208,7 +207,7 @@ public class FileService extends Utils{
             System.gc();
 		}	
 		
-		System.out.println("image should be CREATED - " + finalPath);
+		System.out.println("IMAGE SHOULD BE CREATED - " + finalPath);
 		return finalPath;
 	} 
 	
@@ -218,7 +217,6 @@ public class FileService extends Utils{
 	
 	public void compressImg(String path) throws IOException {
 		File imageFile = new File(path);
-//        File compressedImageFile = new File("myimage_compressed.jpg");
         File compressedImageFile = new File(path+"COMPRESSED");
  
         InputStream is = new FileInputStream(imageFile);
@@ -247,7 +245,7 @@ public class FileService extends Utils{
         param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
         param.setCompressionQuality(quality);
     
-        removeImageFromDirectory(path);
+//        removeImageFromDirectory(path);
         
         // appends a complete image stream containing a single image and
         //associated stream and image metadata and thumbnails to the output
@@ -259,12 +257,20 @@ public class FileService extends Utils{
         ios.close();
         writer.dispose();
         System.gc();
+        
+        removeImageFromDirectory(path);
 	}
     
 	public List<String> getAllFilesFromDirectory(String guid) {
 		
-		try (Stream<Path> walk = Files.walk(Paths.get(path))) {
-			List<String> result = walk.map(x -> x.toString()).map(p -> p.replace(path, ""))
+		String path = context.getRealPath("/");
+		String imagesPath = path + "images/";
+		
+		logger.info("GET ALL ITEMS FROM DIRECTORY - " + imagesPath);
+		
+		try (Stream<Path> walk = Files.walk(Paths.get(imagesPath))) {
+			List<String> result = walk.map(x -> x.toString())
+					.map(p -> p.replace(path, ""))
     				.filter(f -> f.contains(guid))
 					.collect(Collectors.toList());
 			result.forEach(System.out::println);

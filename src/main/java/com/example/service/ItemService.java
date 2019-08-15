@@ -36,11 +36,11 @@ public class ItemService extends Utils {
 
         DBItem savedItem = itemRepository.save(generateDBItem(request));
         
-        try {
-        	emailSender.sendEmail(authenticationCode, request.getEmail());
-        } catch (Exception e) {
-			throw new IllegalArgumentException("Nepodarilo sa odoslat email.");
-		} 
+//        try {
+//        	emailSender.sendEmail(authenticationCode, request.getEmail());
+//        } catch (Exception e) {
+//			throw new IllegalArgumentException("Nepodarilo sa odoslat email.");
+//		} 
         
 
         return generateItemResponse(savedItem);
