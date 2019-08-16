@@ -8,7 +8,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 @SpringBootApplication
-@EnableCaching //enables Spring Caching functionality
+//@EnableCaching //enables Spring Caching functionality
 public class ExampleApplication extends SpringBootServletInitializer{
 
 	public static void main(String[] args) {

@@ -8,8 +8,8 @@ import com.example.repository.FileRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
+//import org.springframework.cache.annotation.CachePut;
+//import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -62,7 +62,7 @@ public class FileService extends Utils{
     	fileRepository.deleteByGuid(guid);
     }
     
-    @Cacheable(value = "fileResponses", key = "#guid")
+//    @Cacheable(value = "fileResponses", key = "#guid")
     public List<FileResponse> getFiles(String guid) throws UnsupportedEncodingException {
     	List<FileResponse> fileResponses = new ArrayList<>();
     	for(DBFile file: fileRepository.findByGuid(guid)) {       		                        
@@ -98,7 +98,7 @@ public class FileService extends Utils{
     }
      
     @Transactional
-    @CachePut(value = "fileResponses", key = "#guid")
+//    @CachePut(value = "fileResponses", key = "#guid")
     public List<FileResponse> saveImages(List<MultipartFile> files, String guid) throws IOException {   
     	
     	List<FileResponse> fileResponses = new ArrayList<>();
@@ -162,9 +162,10 @@ public class FileService extends Utils{
 	}
    
 	public String saveImageToDirectory(MultipartFile file, String guid, String fileName) throws IOException {
+
+		// BLABLA
+		String imagesPath = "/var/webapp/images";
 		
-		String path = context.getRealPath("/");
-		String imagesPath = path + "images";
 		
 		File fff = new File(imagesPath);
         if (!fff.exists()) {
@@ -262,20 +263,19 @@ public class FileService extends Utils{
 	}
     
 	public List<String> getAllFilesFromDirectory(String guid) {
-		
-		String path = context.getRealPath("/");
-		String imagesPath = path + "images/";
+
+		String imagesPath = "/var/webapp/images";
 		
 		logger.info("GET ALL ITEMS FROM DIRECTORY - " + imagesPath);
 		
 		try (Stream<Path> walk = Files.walk(Paths.get(imagesPath))) {
 			List<String> result = walk.map(x -> x.toString())
-					.map(p -> p.replace(path, ""))
+//					.map(p -> p.replace(path, ""))
     				.filter(f -> f.contains(guid))
 					.collect(Collectors.toList());
 			result.forEach(System.out::println);
 			
-			System.out.println("DAVAS PREC - " + path);
+//			System.out.println("DAVAS PREC - " + path);
 
 			return result;
 		} catch (IOException e) {
@@ -306,7 +306,7 @@ public class FileService extends Utils{
     }
     
     @Transactional
-    @CachePut(value = "fileResponses", key = "#guid")
+//    @CachePut(value = "fileResponses", key = "#guid")
     public List<FileResponse> updateFiles(String guid, List<MultipartFile> files) throws IOException {
     	fileRepository.deleteByGuid(guid);
     	return saveImages(files, guid);

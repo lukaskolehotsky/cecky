@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +21,8 @@ import com.example.requests.UpdateItemRequest;
 
 @Service
 public class ItemWithFileService {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ItemWithFileService.class);
 
 	@Autowired
     private ItemService itemService;
@@ -54,9 +59,12 @@ public class ItemWithFileService {
     	List<String> firstImages = new ArrayList<>();
     	
     	for(ItemResponse itemResponse: itemResponses) {
-    		String imgPath = fileService.getAllFilesFromDirectory(itemResponse.getGuid()).get(0);
-    		if(imgPath != null) {
-    			firstImages.add(imgPath);
+    		List<String> imgPaths = fileService.getAllFilesFromDirectory(itemResponse.getGuid());
+    				    		
+    		if(!imgPaths.isEmpty()) {
+    			firstImages.add("http://chcemto.eu"+imgPaths.get(0).replace("/var/webapp", ""));
+    		} else {
+    			logger.info("PRE ITEM S GUID " + itemResponse.getGuid() + " SME NENASLI ZIADNE OBRAZKY.");
     		}   		
     	}
     	

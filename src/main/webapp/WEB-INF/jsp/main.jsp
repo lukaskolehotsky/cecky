@@ -108,7 +108,7 @@
 
             <c:forEach items="${itemsWithFiles}" var="itemWithFiles">
                 <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                    <a href="${itemWithFiles}" class="fancybox" rel="ligthbox"> 
+                    <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getItemWithFiles?guid=${itemWithFiles.getItemResponse().getGuid()}" class="fancybox" rel="ligthbox"> 
                         <img src="${itemWithFiles}" class="zoom img-fluid "  alt=""/> 
                     </a>
                 </div>
