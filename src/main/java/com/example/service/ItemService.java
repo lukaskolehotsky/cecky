@@ -54,12 +54,11 @@ public class ItemService extends Utils {
     }   
     
     @Transactional
-    public void removeItem(String guid) {
-    	
+    public void removeItem(String guid) {    	
     	itemRepository.deleteByGuid(guid);
     } 
     
-    public List<ItemResponse> getAll(int pageNumber){
+    List<ItemResponse> getAll(int pageNumber){
     	Pageable paging = PageRequest.of(pageNumber, 15, Sort.by("createdDateTime").ascending());
     	
     	Page<DBItem> items = itemRepository.findAll(paging);

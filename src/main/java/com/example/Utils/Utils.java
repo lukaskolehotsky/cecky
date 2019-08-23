@@ -1,15 +1,10 @@
 package com.example.Utils;
 
 import com.example.exception.FileStorageException;
-import com.example.model.DBFile;
 import com.example.model.DBItem;
-import com.example.payload.FileResponse;
 import com.example.payload.ItemResponse;
 import com.example.requests.CreateItemRequest;
 import com.example.requests.UpdateItemRequest;
-import org.apache.tomcat.util.codec.binary.Base64;
-
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,7 +13,7 @@ public class Utils {
 
     private static final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-    public String generateRandomUUID() {
+    private String generateRandomUUID() {
         return UUID.randomUUID().toString();
     }
 
@@ -66,10 +61,6 @@ public class Utils {
         item.setCreatedDateTime(LocalDateTime.now());
 
         return item;
-    }
-
-    public FileResponse generateFileResponse(DBFile file) throws UnsupportedEncodingException {
-        return new FileResponse(file.getFileName(), "", file.getFileType(), 1, file.getImgPath());
     }
 
     public String generateAuthenticationCode(int count){

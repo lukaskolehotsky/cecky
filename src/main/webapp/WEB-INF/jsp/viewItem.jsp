@@ -29,7 +29,7 @@
 
                         <c:forEach items="${itemWithFiles.getFileResponses()}" var="fileResponse">
                             <tr>
-                                <td><img alt="img" height="42" width="42" src="data:image/jpeg;base64,${fileResponse.getData()}"/></td>
+                                <td><img alt="img" height="42" width="42" src="${fileResponse.getImgPath()}"/></td>
                                 <td>File name: <c:out value="${fileResponse.getFileName()}"/></td>
                             </tr>
                             <br>

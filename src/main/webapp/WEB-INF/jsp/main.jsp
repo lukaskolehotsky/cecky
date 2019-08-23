@@ -99,23 +99,17 @@
           <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/createItem1"> Create item </a>
       </center>
 
-    <!-- Page Content -->
-       
-        
-        <!-- Page Content -->
-       <div class="container page-top">
-            <div class="row">
-
-            <c:forEach items="${itemsWithFiles}" var="itemWithFiles">
+    <div class="container page-top">
+        <div class="row">
+            <c:forEach items="${guidFirstImageMap}" var="guidFirstImage">
                 <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                    <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getItemWithFiles?guid=${itemWithFiles.getItemResponse().getGuid()}" class="fancybox" rel="ligthbox"> 
-                        <img src="${itemWithFiles}" class="zoom img-fluid "  alt=""/> 
+                    <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getItemWithFiles?guid=${guidFirstImage.key}" class="fancybox" rel="ligthbox">
+                        <img src="${guidFirstImage.value}" class="zoom img-fluid "  alt=""/>
                     </a>
                 </div>
             </c:forEach>
-
-           </div>
         </div>
+    </div>
 
     <center>
           <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAll_v2?page=0"> 0 </a>
