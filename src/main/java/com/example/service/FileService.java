@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.Utils.Utils;
+import com.example.config.ServerProperties;
 import com.example.model.DBFile;
 import com.example.payload.FileResponse;
 import com.example.repository.FileRepository;
@@ -26,15 +27,15 @@ import javax.transaction.Transactional;
 public class FileService extends Utils {
 
 	private static final Logger logger = LoggerFactory.getLogger(FileService.class);
-
+	
 	@Autowired
 	private FileRepository fileRepository;
 	
 	@Autowired
 	private DirectoryService directoryService;
 
-	@Value("${upload.path}")
-	private String uploadPath;
+//	@Value("${upload.path}")
+//	private String uploadPath;
 
 	@Transactional
 	public void removeFile(String guid) {

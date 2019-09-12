@@ -1,35 +1,32 @@
 package com.example.services;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.stereotype.Component;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.config.ServerProperties;
 import com.example.service.DirectoryService;
 
-@TestPropertySource(properties = { "upload.path=C:/javaprojects/Heroku/cecky/src/main/webapp/images" })
 public class DirectoryServiceTest extends AbstractTest {
-
-	@Value("${upload.path}")
-	String uploadPath;
 	
 	@InjectMocks
 	private DirectoryService directoryService;
+	
+	@Mock
+	private ServerProperties serverProperties;
 
 	@Before
 	public void setUp() {
@@ -41,18 +38,40 @@ public class DirectoryServiceTest extends AbstractTest {
 
 	}
 	
+//	File testJpg;
+	
+	@Before
+	public void setup() throws IOException {
+//	    testJpg = new ClassPathResource("blabla.jpeg").getFile();
+	}
+	
+
+//	@Test
+//	public void test_image_io() throws IOException {
+//	    BufferedImage bufferedImage = ImageIO.read(testJpg);
+//	}
+	
 	@Test
-	public void testUploadPath() {
-		Assert.assertEquals("C:/javaprojects/Heroku/cecky/src/main/webapp/images", uploadPath);
+	public void saveImageToDirectory() throws IOException {
+		String guid = "guid";
+		String fileName = "fileName";
+		MultipartFile file = new MockMultipartFile("fileName", new byte[1]);		
+		String uploadPath = "C:/javaprojects/Heroku/cecky/src/main/webapp/images";
+		
+		Mockito.when(serverProperties.getUploadPath()).thenReturn(uploadPath);
+		
+		String response = directoryService.saveImageToDirectory(file, guid, fileName);
+		
+		Assert.assertEquals(uploadPath+"/"+guid+fileName, response);
 	}
 	
 //	@Test
-//	public void saveImageToDirectory() throws IOException {
+//	public void compressImg() throws IOException {
 //		String guid = "guid";
-//		String fileName = "fileName";
-//		MultipartFile file = new MockMultipartFile("fileName", new byte[1]);
-//		
-//		directoryService.saveImageToDirectory(file, guid, fileName);
+//		String fileName = "fileName.jpg";
+////		String path = "C:/javaprojects/Heroku/cecky/src/main/webapp/images/" +guid+fileName;
+//		String path = "C:/javaprojects/Heroku/cecky/src/test/resources/blabla.jpeg";
+//		directoryService.compressImg(path);
 //	}
 
 }

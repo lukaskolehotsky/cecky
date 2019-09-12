@@ -23,20 +23,22 @@ import javax.imageio.stream.ImageOutputStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.example.config.ServerProperties;
 
 @Service
 public class DirectoryService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(DirectoryService.class);
 	
-	@Value("${upload.path}")
-	private String uploadPath;
+	@Autowired
+    private ServerProperties serverProperties;
 
 	List<String> getAllFilesFromDirectory(String guid) {
-		String imagesPath = uploadPath;
+		String imagesPath = serverProperties.getUploadPath();
 
 		logger.info("GET ALL ITEMS FROM DIRECTORY - " + imagesPath);
 
@@ -53,7 +55,7 @@ public class DirectoryService {
 	}
 	
 	public String saveImageToDirectory(MultipartFile file, String guid, String fileName) throws IOException {
-		String imagesPath = this.uploadPath;
+		String imagesPath = serverProperties.getUploadPath();
 
 		File fff = new File(imagesPath);
 		if (!fff.exists()) {
@@ -94,13 +96,11 @@ public class DirectoryService {
 			System.gc();
 		}
 
-//		compressImg(finalPath);
-
 		System.out.println("IMAGE SHOULD BE CREATED - " + finalPath);
 		return finalPath;
 	}
 	
-	void compressImg(String path) throws IOException {
+	public void compressImg(String path) throws IOException {
 		File imageFile = new File(path);
 		File compressedImageFile = new File(path + "COMPRESSED");
 

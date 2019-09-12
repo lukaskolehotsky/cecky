@@ -22,7 +22,7 @@
                     <tr>
                         <td>Item brand: <c:out value="${itemWithFiles.getItemResponse().getBrand()}"/></td>
                             <td><a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/updateItem1?guid=${itemWithFiles.getItemResponse().getGuid()}"> Update item </a></td>
-                            <td><a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/removeItemWithFiles?guid=${itemWithFiles.getItemResponse().getGuid()}"> Remove item </a></td>
+                            <td style="display: none;"><a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/removeItemWithFiles?guid=${itemWithFiles.getItemResponse().getGuid()}"> Remove item </a></td>
                         </tr>
 
                         <br>
