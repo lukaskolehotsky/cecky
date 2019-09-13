@@ -9,24 +9,39 @@ import com.example.requests.UpdateItemRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class ItemService extends Utils {
 
     @Autowired
     private ItemRepository itemRepository;
+    
+    @Autowired
+    private EmailSender emailSender;
 
     public ItemResponse createItem(CreateItemRequest request) {
 
+        String authenticationCode = generateAuthenticationCode(10);
+        request.setAuthenticationCode(Optional.of(authenticationCode));
+
         DBItem savedItem = itemRepository.save(generateDBItem(request));
+        
+//        try {
+//        	emailSender.sendEmail(authenticationCode, request.getEmail());
+//        } catch (Exception e) {
+//			throw new IllegalArgumentException("Nepodarilo sa odoslat email.");
+//		} 
+        
 
         return generateItemResponse(savedItem);
     }
@@ -39,29 +54,53 @@ public class ItemService extends Utils {
     }   
     
     @Transactional
-    public void removeItem(String guid) {
-    	
+    public void removeItem(String guid) {    	
     	itemRepository.deleteByGuid(guid);
     } 
     
-    public List<ItemResponse> getAll(){
+    List<ItemResponse> getAll(int pageNumber){
+    	Pageable paging = PageRequest.of(pageNumber, 15, Sort.by("createdDateTime").ascending());
     	
-    	List<DBItem> items = itemRepository.findAll();
+    	Page<DBItem> items = itemRepository.findAll(paging);
     	List<ItemResponse> itemResponses = new ArrayList<>();
-    	
-    	for(DBItem item: items) {
-    		itemResponses.add(generateItemResponse(item));
+
+    	if(items != null) {
+    		for(DBItem item: items.getContent()) {
+        		itemResponses.add(generateItemResponse(item));
+        	}
     	}
+    	
     	return itemResponses;
     }    
-    
-    @Transactional
+        
     public ItemResponse updateItem(String guid, UpdateItemRequest request) {   
     	
     	DBItem item = itemRepository.findByGuid(guid);
-    	DBItem updatedItem = itemRepository.save(prepareModifiedItem(item, request));
 
-    	return generateItemResponse(updatedItem);
+    	if(request.getAuthenticationCode().isPresent()){
+    	    if(item.getAuthenticationCode().equals(request.getAuthenticationCode().get())) {
+                DBItem updatedItem = itemRepository.save(prepareModifiedItem(item, request));
+                return generateItemResponse(updatedItem);
+            } else {
+                throw new IllegalArgumentException("You have no permissions for modification.");
+            }
+        }
+
+        return null;
     }
-    
+
+    public String changeAuthenticationCode(String guid, String email){
+        DBItem item = itemRepository.findByGuidAndEmail(guid, email);
+        String authenticationCode;
+        if(item != null){
+            authenticationCode = generateAuthenticationCode(10);
+            item.setAuthenticationCode(authenticationCode);
+            itemRepository.save(item);
+            emailSender.sendEmail(authenticationCode, email);
+            return authenticationCode;
+        } else {
+            throw new IllegalArgumentException("For your email does not exist any item.");
+        }
+    }
+
 }

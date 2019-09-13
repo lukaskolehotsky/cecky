@@ -16,7 +16,7 @@ public class DBItem {
 	@Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private String id;
+    private String id;	
 	
 	private String brand;
 	
@@ -25,23 +25,23 @@ public class DBItem {
 	private String guid;
 
 	private LocalDateTime createdDateTime;
+
+	private String email;
+
+	private String authenticationCode;
 	
 	public DBItem() {
 	}
-	
-	public DBItem(String brand, String type, String guid, LocalDateTime createdDateTime) {
+
+	public DBItem(String brand, String type, String guid,
+			LocalDateTime createdDateTime, String email, String authenticationCode) {
+		super();	
 		this.brand = brand;
 		this.type = type;
 		this.guid = guid;
 		this.createdDateTime = createdDateTime;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
+		this.email = email;
+		this.authenticationCode = authenticationCode;
 	}
 
 	public String getBrand() {
@@ -75,4 +75,21 @@ public class DBItem {
 	public void setCreatedDateTime(LocalDateTime createdDateTime) {
 		this.createdDateTime = createdDateTime;
 	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getAuthenticationCode() {
+		return authenticationCode;
+	}
+
+	public void setAuthenticationCode(String authenticationCode) {
+		this.authenticationCode = authenticationCode;
+	}	
+	
 }

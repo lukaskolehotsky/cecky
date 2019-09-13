@@ -4,14 +4,18 @@ import com.example.model.DBFile;
 import com.example.payload.ItemResponse;
 import com.example.payload.FileResponse;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import com.example.requests.CreateItemRequest;
 import com.example.requests.UpdateItemRequest;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
@@ -30,11 +34,20 @@ public abstract class AbstractTest {
 		String guid = "guid";
 		String brand = "brand";
 		String type = "type";
-		return new DBItem(brand,type,guid, LocalDateTime.now());
+		String email = "email";
+		String authenticationCode = "authenticationCode";
+		return new DBItem(brand,type,guid, LocalDateTime.now(), email, authenticationCode);
 	}
-	
+
 	public DBItem generateDBItem(CreateItemRequest request) {
-		return new DBItem(request.getBrand(), request.getType(), generateRandomUUID(), LocalDateTime.now());
+		return new DBItem(
+			request.getBrand(),
+			request.getType(),
+			generateRandomUUID(),
+			LocalDateTime.now(),
+			request.getEmail(),
+			request.getAuthenticationCode().get()
+		);
 	}	
     
     public List<DBItem> generateDBItems() {
@@ -44,25 +57,29 @@ public abstract class AbstractTest {
     }
 	
 	public DBFile generateFile() {
-		return new DBFile("name", "type", new byte[1],"guid");
+		return new DBFile("imgPath", "name", "type", "guid");
+	}
+	
+	public DBFile generateFile(String guid) {
+		return new DBFile("imgPath2", "name2", "type2", guid);
 	}
 	
 	public List<DBFile> generateFiles() {
 		List<DBFile> files = new ArrayList<>();
-		files.add(new DBFile("name1", "type1", new byte[1],"guid"));
-		files.add(new DBFile("name2", "type2", new byte[2],"guid"));
+		files.add(new DBFile("imgPath", "name1", "type1", "guid"));
+		files.add(new DBFile("imgPath", "name2", "type2", "guid"));
 		
 		return files;
 	}
 
 	public ItemResponse generateItemResponse(DBItem item) {
-		return new ItemResponse(item.getBrand(),item.getType(),item.getGuid(),item.getCreatedDateTime());
+		return new ItemResponse(item.getBrand(),item.getType(),item.getGuid(),item.getCreatedDateTime(), item.getEmail(), Optional.of(item.getAuthenticationCode()));
 	}	
 	
-	public List<FileResponse> generateUploadFileResponses(List<DBFile> files) {
+	public List<FileResponse> generateUploadFileResponses(List<DBFile> files) throws UnsupportedEncodingException {
 		List<FileResponse> uploadFileResponses = new ArrayList<FileResponse>();
 		for(DBFile file: files) {
-			uploadFileResponses.add(new FileResponse(file.getFileName(), "", file.getFileType(), 1));
+			uploadFileResponses.add(new FileResponse(file.getFileName(), "", file.getFileType(), 1, file.getImgPath()));
 		}
 		
 		return uploadFileResponses;
@@ -73,19 +90,27 @@ public abstract class AbstractTest {
 	}
 	
 	public UpdateItemRequest generateUpdateItemRequest(DBItem item) {
-		return new UpdateItemRequest(item.getBrand(), item.getType());
+		return new UpdateItemRequest(item.getBrand(), item.getType(), item.getEmail(), Optional.of(item.getAuthenticationCode()));
 	}
 	
-	public List<FileResponse> generateFileResponses(List<MultipartFile> files) {
+	public List<FileResponse> generateFileResponses(List<MultipartFile> files) throws IOException {
 		List<FileResponse> fileResponses = new ArrayList<>();
 		for(MultipartFile multipartFile: files) {
-			fileResponses.add(new FileResponse(multipartFile.getName(), "",multipartFile.getContentType(), 1));
+			fileResponses.add(new FileResponse(multipartFile.getName(), "",multipartFile.getContentType(), 1, "DOROBIT"));
+		}
+		return fileResponses;
+	}
+	
+	public List<FileResponse> generateFileResponsesFromFiles(List<DBFile> files) {
+		List<FileResponse> fileResponses = new ArrayList<>();
+		for(DBFile file: files) {
+			fileResponses.add(new FileResponse(file.getFileName(), "", file.getFileType(), 1, file.getImgPath()));
 		}
 		return fileResponses;
 	}
 	
 	public CreateItemRequest generateCreateItemRequest() {
-		return new CreateItemRequest("brand", "type");
+		return new CreateItemRequest("brand", "type", "email", Optional.of("authenticationCode"));
 	}
 	
 	public List<MultipartFile> generateMockedMultipartFiles() {
@@ -94,5 +119,11 @@ public abstract class AbstractTest {
 		files.add(file);
 		return files;
 	}
+	
+	public String encodeBytes(byte[] bytes) throws UnsupportedEncodingException {
+        byte[] encodeBase64 = Base64.encodeBase64(bytes);
+        String base64Encoded = new String(encodeBase64, "UTF-8"); 
+        return base64Encoded;
+    }
 	
 }

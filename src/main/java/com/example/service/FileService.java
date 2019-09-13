@@ -1,157 +1,100 @@
 package com.example.service;
 
 import com.example.Utils.Utils;
-import com.example.exception.MyFileNotFoundException;
-import com.example.exception.FileStorageException;
 import com.example.model.DBFile;
-import com.example.payload.ItemResponse;
 import com.example.payload.FileResponse;
 import com.example.repository.FileRepository;
-
-import com.example.requests.CreateItemRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+//import org.springframework.cache.annotation.CachePut;
+//import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 @Service
-public class FileService extends Utils{
+public class FileService extends Utils {
 
-    @Autowired
-    private FileRepository fileRepository;
-    
-    @Autowired
-    private ItemService itemService;
-    
-    @Transactional
-    public void removeFile(String guid) {
-    	fileRepository.deleteByGuid(guid);
-    }
-    
-    public List<FileResponse> getFiles(String guid) {
-    	List<FileResponse> fileResponses = new ArrayList<>();
-    	for(DBFile file: fileRepository.findByGuid(guid)) {
-    		fileResponses.add(new FileResponse(file.getFileName(), "", file.getFileType(), 1));
-    	}
-    	return fileResponses;
-    }    
+	private static final Logger logger = LoggerFactory.getLogger(FileService.class);
 
-    public List<FileResponse> findAll(){
-    	
-    	List<DBFile> files;
-    	files = fileRepository.findAll();
+	@Autowired
+	private FileRepository fileRepository;
 
-        List<FileResponse> responses = new ArrayList<>();
-    	for(DBFile file: files) {
-    		responses.add(generateFileResponse(file));
-    	}
+	@Autowired
+	private DirectoryService directoryService;
 
-    	return responses;
-    }
-    
-    public FileResponse findById(String id) {
-    	Optional<DBFile> file = fileRepository.findById(id);
-    	if(file.isPresent()){
-            return generateFileResponse(file.get());
-        } else{
-    	    throw new IllegalArgumentException("File not found.");
-        }
-    }
-    
-    public FileResponse uploadFile(MultipartFile file, String guid) {
-        DBFile dbFile = storeFile(file, guid);
+	@Transactional
+	public void removeFile(String guid) {
+		fileRepository.deleteByGuid(guid);
+	}
 
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
-                .path(dbFile.getId())
-                .toUriString();
+//    @Cacheable(value = "fileResponses", key = "#guid")
+	List<FileResponse> getFiles(String guid) throws UnsupportedEncodingException {
+		List<FileResponse> fileResponses = new ArrayList<>();
+		for (DBFile file : fileRepository.findByGuid(guid)) {
+			logger.info("findByGuid - FROM DATABASE - " + file.toString());
+			fileResponses.add(new FileResponse(file.getFileName(), "", file.getFileType(), 1, file.getImgPath()));
+		}
 
-        return new FileResponse(dbFile.getFileName(), fileDownloadUri,
-                file.getContentType(), file.getSize());
-    }
-    
-    public List<FileResponse> uploadMultipleFiles(MultipartFile[] files) {
-        CreateItemRequest createItemRequest = new CreateItemRequest("brand", "type");
-    	ItemResponse createdItem = itemService.createItem(createItemRequest);
-    	
-        return Arrays.asList(files)
-                .stream()
-                .map(file -> uploadFile(file, createdItem.getGuid()))
-                .collect(Collectors.toList());
-    }
-    
-    @Transactional
-    public List<FileResponse> saveImages(List<MultipartFile> files, String guid) {    	
-        return files.stream()
-                .map(file -> saveImage(file, guid))
-                .collect(Collectors.toList());
-    }
-    
-    public FileResponse saveImage(MultipartFile file, String guid) {
-        DBFile dbFile = storeFile(file, guid);
+		directoryService.getAllFilesFromDirectory(guid);
+		return fileResponses;
+	}
 
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
-                .path(dbFile.getId())
-                .toUriString();
+	@Transactional
+//    @CachePut(value = "fileResponses", key = "#guid")
+	public List<FileResponse> saveImages(List<MultipartFile> files, String guid) throws IOException {
 
-        return new FileResponse(dbFile.getFileName(), fileDownloadUri,
-                file.getContentType(), file.getSize());
-    }
+		List<FileResponse> fileResponses = new ArrayList<>();
+		for (MultipartFile file : files) {
+			fileResponses.add(saveImage(file, guid));
+		}
+		return fileResponses;
+	}
 
-    public DBFile storeFile(MultipartFile file, String guid) {
-        // Normalize file name
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+	private FileResponse saveImage(MultipartFile file, String guid) throws IOException {
+		DBFile dbFile = storeFile(file, guid);
 
-        try {
-            // Check if the file's name contains invalid characters
-            if(fileName.contains("..")) {
-                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
-            }
+		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/downloadFile/")
+				.path(dbFile.getId()).toUriString();
 
-            DBFile dbFile = new DBFile(fileName, file.getContentType(), file.getBytes(), guid);
+		return new FileResponse(dbFile.getFileName(), fileDownloadUri, file.getContentType(), file.getSize(),
+				dbFile.getImgPath());
+	}
 
-            return fileRepository.save(dbFile);
-        } catch (IOException ex) {
-            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
-        }
-    }
+	private DBFile storeFile(MultipartFile file, String guid) throws IOException {
+		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
-    public DBFile getFile(String fileId) {
-        return fileRepository.findById(fileId)
-                .orElseThrow(() -> new MyFileNotFoundException("File not found with id " + fileId));
-    }
+		validateFileName(fileName);
+		String imagePath = directoryService.prepareAndSaveToDirectory(file, guid, fileName);
 
-    // TODO - we don't need in the future
-    public ResponseEntity<Resource> downloadFile(String fileId) {
-        // Load file from database
-        DBFile dbFile = getFile(fileId);
+		DBFile dbFile = generateDBFile(imagePath, fileName, file.getContentType(), guid);
 
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(dbFile.getFileType()))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + dbFile.getFileName() + "\"")
-                .body(new ByteArrayResource(dbFile.getData()));
-    }
-    
-    @Transactional
-    public List<FileResponse> updateFiles(String guid, List<MultipartFile> files) {
-    	fileRepository.deleteByGuid(guid);
-    	return saveImages(files, guid);
-    }
+		directoryService.compressImg(imagePath);
+		directoryService.removeImageFromDirectory(imagePath);
+
+		return fileRepository.save(dbFile);
+	}
+
+	@Transactional
+//    @CachePut(value = "fileResponses", key = "#guid")
+	public List<FileResponse> updateFiles(String guid, List<MultipartFile> files) throws IOException {
+		fileRepository.deleteByGuid(guid);
+
+		List<String> images = directoryService.getAllFilesFromDirectory(guid);
+		for (String img : images) {
+			directoryService.removeImageFromDirectory(img);
+		}
+
+		return saveImages(files, guid);
+	}
 
 }

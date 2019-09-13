@@ -1,19 +1,17 @@
 package com.example.controller;
 
-import com.example.payload.FileResponse;
 import com.example.service.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class FileController {
@@ -22,41 +20,12 @@ public class FileController {
     
     @Autowired
     private FileService fileService;
-
-    @GetMapping("/all")
-    public List<FileResponse> findAll() {    	
-    	logger.info("findAll");
-    	return fileService.findAll();
-    }
-    
-    @GetMapping("/byId")
-    public FileResponse findById(@RequestParam("id") String id) {  
-    	logger.info("findById: " + id);
-    	return fileService.findById(id);
-    }
-    
-    @PostMapping("/uploadFile")
-    public FileResponse uploadFile(@RequestParam("file") MultipartFile file) {
-    	logger.info("uploadFile: " + file.toString());
-        return fileService.uploadFile(file, "GUID");
-    }
-
-    @PostMapping("/uploadMultipleFiles")
-    public List<FileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
-    	logger.info("uploadMultipleFiles: " + Arrays.toString(files));
-        return fileService.uploadMultipleFiles(files);
-    }
     
     @PostMapping(value = ("/saveImages"), consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public List<FileResponse> saveImages(List<MultipartFile> files, String guid) {
+    public RedirectView saveImages(List<MultipartFile> files, String guid) throws IOException {
     	logger.info("uploadMultipleFiles: " + files);
-        return fileService.saveImages(files, guid);
-    }
-
-    @GetMapping("/downloadFile/{fileId}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileId) {
-    	logger.info("downloadFile by fileId: " + fileId);
-        return fileService.downloadFile(fileId);
+        fileService.saveImages(files, guid);
+    	return new RedirectView("/getAll_v2");
     }
     
     @DeleteMapping("/removeFile")
@@ -66,9 +35,16 @@ public class FileController {
     }
     
     @PutMapping("/updateFiles")
-    public void updateFiles(@RequestParam("guid") String guid, @RequestParam("files") List<MultipartFile> files) {
+    public RedirectView updateFiles(@RequestParam("guid") String guid, @RequestParam("files") List<MultipartFile> files) throws IOException {
     	logger.info("updateFiles by guid: " + guid);
         fileService.updateFiles(guid, files);
+        return new RedirectView("/getAll_v2");
+    }
+    
+    @GetMapping("/clearCache")
+    @CacheEvict(value = "fileResponses", allEntries = true)
+    public void clearCache() {    	
+    	logger.info("clearCache");
     }
    
 }
