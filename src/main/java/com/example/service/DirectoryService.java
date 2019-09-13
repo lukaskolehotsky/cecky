@@ -37,7 +37,7 @@ public class DirectoryService {
 	@Autowired
     private ServerProperties serverProperties;
 
-	List<String> getAllFilesFromDirectory(String guid) {
+	public List<String> getAllFilesFromDirectory(String guid) {
 		String imagesPath = serverProperties.getUploadPath();
 
 		logger.info("getAllFilesFromDirectory - FROM DIRECTORY -" + imagesPath);
@@ -67,7 +67,7 @@ public class DirectoryService {
 		}
 	}
 
-	private void saveFileToDirecory(MultipartFile file, String imagePath) throws IOException {
+	public void saveFileToDirecory(MultipartFile file, String imagePath) throws IOException {
 		InputStream inputStream = null;
 		OutputStream outputStream = null;
 
@@ -148,7 +148,7 @@ public class DirectoryService {
 		removeImageFromDirectory(imagePath);
 	}
 	
-	void removeImageFromDirectory(String path) {
+	public void removeImageFromDirectory(String path) {
 		try {
 			File file = new File(path);
 			logger.info("YOU ARE TRYING TO DELETE IMAGE FROM - " + path);
