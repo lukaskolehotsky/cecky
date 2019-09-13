@@ -99,29 +99,23 @@
           <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/createItem1"> Create item </a>
       </center>
 
-    <!-- Page Content -->
-       <div class="container page-top">
-            <div class="row">
-
-            <c:forEach items="${itemsWithFiles}" var="itemWithFiles">
+    <div class="container page-top">
+        <div class="row">
+            <c:forEach items="${guidFirstImageMap}" var="guidFirstImage">
                 <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                    <a href="${itemWithFiles.getFileResponses().get(0).getData()}" class="fancybox" rel="ligthbox">
-                        <img src="449191dc-9ff4-4fad-b2b2-d1fc9934c155IMG_20190216_115812.jpg" class="zoom img-fluid "  alt=""/>
+                    <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getItemWithFiles?guid=${guidFirstImage.key}" class="fancybox" rel="ligthbox">
+                        <img src="${guidFirstImage.value}" class="zoom img-fluid "  alt=""/>
                     </a>
                 </div>
             </c:forEach>
-
-           </div>
         </div>
-
-        <img src="<c:url value="/images/449191dc-9ff4-4fad-b2b2-d1fc9934c155IMG_20190216_115812.jpg" />"/>
-        <img src="src/main/webapp/WEB-INF/images/449191dc-9ff4-4fad-b2b2-d1fc9934c155IMG_20190216_115812.jpg" class="zoom img-fluid "  alt=""/>
+    </div>
 
     <center>
-          <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAllItemsWithFiles?page=0"> 0 </a>
-          <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAllItemsWithFiles?page=1"> 1 </a>
-          <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAllItemsWithFiles?page=2"> 2 </a>
-          <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAllItemsWithFiles?page=3"> 3 </a>
+          <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAll_v2?page=0"> 0 </a>
+          <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAll_v2?page=1"> 1 </a>
+          <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAll_v2?page=2"> 2 </a>
+          <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAll_v2?page=3"> 3 </a>
     </center>
 
   </body>

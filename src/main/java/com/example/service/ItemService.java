@@ -35,7 +35,13 @@ public class ItemService extends Utils {
         request.setAuthenticationCode(Optional.of(authenticationCode));
 
         DBItem savedItem = itemRepository.save(generateDBItem(request));
-        emailSender.sendEmail(authenticationCode, request.getEmail());
+        
+//        try {
+//        	emailSender.sendEmail(authenticationCode, request.getEmail());
+//        } catch (Exception e) {
+//			throw new IllegalArgumentException("Nepodarilo sa odoslat email.");
+//		} 
+        
 
         return generateItemResponse(savedItem);
     }
@@ -48,20 +54,22 @@ public class ItemService extends Utils {
     }   
     
     @Transactional
-    public void removeItem(String guid) {
-    	
+    public void removeItem(String guid) {    	
     	itemRepository.deleteByGuid(guid);
     } 
     
-    public List<ItemResponse> getAll(int pageNumber){
+    List<ItemResponse> getAll(int pageNumber){
     	Pageable paging = PageRequest.of(pageNumber, 15, Sort.by("createdDateTime").ascending());
     	
     	Page<DBItem> items = itemRepository.findAll(paging);
     	List<ItemResponse> itemResponses = new ArrayList<>();
 
-    	for(DBItem item: items.getContent()) {
-    		itemResponses.add(generateItemResponse(item));
+    	if(items != null) {
+    		for(DBItem item: items.getContent()) {
+        		itemResponses.add(generateItemResponse(item));
+        	}
     	}
+    	
     	return itemResponses;
     }    
         

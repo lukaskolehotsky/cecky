@@ -1,10 +1,10 @@
 CREATE TABLE files
 (
 id varchar(100) NULL,
+ img_path varchar(1000) NULL,
  file_name varchar(100) NULL,
  file_type varchar(100) NULL,
  guid varchar(100) NULL,
- data BIGINT,
  PRIMARY KEY (id)
 );
 

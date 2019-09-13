@@ -6,14 +6,14 @@ public class FileResponse {
     private String fileDownloadUri;
     private String fileType;
     private long size;
-    private String data;
+    private String imgPath;
 
-    public FileResponse(String fileName, String fileDownloadUri, String fileType, long size, String data) {
+    public FileResponse(String fileName, String fileDownloadUri, String fileType, long size, String imgPath) {
         this.fileName = fileName;
         this.fileDownloadUri = fileDownloadUri;
         this.fileType = fileType;
         this.size = size;
-        this.data = data;
+        this.imgPath = imgPath;
     }
 
     public String getFileName() {
@@ -48,12 +48,12 @@ public class FileResponse {
         this.size = size;
     }
 
-	public String getData() {
-		return data;
+	public String getImgPath() {
+		return imgPath;
 	}
 
-	public void setData(String data) {
-		this.data = data;
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
 	}
 	    
 }
