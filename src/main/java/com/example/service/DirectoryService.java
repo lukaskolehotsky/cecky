@@ -40,7 +40,7 @@ public class DirectoryService {
 	List<String> getAllFilesFromDirectory(String guid) {
 		String imagesPath = serverProperties.getUploadPath();
 
-		logger.info("GET ALL ITEMS FROM DIRECTORY - " + imagesPath);
+		logger.info("getAllFilesFromDirectory - FROM DIRECTORY -" + imagesPath);
 
 		try (Stream<Path> walk = Files.walk(Paths.get(imagesPath))) {
 			List<String> result = walk.map(x -> x.toString()).filter(f -> f.contains(guid))
@@ -53,29 +53,28 @@ public class DirectoryService {
 		}
 		return null;
 	}
-	
-	public String saveImageToDirectory(MultipartFile file, String guid, String fileName) throws IOException {
-		String imagesPath = serverProperties.getUploadPath();
 
-		File fff = new File(imagesPath);
+	private void createDirectory(String path) {
+		File fff = new File(path);
 		if (!fff.exists()) {
 			if (fff.mkdir()) {
-				logger.info("DIRECTORY IMAGES IS CREATED!" + imagesPath);
+				logger.info("Directory Images was created. " + path);
 			} else {
-				logger.info("FAILED TO CREATE IMAGES DIRECTORY!" + imagesPath);
+				logger.info("Failed to create Images directory. " + path);
 			}
+		} else {
+			logger.info("Directory Images already exist. " + path);
 		}
+	}
 
+	private void saveFileToDirecory(MultipartFile file, String imagePath) throws IOException {
 		InputStream inputStream = null;
 		OutputStream outputStream = null;
-		String finalPath = imagesPath + "/" + guid + fileName;
-
-		logger.info("FINAL PATH" + finalPath);
 
 		try {
 			inputStream = file.getInputStream();
 
-			File newFile = new File(finalPath);
+			File newFile = new File(imagePath);
 			if (!newFile.exists()) {
 				newFile.createNewFile();
 			}
@@ -86,33 +85,38 @@ public class DirectoryService {
 			while ((read = inputStream.read(bytes)) != -1) {
 				outputStream.write(bytes, 0, read);
 			}
-
+			logger.info("Image should be stored to directory - " + imagePath);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
+			inputStream.close();
 			outputStream.flush();
 			outputStream.close();
-			outputStream = null;
+//			outputStream = null;
 			System.gc();
 		}
+	}
 
-		System.out.println("IMAGE SHOULD BE CREATED - " + finalPath);
-		return finalPath;
+	public String prepareAndSaveToDirectory(MultipartFile file, String guid, String fileName) throws IOException {
+		String uploadPath = serverProperties.getUploadPath();
+		String imagePath = uploadPath + "/" + guid + fileName;
+
+		createDirectory(uploadPath);
+		saveFileToDirecory(file, imagePath);
+
+		return imagePath;
 	}
 	
-	public void compressImg(String path) throws IOException {
-		File imageFile = new File(path);
-		File compressedImageFile = new File(path + "COMPRESSED");
+	public void compressImg(String imagePath) throws IOException {
+		File imageFile = new File(imagePath);
+		File compressedImageFile = new File(imagePath + "COMPRESSED");
 
 		InputStream is = new FileInputStream(imageFile);
 		OutputStream os = new FileOutputStream(compressedImageFile);
 
 		float quality = 0.5f;
 
-		// create a BufferedImage as the result of decoding the supplied InputStream
 		BufferedImage image = ImageIO.read(is);
-
-		// get all image writers for JPG format
 		Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpg");
 
 		if (!writers.hasNext())
@@ -128,7 +132,6 @@ public class DirectoryService {
 		param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
 		param.setCompressionQuality(quality);
 
-//        removeImageFromDirectory(path);
 
 		// appends a complete image stream containing a single image and
 		// associated stream and image metadata and thumbnails to the output
@@ -141,8 +144,8 @@ public class DirectoryService {
 		writer.dispose();
 		System.gc();
 
-		logger.info("IMAGE SHOULD BE COMPRESSED");
-		removeImageFromDirectory(path);
+		logger.info("Image should be compressed.");
+		removeImageFromDirectory(imagePath);
 	}
 	
 	void removeImageFromDirectory(String path) {

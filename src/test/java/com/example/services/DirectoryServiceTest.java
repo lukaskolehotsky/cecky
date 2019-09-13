@@ -1,10 +1,6 @@
 package com.example.services;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -13,7 +9,6 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -60,7 +55,7 @@ public class DirectoryServiceTest extends AbstractTest {
 		
 		Mockito.when(serverProperties.getUploadPath()).thenReturn(uploadPath);
 		
-		String response = directoryService.saveImageToDirectory(file, guid, fileName);
+		String response = directoryService.prepareAndSaveToDirectory(file, guid, fileName);
 		
 		Assert.assertEquals(uploadPath+"/"+guid+fileName, response);
 	}

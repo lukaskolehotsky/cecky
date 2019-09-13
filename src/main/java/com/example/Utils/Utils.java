@@ -1,6 +1,7 @@
 package com.example.Utils;
 
 import com.example.exception.FileStorageException;
+import com.example.model.DBFile;
 import com.example.model.DBItem;
 import com.example.payload.ItemResponse;
 import com.example.requests.CreateItemRequest;
@@ -26,6 +27,10 @@ public class Utils {
         		request.getEmail(),
         		generateAuthenticationCode(10)
         );
+    }
+
+    public DBFile generateDBFile(String imgPath, String fileName, String contentType, String guid) {
+        return new DBFile(imgPath, fileName, contentType, guid);
     }
 
     public ItemResponse generateItemResponse(DBItem item) {

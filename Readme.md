@@ -39,4 +39,12 @@ Make sure Less secure apps is TURNED ON https://www.google.com/settings/security
 Allow each app to send email Go to https://accounts.google.com/b/0/DisplayUnlockCaptcha and click on Continue.
 
 Run locally:
-mvn spring-boot:run -Dspring-boot.run.profiles=foo,bar
+mvn spring-boot:run -Dspring-boot.run.profiles=dev
+
+PostgreSQL database changes:
+sudo su postgres
+psql
+DELETE FROM ITEMS;
+DELETE FROM FILES;
+\q
+exit

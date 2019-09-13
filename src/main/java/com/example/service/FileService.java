@@ -1,14 +1,12 @@
 package com.example.service;
 
 import com.example.Utils.Utils;
-import com.example.config.ServerProperties;
 import com.example.model.DBFile;
 import com.example.payload.FileResponse;
 import com.example.repository.FileRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 //import org.springframework.cache.annotation.CachePut;
 //import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -34,9 +32,6 @@ public class FileService extends Utils {
 	@Autowired
 	private DirectoryService directoryService;
 
-//	@Value("${upload.path}")
-//	private String uploadPath;
-
 	@Transactional
 	public void removeFile(String guid) {
 		fileRepository.deleteByGuid(guid);
@@ -46,12 +41,11 @@ public class FileService extends Utils {
 	List<FileResponse> getFiles(String guid) throws UnsupportedEncodingException {
 		List<FileResponse> fileResponses = new ArrayList<>();
 		for (DBFile file : fileRepository.findByGuid(guid)) {
+			logger.info("findByGuid - FROM DATABASE - " + file.toString());
 			fileResponses.add(new FileResponse(file.getFileName(), "", file.getFileType(), 1, file.getImgPath()));
 		}
-		logger.info("!!!!!!!!!!!!!!!!!!FROM DATABASE!!!!!!!!!!!!!!!!!!!!!!!!!");
 
 		directoryService.getAllFilesFromDirectory(guid);
-		logger.info("!!!!!!!!!!!!!!!!!!FROM IMAGES FOLDER!!!!!!!!!!!!!!!!!!!!!!!!!");
 		return fileResponses;
 	}
 
@@ -80,11 +74,12 @@ public class FileService extends Utils {
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
 		validateFileName(fileName);
-		String imgPath = directoryService.saveImageToDirectory(file, guid, fileName);
-		DBFile dbFile = new DBFile(imgPath, fileName, file.getContentType(), guid);
+		String imagePath = directoryService.prepareAndSaveToDirectory(file, guid, fileName);
 
-		directoryService.compressImg(imgPath);
-		directoryService.removeImageFromDirectory(imgPath);
+		DBFile dbFile = generateDBFile(imagePath, fileName, file.getContentType(), guid);
+
+		directoryService.compressImg(imagePath);
+		directoryService.removeImageFromDirectory(imagePath);
 
 		return fileRepository.save(dbFile);
 	}	
