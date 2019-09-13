@@ -25,10 +25,10 @@ import javax.transaction.Transactional;
 public class FileService extends Utils {
 
 	private static final Logger logger = LoggerFactory.getLogger(FileService.class);
-	
+
 	@Autowired
 	private FileRepository fileRepository;
-	
+
 	@Autowired
 	private DirectoryService directoryService;
 
@@ -82,7 +82,7 @@ public class FileService extends Utils {
 		directoryService.removeImageFromDirectory(imagePath);
 
 		return fileRepository.save(dbFile);
-	}	
+	}
 
 	@Transactional
 //    @CachePut(value = "fileResponses", key = "#guid")
@@ -91,7 +91,7 @@ public class FileService extends Utils {
 
 		List<String> images = directoryService.getAllFilesFromDirectory(guid);
 		for (String img : images) {
-			directoryService.removeImageFromDirectory(img);			
+			directoryService.removeImageFromDirectory(img);
 		}
 
 		return saveImages(files, guid);
