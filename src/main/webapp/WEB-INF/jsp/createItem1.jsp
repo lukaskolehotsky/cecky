@@ -51,7 +51,7 @@
               color: #fff;
           }
         </style>
-        <title>Pridaj novy</title>
+        <title>Pridaj</title>
 </head>
 <body>
 
@@ -64,7 +64,7 @@
     <form:form class="container register-form" method="post" modelAttribute="item" action="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/createItem2">
         <div class="form">
             <div class="note">
-                <p>Pridaj novy</p>
+                <p>Pridaj</p>
             </div>
 
             <div class="form-content">
