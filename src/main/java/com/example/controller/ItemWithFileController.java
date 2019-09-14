@@ -39,7 +39,7 @@ public class ItemWithFileController {
 		return new ModelAndView("main", "guidFirstImageMap", response);
 	}
 
-	@GetMapping("/removeItemWithFiles")
+	@GetMapping("/removeItemWithFilesTyKurva")
 	public RedirectView removeItemWithFiles(@RequestParam("guid") String guid) {
 		logger.info("removeItemWithFiles");
 		itemWithFileService.removeItemWithFiles(guid);

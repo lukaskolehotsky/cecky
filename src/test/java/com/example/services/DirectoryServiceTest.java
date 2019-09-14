@@ -1,5 +1,8 @@
 package com.example.services;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.util.List;
@@ -15,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.config.ServerProperties;
 import com.example.service.DirectoryService;
 
+import javax.imageio.ImageIO;
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
@@ -102,6 +106,15 @@ public class DirectoryServiceTest extends AbstractTest {
 
 		Assert.assertEquals(uploadPath+"/"+guid+fileName, response);
 	}
+
+
+
+//	@Test
+//	public void compressImg() throws IOException {
+//		String imagePath = "C:/javaprojects/Heroku/cecky/src/test/resources/" + guid + fileName;
+//
+//		directoryService.compressImg(imagePath);
+//	}
 
 	@Test()
 	public void test7_removeImageFromDirectory() {
