@@ -1,181 +1,163 @@
 package com.example.service;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
-import javax.imageio.stream.ImageOutputStream;
-
+import com.example.config.ServerProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.config.ServerProperties;
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.nio.file.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class DirectoryService {
-	
-	private static final Logger logger = LoggerFactory.getLogger(DirectoryService.class);
-	
-	@Autowired
+
+    private static final Logger logger = LoggerFactory.getLogger(DirectoryService.class);
+
+    @Autowired
     private ServerProperties serverProperties;
 
-	public List<String> getAllFilesFromDirectory(String guid) {
-		String imagesPath = serverProperties.getUploadPath();
+    public List<String> getAllFilesFromDirectory(String guid) {
+        String imagesPath = serverProperties.getUploadPath();
 
-		logger.info("getAllFilesFromDirectory - FROM DIRECTORY -" + imagesPath);
+        logger.info("getAllFilesFromDirectory - FROM DIRECTORY -" + imagesPath);
 
-		try (Stream<Path> walk = Files.walk(Paths.get(imagesPath))) {
-			List<String> result = walk.map(x -> x.toString()).filter(f -> f.contains(guid))
-					.collect(Collectors.toList());
-			result.forEach(System.out::println);
+        try (Stream<Path> walk = Files.walk(Paths.get(imagesPath))) {
+            List<String> result = walk.map(x -> x.toString()).filter(f -> f.contains(guid))
+                    .collect(Collectors.toList());
+            result.forEach(System.out::println);
 
-			return result;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+            return result;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	private void createDirectory(String path) {
-		File fff = new File(path);
-		if (!fff.exists()) {
-			if (fff.mkdir()) {
-				logger.info("Directory Images was created. " + path);
-			} else {
-				logger.info("Failed to create Images directory. " + path);
-			}
-		} else {
-			logger.info("Directory Images already exist. " + path);
-		}
-	}
+    private void createDirectory(String path) {
+        File fff = new File(path);
+        if (!fff.exists()) {
+            if (fff.mkdir()) {
+                logger.info("Directory Images was created. " + path);
+            } else {
+                logger.info("Failed to create Images directory. " + path);
+            }
+        } else {
+            logger.info("Directory Images already exist. " + path);
+        }
+    }
 
-	public void saveFileToDirecory(MultipartFile file, String imagePath) throws IOException {
-		InputStream inputStream = null;
-		OutputStream outputStream = null;
+    public void saveFileToDirecory(MultipartFile file, String imagePath) throws IOException {
+        InputStream inputStream = null;
+        BufferedImage image = null;
+        try {
+            inputStream = new ByteArrayInputStream(file.getBytes());
+            image = ImageIO.read(inputStream);
 
-		try {
-			inputStream = file.getInputStream();
+            ImageIO.write(image, "jpg", new File(imagePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            inputStream.close();
+            System.gc();
+        }
+        System.out.println("Done");
+    }
 
-			File newFile = new File(imagePath);
-			if (!newFile.exists()) {
-				newFile.createNewFile();
-			}
-			outputStream = new FileOutputStream(newFile);
-			int read = 0;
-			byte[] bytes = new byte[1024];
+    public String prepareAndSaveToDirectory(MultipartFile file, String guid, String fileName) throws IOException {
+        String uploadPath = serverProperties.getUploadPath();
+        String imagePath = uploadPath + "/" + guid + fileName;
 
-			while ((read = inputStream.read(bytes)) != -1) {
-				outputStream.write(bytes, 0, read);
-			}
-			logger.info("Image should be stored to directory - " + imagePath);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			inputStream.close();
-			outputStream.flush();
-			outputStream.close();
-//			outputStream = null;
-			System.gc();
-		}
-	}
+        createDirectory(uploadPath);
+        saveFileToDirecory(file, imagePath);
 
-	public String prepareAndSaveToDirectory(MultipartFile file, String guid, String fileName) throws IOException {
-		String uploadPath = serverProperties.getUploadPath();
-		String imagePath = uploadPath + "/" + guid + fileName;
+        return imagePath;
+    }
 
-		createDirectory(uploadPath);
-		saveFileToDirecory(file, imagePath);
+    public BufferedImage readImage(String imagePath) {
+        try {
+            BufferedImage image = ImageIO.read(new File(imagePath));
+            return image;
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Image was not able to read.");
+        }
+    }
 
-		return imagePath;
-	}
+    public void compressImg(String imagePath) throws IOException {
+        File imageFile = new File(imagePath);
+        File compressedImageFile = new File(imagePath + "COMPRESSED");
 
-	public void compressImg(String imagePath) throws IOException {
-		File imageFile = new File(imagePath);
-		File compressedImageFile = new File(imagePath + "COMPRESSED");
+        InputStream is = new FileInputStream(imageFile);
+        OutputStream os = new FileOutputStream(compressedImageFile);
 
-		InputStream is = new FileInputStream(imageFile);
-		OutputStream os = new FileOutputStream(compressedImageFile);
+        float quality = 0.5f;
 
-		float quality = 0.5f;
+        BufferedImage image = ImageIO.read(is);
+        Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpg");
 
-		BufferedImage image = ImageIO.read(is);
-		Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpg");
+        if (!writers.hasNext())
+            throw new IllegalStateException("No writers found");
 
-		if (!writers.hasNext())
-			throw new IllegalStateException("No writers found");
+        ImageWriter writer = (ImageWriter) writers.next();
+        ImageOutputStream ios = ImageIO.createImageOutputStream(os);
+        writer.setOutput(ios);
 
-		ImageWriter writer = (ImageWriter) writers.next();
-		ImageOutputStream ios = ImageIO.createImageOutputStream(os);
-		writer.setOutput(ios);
+        ImageWriteParam param = writer.getDefaultWriteParam();
 
-		ImageWriteParam param = writer.getDefaultWriteParam();
+        // compress to a given quality
+        param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+        param.setCompressionQuality(quality);
 
-		// compress to a given quality
-		param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-		param.setCompressionQuality(quality);
+        // appends a complete image stream containing a single image and
+        // associated stream and image metadata and thumbnails to the output
+        writer.write(null, new IIOImage(image, null, null), param);
 
+        // close all streams
+        is.close();
+        os.close();
+        ios.close();
+        writer.dispose();
+        System.gc();
 
-		// appends a complete image stream containing a single image and
-		// associated stream and image metadata and thumbnails to the output
-		writer.write(null, new IIOImage(image, null, null), param);
+        logger.info("Image should be compressed.");
+        removeImageFromDirectory(imagePath);
+    }
 
-		// close all streams
-		is.close();
-		os.close();
-		ios.close();
-		writer.dispose();
-		System.gc();
+    public void removeImageFromDirectory(String path) {
+        try {
+            Files.deleteIfExists(Paths.get(path));
+        } catch (NoSuchFileException e) {
+            logger.info("No such file/directory exists");
+        } catch (DirectoryNotEmptyException e) {
+            logger.info("Directory is not empty.");
+        } catch (IOException e) {
+            logger.info("Invalid permissions.");
+        }
+        logger.info("Deletion successful.");
+    }
 
-		logger.info("Image should be compressed.");
-		removeImageFromDirectory(imagePath);
-	}
-	
-	public void removeImageFromDirectory(String path) {
-		try {
-			File file = new File(path);
-			logger.info("YOU ARE TRYING TO DELETE IMAGE FROM - " + path);
-			logger.info(getReasonForFileDeletionFailureInPlainEnglish(file));
+    private String getReasonForFileDeletionFailureInPlainEnglish(File file) {
+        try {
+            if (!file.exists())
+                return "IT DOESN'T EXIST IN THE FIRST PLACE.";
+            else if (file.isDirectory() && file.list().length > 0)
+                return "IT'S A DIRECTORY AND IT'S NOT EMPTY.";
+            else
+                return "SOMEBODY ELSE HAS IT OPEN, WE DON'T HAVE WRITE PERMISSIONS, OR SOMEBODY STOLE MY DISK.";
+        } catch (SecurityException e) {
+            return "WE'RE SANDBOXED AND DON'T HAVE FILESYSTEM ACCESS.";
+        }
+    }
 
-			if (file.delete()) {
-				logger.info("IMAGE WAS DELETED! " + file.getName());
-			} else {
-				logger.info("DELETE OPERATION IS FAILED.");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private String getReasonForFileDeletionFailureInPlainEnglish(File file) {
-		try {
-			if (!file.exists())
-				return "IT DOESN'T EXIST IN THE FIRST PLACE.";
-			else if (file.isDirectory() && file.list().length > 0)
-				return "IT'S A DIRECTORY AND IT'S NOT EMPTY.";
-			else
-				return "SOMEBODY ELSE HAS IT OPEN, WE DON'T HAVE WRITE PERMISSIONS, OR SOMEBODY STOLE MY DISK.";
-		} catch (SecurityException e) {
-			return "WE'RE SANDBOXED AND DON'T HAVE FILESYSTEM ACCESS.";
-		}
-	}
-	
 }
