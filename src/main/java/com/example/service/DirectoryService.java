@@ -147,17 +147,4 @@ public class DirectoryService {
         logger.info("Deletion successful.");
     }
 
-    private String getReasonForFileDeletionFailureInPlainEnglish(File file) {
-        try {
-            if (!file.exists())
-                return "IT DOESN'T EXIST IN THE FIRST PLACE.";
-            else if (file.isDirectory() && file.list().length > 0)
-                return "IT'S A DIRECTORY AND IT'S NOT EMPTY.";
-            else
-                return "SOMEBODY ELSE HAS IT OPEN, WE DON'T HAVE WRITE PERMISSIONS, OR SOMEBODY STOLE MY DISK.";
-        } catch (SecurityException e) {
-            return "WE'RE SANDBOXED AND DON'T HAVE FILESYSTEM ACCESS.";
-        }
-    }
-
 }

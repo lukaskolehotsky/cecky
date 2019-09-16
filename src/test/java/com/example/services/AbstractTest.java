@@ -63,6 +63,10 @@ public abstract class AbstractTest {
 	public DBFile generateFile(String guid) {
 		return new DBFile("imgPath2", "name2", "type2", guid);
 	}
+
+	public DBFile generateFile(MultipartFile multipartFile, String guid, String imagePath) {
+		return new DBFile(imagePath, multipartFile.getOriginalFilename(), multipartFile.getContentType(), guid);
+	}
 	
 	public List<DBFile> generateFiles() {
 		List<DBFile> files = new ArrayList<>();
@@ -125,5 +129,13 @@ public abstract class AbstractTest {
         String base64Encoded = new String(encodeBase64, "UTF-8"); 
         return base64Encoded;
     }
+
+	public FileResponse generateFileResponse() {
+		return new FileResponse("fileName", "fileDownloadUri", "fileType", 1, "imgPath");
+	}
+
+	public DBFile generateDBFile(String imgPath, String fileName, String contentType, String guid) {
+		return new DBFile(imgPath, fileName, contentType, guid);
+	}
 	
 }
