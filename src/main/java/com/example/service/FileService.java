@@ -38,7 +38,7 @@ public class FileService extends Utils {
 	}
 
 //    @Cacheable(value = "fileResponses", key = "#guid")
-	List<FileResponse> getFiles(String guid) throws UnsupportedEncodingException {
+	public List<FileResponse> getFiles(String guid) throws UnsupportedEncodingException {
 		List<FileResponse> fileResponses = new ArrayList<>();
 		for (DBFile file : fileRepository.findByGuid(guid)) {
 			logger.info("findByGuid - FROM DATABASE - " + file.toString());
@@ -60,7 +60,7 @@ public class FileService extends Utils {
 		return fileResponses;
 	}
 
-	private FileResponse saveImage(MultipartFile file, String guid) throws IOException {
+	public FileResponse saveImage(MultipartFile file, String guid) throws IOException {
 		DBFile dbFile = storeFile(file, guid);
 
 		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/downloadFile/")
@@ -70,7 +70,7 @@ public class FileService extends Utils {
 				dbFile.getImgPath());
 	}
 
-	private DBFile storeFile(MultipartFile file, String guid) throws IOException {
+	public DBFile storeFile(MultipartFile file, String guid) throws IOException {
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
 		validateFileName(fileName);
