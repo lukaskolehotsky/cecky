@@ -58,8 +58,8 @@ public class ItemService extends Utils {
     	itemRepository.deleteByGuid(guid);
     } 
     
-    List<ItemResponse> getAll(int pageNumber){
-    	Pageable paging = PageRequest.of(pageNumber, 15, Sort.by("createdDateTime").ascending());
+    public List<ItemResponse> getAll(int pageNumber){
+    	Pageable paging = PageRequest.of(pageNumber, 8, Sort.by("createdDateTime").ascending());
     	
     	Page<DBItem> items = itemRepository.findAll(paging);
     	List<ItemResponse> itemResponses = new ArrayList<>();

@@ -10,7 +10,6 @@ import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.example.config.ServerProperties;
@@ -35,13 +34,7 @@ public class ItemWithFileService {
 	@Autowired
 	private DirectoryService directoryService;
 
-//	@Value("${remove.path}")
-//	private String removePath;
-//
-//	@Value("${server.path}")
-//	private String serverPath;
-
-	public HashMap<String, String> getAll_v2(int pageNumber) throws UnsupportedEncodingException {
+	public HashMap<String, String> getAll_v2(int pageNumber) {
 		HashMap<String, String> guidFirstImageMap = new HashMap<>();
 		for (ItemResponse itemResponse : itemService.getAll(pageNumber)) {
 			List<String> imgPaths = directoryService.getAllFilesFromDirectory(itemResponse.getGuid());
