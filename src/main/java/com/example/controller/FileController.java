@@ -25,7 +25,7 @@ public class FileController {
     public RedirectView saveImages(List<MultipartFile> files, String guid) throws IOException {
     	logger.info("uploadMultipleFiles: " + files);
         fileService.saveImages(files, guid);
-    	return new RedirectView("/getAll_v2");
+    	return new RedirectView("/getItemWithFileResponses");
     }
     
     @DeleteMapping("/removeFile")
@@ -38,7 +38,7 @@ public class FileController {
     public RedirectView updateFiles(@RequestParam("guid") String guid, @RequestParam("files") List<MultipartFile> files) throws IOException {
     	logger.info("updateFiles by guid: " + guid);
         fileService.updateFiles(guid, files);
-        return new RedirectView("/getAll_v2");
+        return new RedirectView("/getItemWithFileResponses");
     }
     
     @GetMapping("/clearCache")

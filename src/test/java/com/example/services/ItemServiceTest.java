@@ -91,7 +91,7 @@ public class ItemServiceTest extends AbstractTest {
         Page<DBItem> pagedResponse = new PageImpl(items);
 
         Pageable sortedByCreateDateTimeAsc =
-                PageRequest.of(0, 8, Sort.by("createdDateTime").ascending());
+                PageRequest.of(0, 500, Sort.by("createdDateTime").descending());
         Mockito.when(itemRepository.findAll(sortedByCreateDateTimeAsc)).thenReturn(pagedResponse);
 
         List<ItemResponse> response = itemService.getAll(0);

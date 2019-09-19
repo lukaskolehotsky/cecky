@@ -4,6 +4,7 @@ import com.example.config.ServerProperties;
 import com.example.model.DBItem;
 import com.example.payload.FileResponse;
 import com.example.payload.ItemResponse;
+import com.example.payload.ItemWithFileResponse;
 import com.example.payload.ItemWithFilesResponse;
 import com.example.service.DirectoryService;
 import com.example.service.FileService;
@@ -19,7 +20,6 @@ import org.mockito.Mockito;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.mockito.Mockito.doNothing;
@@ -53,7 +53,7 @@ public class ItemWithFileServiceTest extends AbstractTest {
 	}
 
 	@Test
-	public void getAll_v2() {
+	public void getItemWithFileResponses() {
 		int pageNumber = 0;
 		DBItem item = generateItem();
 		ItemResponse itemResponse = generateItemResponse(item);
@@ -61,16 +61,20 @@ public class ItemWithFileServiceTest extends AbstractTest {
 		itemResponses.add(itemResponse);
 		List<String> imgPaths = new ArrayList<>();
 		imgPaths.add("imgPath");
+		FileResponse fileResponse = generateFileResponse();
+		List<FileResponse> fileResponses = new ArrayList<>();
+		fileResponses.add(fileResponse);
 
 		Mockito.when(itemService.getAll(pageNumber)).thenReturn(itemResponses);
 		Mockito.when(directoryService.getAllFilesFromDirectory(itemResponse.getGuid())).thenReturn(imgPaths);
+		Mockito.when(fileService.getFiles(itemResponse.getGuid())).thenReturn(fileResponses);
 		Mockito.when(serverProperties.getServerPath()).thenReturn("serverPath");
 		Mockito.when(serverProperties.getRemovePath()).thenReturn("removePath");
 
-		HashMap<String, String> response = itemWithFileService.getAll_v2(pageNumber);
+		List<ItemWithFileResponse> response = itemWithFileService.getItemWithFileResponses(pageNumber);
 
-		Assert.assertTrue(response.containsKey("guid"));
-		Assert.assertEquals("serverPathimgPath", response.get("guid"));
+		Assert.assertEquals("guid", response.get(0).getItemResponse().getGuid());
+		Assert.assertEquals("serverPathimgPath", response.get(0).getFileResponse().getImgPath());
 	}
 
 	@Test
@@ -96,7 +100,7 @@ public class ItemWithFileServiceTest extends AbstractTest {
 		Assert.assertEquals(itemWithFilesResponse.getFileResponses().get(0).getFileName(), response.getFileResponses().get(0).getFileName());
 		Assert.assertEquals(itemWithFilesResponse.getFileResponses().get(0).getFileType(), response.getFileResponses().get(0).getFileType());
 		Assert.assertEquals(itemWithFilesResponse.getFileResponses().get(0).getFileDownloadUri(), response.getFileResponses().get(0).getFileDownloadUri());
-		Assert.assertEquals("serverPathimgPathCOMPRESSED", response.getFileResponses().get(0).getImgPath());
+		Assert.assertEquals("serverPathimgPath", response.getFileResponses().get(0).getImgPath());
 
 		Assert.assertEquals(itemWithFilesResponse.getItemResponse().getBrand(), response.getItemResponse().getBrand());
 		Assert.assertEquals(itemWithFilesResponse.getItemResponse().getType(), response.getItemResponse().getType());
