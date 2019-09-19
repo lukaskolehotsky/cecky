@@ -1,16 +1,16 @@
-	<!DOCTYPE html>
+<!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <c:set var="req" value="${pageContext.request}" />
 <c:set var="url">${req.requestURL}</c:set>
 <c:set var="uri" value="${req.requestURI}" />
 
 <html lang="en">
-<head>
-    <!-- Required meta tags -->
+    <head>
+        <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -57,7 +57,7 @@
             border-radius: 2px; }
                     </style>
                     <title>Nahlad</title>
-            </head>
+    </head>
 <body>
 	
 	<!-- Optional JavaScript -->

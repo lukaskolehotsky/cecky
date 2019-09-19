@@ -1,122 +1,108 @@
-<!doctype html>
+<!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <c:set var="req" value="${pageContext.request}" />
 <c:set var="url">${req.requestURL}</c:set>
 <c:set var="uri" value="${req.requestURI}" />
 
 <html lang="en">
-  <head>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <!------ Include the above in your HEAD tag ---------->
+    <head>
+    <!-- Required meta tags -->
+    <!--<meta charset="utf-8">-->
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
-
-    <style>
-    body {
-      background-color:#1d1d1d !important;
-      font-family: "Asap", sans-serif;
-      color:#989898;
-      margin:10px;
-      font-size:16px;
-    }
-
-    #demo {
-      height:100%;
-      position:relative;
-      overflow:hidden;
-    }
-
-
-    .green{
-      background-color:#6fb936;
-    }
-            .thumb{
-                margin-bottom: 30px;
-            }
-
-            .page-top{
-                margin-top:85px;
-            }
-
-
-    img.zoom {
-        width: 100%;
-        height: 200px;
-        border-radius:5px;
-        object-fit:cover;
-        -webkit-transition: all .3s ease-in-out;
-        -moz-transition: all .3s ease-in-out;
-        -o-transition: all .3s ease-in-out;
-        -ms-transition: all .3s ease-in-out;
-    }
-
-
-    .transition {
-        -webkit-transform: scale(1.2);
-        -moz-transform: scale(1.2);
-        -o-transform: scale(1.2);
-        transform: scale(1.2);
-    }
-        .modal-header {
-
-         border-bottom: none;
-    }
-        .modal-title {
-            color:#000;
-        }
-        .modal-footer{
-          display:none;
-        }
-
-    </style>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <title>Hello, world!</title>
-  </head>
-  <body>
 
-  <script>
-  $(document).ready(function(){
-    $(".fancybox").fancybox({
-          openEffect: "none",
-          closeEffect: "none"
-      });
+        <style>
+            @media (min-width: 768px) {
+                .carousel-multi-item-2 .col-md-3 {
+                    float: left;
+                    width: 25%;
+                    max-width: 100%;
+                }
+            }
+            .carousel-multi-item-2 .card img {
+                border-radius: 2px;
+            }
+        </style>
+    </head>
+    <body>
 
-      $(".zoom").hover(function(){
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-  		$(this).addClass('transition');
-  	}, function(){
+        <div class="container my-4">
+            <!--Carousel Wrapper-->
+            <div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel">
+                <button type="button" class="btn btn-success" onclick="location.href='${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/createItem1';">Pridaj</button>
 
-  		$(this).removeClass('transition');
-  	});
-  });
-  </script>
+                <!--Multi itemy - posuvne gulicky pod galeriou -->
+                <!--Indicators-->
+                <!--<ol class="carousel-indicators">
+                    <li data-target="#multi-item-example" data-slide-to="0" class="active"></li>
+                    <li data-target="#multi-item-example" data-slide-to="1"></li>
+                    <li data-target="#multi-item-example" data-slide-to="2"></li>
+                    <li data-target="#multi-item-example" data-slide-to="3"></li>
+                    <li data-target="#multi-item-example" data-slide-to="4"></li>
+                </ol>-->
+                <!--/.Indicators-->
 
-      <center>
-          <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/createItem1"> Create item </a>
-      </center>
+                <c:set var="carouselItemActive" value="<div class='carousel-item active'>" />
+                <c:set var="carouselItem" value="<div class='carousel-item'>" />
+                <c:set var="coldMd4" value="<div class='col-md-4'>" />
+                <c:set var="coldMd4Clearfix" value="<div class='col-md-4 clearfix d-none d-md-block'>" />
 
-    <div class="container page-top">
-        <div class="row">
-            <c:forEach items="${guidFirstImageMap}" var="guidFirstImage">
-                <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                    <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getItemWithFiles?guid=${guidFirstImage.key}" class="fancybox" rel="ligthbox">
-                        <img src="${guidFirstImage.value}" class="zoom img-fluid "  alt=""/>
-                    </a>
+                <br>
+                <br>
+                <!--Slides-->
+                <div class="carousel-inner" role="listbox">
+                    <c:forEach begin="1" end="${itemWithFileResponses.size() / 3 + 1}" varStatus="loop">
+                        <c:if test="${loop.count == 1}">${carouselItemActive}</c:if>
+                        <c:if test="${loop.count != 1}">${carouselItem}</c:if>
+                            <div class="row">
+                                <c:forEach items="${itemWithFileResponses}" var="itemWithFileResponse" varStatus="loopCounter">
+                                    <c:if test="${loopCounter.count >= loop.count * 3 - 2 && loopCounter.count < loop.count * 3 + 1}">
+                                        <%--<c:if test="${loopCounter.count %3 == 0}">${coldMd4}</c:if>
+                                        <c:if test="${loopCounter.count %3 != 0}">${coldMd4Clearfix}</c:if>--%>
+                                        <div class="col-md-4 mb-4">
+                                            <div class="card mb-2">
+                                                <img class="card-img-top" src="${itemWithFileResponse.getFileResponse().getImgPath()}" alt="Card image cap">
+                                                <div class="card-body">
+                                                    <h4 class="card-title">${itemWithFileResponse.getItemResponse().getBrand()} ${itemWithFileResponse.getItemResponse().getType()}</h4>
+                                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                                    <div class="btn btn-primary" onclick="location.href='${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getItemWithFiles?guid=${itemWithFileResponse.getItemResponse().getGuid()}';">
+                                                        Detail
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </c:if>
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </c:forEach>
                 </div>
-            </c:forEach>
+                <!--/.Slides-->
+                <center>
+                    <!--Controls-->
+                    <div class="controls-top">
+                        <a class="btn-floating" href="#multi-item-example" data-slide="prev"><i class="fa fa-chevron-left"></i><button type="button" class="btn btn-info">Spat</button></a>
+                        <a class="btn-floating" href="#multi-item-example" data-slide="next"><i class="fa fa-chevron-right"></i><button type="button" class="btn btn-info">Dalsi</button></a>
+                    </div>
+                    <!--/.Controls-->
+                </center>
+            </div>
+            <!--/.Carousel Wrapper-->
         </div>
-    </div>
-
-    <center>
-          <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAll_v2?page=0"> 0 </a>
-          <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAll_v2?page=1"> 1 </a>
-          <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAll_v2?page=2"> 2 </a>
-          <a href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getAll_v2?page=3"> 3 </a>
-    </center>
-
-  </body>
+    </body>
 </html>

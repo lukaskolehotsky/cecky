@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.example.payload.ItemWithFileResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,18 +35,18 @@ public class ItemWithFileService {
 	@Autowired
 	private DirectoryService directoryService;
 
-	public HashMap<String, String> getAll_v2(int pageNumber) {
-		HashMap<String, String> guidFirstImageMap = new HashMap<>();
+	public List<ItemWithFileResponse> getItemWithFileResponses(int pageNumber) {
+		List<ItemWithFileResponse> itemWithFileResponses = new ArrayList<>();
 		for (ItemResponse itemResponse : itemService.getAll(pageNumber)) {
 			List<String> imgPaths = directoryService.getAllFilesFromDirectory(itemResponse.getGuid());
-
-			if (!imgPaths.isEmpty()) {
-				guidFirstImageMap.put(itemResponse.getGuid(), serverProperties.getServerPath() + imgPaths.get(0).replace(serverProperties.getRemovePath(), ""));
-			} else {
-				logger.info("PRE ITEM S GUID " + itemResponse.getGuid() + " SME NENASLI ZIADNE OBRAZKY.");
+			for (FileResponse fileResponse : fileService.getFiles(itemResponse.getGuid())) {
+				if (imgPaths.get(0).contains(fileResponse.getImgPath().replace("/", "\\"))) {
+					fileResponse.setImgPath(serverProperties.getServerPath() + imgPaths.get(0).replace(serverProperties.getRemovePath(), ""));
+					itemWithFileResponses.add(new ItemWithFileResponse(itemResponse, fileResponse));
+				}
 			}
 		}
-		return guidFirstImageMap;
+		return itemWithFileResponses;
 	}
 
 	@Transactional
@@ -58,7 +59,7 @@ public class ItemWithFileService {
 		for (FileResponse fileResponse : fileResponses) {
 			preparedFileResponses.add(new FileResponse(fileResponse.getFileName(), fileResponse.getFileDownloadUri(),
 					fileResponse.getFileType(), fileResponse.getSize(),
-					serverProperties.getServerPath() + fileResponse.getImgPath().replace(serverProperties.getRemovePath(), "") + "COMPRESSED"));
+					serverProperties.getServerPath() + fileResponse.getImgPath().replace(serverProperties.getRemovePath(), "")));
 		}
 
 		return new ItemWithFilesResponse(itemResponse, preparedFileResponses);

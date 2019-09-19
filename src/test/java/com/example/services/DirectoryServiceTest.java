@@ -131,19 +131,19 @@ public class DirectoryServiceTest extends AbstractTest {
 
         String response = directoryService.prepareAndSaveToDirectory(file, guid, fileName);
 
-        Assert.assertEquals(uploadPath + "/" + guid + fileName, response);
+        Assert.assertEquals(uploadPath + "/UNCOMPRESSED" + guid + fileName, response);
     }
 
     @Test
     public void test18_compressImg() throws IOException {
-        String imagePath = "C:/javaprojects/Heroku/cecky/src/test/resources/" + guid + fileName;
+        String imagePath = "C:/javaprojects/Heroku/cecky/src/test/resources/UNCOMPRESSED" + guid + fileName;
 
         directoryService.compressImg(imagePath);
     }
 
     @Test()
     public void test19_removeImageFromDirectory() {
-        String imagePath = "C:/javaprojects/Heroku/cecky/src/test/resources/" + guid + fileName + "COMPRESSED";
+        String imagePath = "C:/javaprojects/Heroku/cecky/src/test/resources/" + guid + fileName;
 
         directoryService.removeImageFromDirectory(imagePath);
     }
