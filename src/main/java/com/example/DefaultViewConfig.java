@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class DefaultViewConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-    	registry.addRedirectViewController("/", "/getAll_v2");
+    	registry.addRedirectViewController("/", "/getItemWithFileResponses");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 }

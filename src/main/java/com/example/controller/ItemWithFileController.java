@@ -2,8 +2,10 @@ package com.example.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
+import com.example.payload.ItemWithFileResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,19 +33,19 @@ public class ItemWithFileController {
 		return new ModelAndView("viewItem", "itemWithFiles", response);
 	}
 
-	@GetMapping("/getAll_v2")
-	public ModelAndView getAll_v2(Optional<Integer> page) throws UnsupportedEncodingException {
-		logger.info("/getAll_v2");
+	@GetMapping("/getItemWithFileResponses")
+	public ModelAndView getItemWithFileResponses(Optional<Integer> page) throws UnsupportedEncodingException {
+		logger.info("/getItemWithFileResponses");
 
-		HashMap<String, String> response = itemWithFileService.getAll_v2((page.isPresent()) ? page.get() : 0);
-		return new ModelAndView("main", "guidFirstImageMap", response);
+		List<ItemWithFileResponse> response = itemWithFileService.getItemWithFileResponses((page.isPresent()) ? page.get() : 0);
+		return new ModelAndView("main", "itemWithFileResponses", response);
 	}
 
 	@GetMapping("/removeItemWithFilesTyKurva")
 	public RedirectView removeItemWithFiles(@RequestParam("guid") String guid) {
 		logger.info("removeItemWithFiles");
 		itemWithFileService.removeItemWithFiles(guid);
-		return new RedirectView("/getAll_v2");
+		return new RedirectView("/getItemWithFileResponses");
 	}
 
 }

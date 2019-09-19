@@ -38,7 +38,7 @@ public class FileService extends Utils {
 	}
 
 //    @Cacheable(value = "fileResponses", key = "#guid")
-	public List<FileResponse> getFiles(String guid) throws UnsupportedEncodingException {
+	public List<FileResponse> getFiles(String guid) {
 		List<FileResponse> fileResponses = new ArrayList<>();
 		for (DBFile file : fileRepository.findByGuid(guid)) {
 			logger.info("findByGuid - FROM DATABASE - " + file.toString());
@@ -76,7 +76,7 @@ public class FileService extends Utils {
 		validateFileName(fileName);
 		String imagePath = directoryService.prepareAndSaveToDirectory(file, guid, fileName);
 
-		DBFile dbFile = generateDBFile(imagePath, fileName, file.getContentType(), guid);
+		DBFile dbFile = generateDBFile(imagePath.replace("UNCOMPRESSED", ""), fileName, file.getContentType(), guid);
 
 		directoryService.compressImg(imagePath);
 		directoryService.removeImageFromDirectory(imagePath);

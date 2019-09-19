@@ -77,7 +77,7 @@ public class DirectoryService {
 
     public String prepareAndSaveToDirectory(MultipartFile file, String guid, String fileName) throws IOException {
         String uploadPath = serverProperties.getUploadPath();
-        String imagePath = uploadPath + "/" + guid + fileName;
+        String imagePath = uploadPath + "/UNCOMPRESSED" + guid + fileName;
 
         createDirectory(uploadPath);
         saveFileToDirecory(file, imagePath);
@@ -85,18 +85,9 @@ public class DirectoryService {
         return imagePath;
     }
 
-    public BufferedImage readImage(String imagePath) {
-        try {
-            BufferedImage image = ImageIO.read(new File(imagePath));
-            return image;
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Image was not able to read.");
-        }
-    }
-
     public void compressImg(String imagePath) throws IOException {
         File imageFile = new File(imagePath);
-        File compressedImageFile = new File(imagePath + "COMPRESSED");
+        File compressedImageFile = new File(imagePath.replace("UNCOMPRESSED", ""));
 
         InputStream is = new FileInputStream(imageFile);
         OutputStream os = new FileOutputStream(compressedImageFile);

@@ -66,21 +66,21 @@
                 <br>
                 <!--Slides-->
                 <div class="carousel-inner" role="listbox">
-                    <c:forEach begin="1" end="${guidFirstImageMap.size() / 3 + 1}" varStatus="loop">
+                    <c:forEach begin="1" end="${itemWithFileResponses.size() / 3 + 1}" varStatus="loop">
                         <c:if test="${loop.count == 1}">${carouselItemActive}</c:if>
                         <c:if test="${loop.count != 1}">${carouselItem}</c:if>
                             <div class="row">
-                                <c:forEach items="${guidFirstImageMap}" var="guidFirstImage" varStatus="loopCounter">
+                                <c:forEach items="${itemWithFileResponses}" var="itemWithFileResponse" varStatus="loopCounter">
                                     <c:if test="${loopCounter.count >= loop.count * 3 - 2 && loopCounter.count < loop.count * 3 + 1}">
                                         <%--<c:if test="${loopCounter.count %3 == 0}">${coldMd4}</c:if>
                                         <c:if test="${loopCounter.count %3 != 0}">${coldMd4Clearfix}</c:if>--%>
                                         <div class="col-md-4 mb-4">
                                             <div class="card mb-2">
-                                                <img class="card-img-top" src="${guidFirstImage.value}" alt="Card image cap">
+                                                <img class="card-img-top" src="${itemWithFileResponse.getFileResponse().getImgPath()}" alt="Card image cap">
                                                 <div class="card-body">
-                                                    <h4 class="card-title">Card title</h4>
+                                                    <h4 class="card-title">${itemWithFileResponse.getItemResponse().getBrand()} ${itemWithFileResponse.getItemResponse().getType()}</h4>
                                                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                                    <div class="btn btn-primary" onclick="location.href='${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getItemWithFiles?guid=${guidFirstImage.key}';">
+                                                    <div class="btn btn-primary" onclick="location.href='${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getItemWithFiles?guid=${itemWithFileResponse.getItemResponse().getGuid()}';">
                                                         Detail
                                                     </div>
                                                 </div>
