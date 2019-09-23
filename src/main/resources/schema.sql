@@ -18,7 +18,10 @@ id varchar(100) NULL,
  email varchar(100) NULL,
  authentication_code varchar(100) NULL,
  price bigint NULL,
- description BYTEA,
+ description varchar(5000) NULL,
+ fuel_type varchar(100) NULL,
+ speedometer_condition numeric NULL,
+ production_year numeric NULL,
  PRIMARY KEY (id)
 );
 --ALTER TABLE public.items add COLUMN price bigint;

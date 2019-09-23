@@ -87,9 +87,23 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group green-border-focus">
-                        <label for="exampleFormControlTextarea5">Description Colorful border on :focus state</label>
-                        <form:textarea path="description" class="form-control" id="exampleFormControlTextarea5" rows="3"/>
+                            <label for="exampleFormControlTextarea5">Description Colorful border on :focus state</label>
+                            <form:textarea path="description" class="form-control" id="exampleFormControlTextarea5" rows="3"/>
+                        </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <form:input type="text" path="fuelType" class="form-control" placeholder="Palivo *" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <form:input type="number" path="speedometerCondition" class="form-control" placeholder="Stav tachometra *" value=""/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <form:input type="number" path="productionYear" class="form-control" placeholder="Rok vyroby *" value=""/>
+                        </div>
                     </div>
                 </div>
                 <button type="submit" class="btnSubmit">Hotovo</button>
@@ -97,25 +111,5 @@
         </div>
     </form:form>
 
-
-<!--
-	<center>
-		<table width="400" bgcolor="yellow" border="1">
-			<tr>
-                <td>
-                    <form:form method="post" modelAttribute="item" action="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/createItem2">
-                        Brand: <form:input path="brand" type="text" />
-                        <form:errors path="brand" />
-                        Type:<form:input path="type" type="text" />
-                        <form:errors path="type" />
-                        Email:<form:input path="email" type="text" />
-                        <form:errors path="email" />
-                        <input type="submit" value="Submit" /></form>
-                    </form:form>
-                </td>
-			</tr>
-		</table>
-	</center>
--->
 </body>
 </html>

@@ -6,95 +6,130 @@ import java.util.Optional;
 
 public class ItemResponse {
 
-	private String brand;
-	
-	private String type;
-	
-	private String guid;
-	
-	private LocalDateTime createdDateTime;
+    private String brand;
+    private String type;
+    private String guid;
+    private LocalDateTime createdDateTime;
+    private String email;
+    private Optional<String> authenticationCode;
+    private BigInteger price;
+    private String description;
+    private String fuelType;
+    private Long speedoMeterCondition;
+    private Long productionYear;
 
-	private String email;
+    public ItemResponse(
+            String brand,
+            String type,
+            String guid,
+            LocalDateTime createdDateTime,
+            String email,
+            Optional<String> authenticationCode,
+            BigInteger price,
+            String description,
+            String fuelType,
+            Long speedoMeterCondition,
+            Long productionYear
+    ) {
+        super();
+        this.brand = brand;
+        this.type = type;
+        this.guid = guid;
+        this.createdDateTime = createdDateTime;
+        this.email = email;
+        this.authenticationCode = authenticationCode;
+        this.price = price;
+        this.description = description;
+        this.fuelType = fuelType;
+        this.speedoMeterCondition = speedoMeterCondition;
+        this.productionYear = productionYear;
+    }
 
-	private Optional<String> authenticationCode;
+    public String getBrand() {
+        return brand;
+    }
 
-	private BigInteger price;
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
 
-	private String description;
-	
-	public ItemResponse(String brand, String type, String guid, LocalDateTime createdDateTime, String email, Optional<String> authenticationCode, BigInteger price, String description) {
-		super();
-		this.brand = brand;
-		this.type = type;
-		this.guid = guid;
-		this.createdDateTime = createdDateTime;
-		this.email = email;
-		this.authenticationCode = authenticationCode;
-		this.price = price;
-		this.description = description;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public String getBrand() {
-		return brand;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public void setBrand(String brand) {
-		this.brand = brand;
-	}
+    public String getGuid() {
+        return guid;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public LocalDateTime getCreatedDateTime() {
+        return createdDateTime;
+    }
 
-	public String getGuid() {
-		return guid;
-	}
+    public void setCreatedDateTime(LocalDateTime createdDateTime) {
+        this.createdDateTime = createdDateTime;
+    }
 
-	public void setGuid(String guid) {
-		this.guid = guid;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public LocalDateTime getCreatedDateTime() {
-		return createdDateTime;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setCreatedDateTime(LocalDateTime createdDateTime) {
-		this.createdDateTime = createdDateTime;
-	}
+    public Optional<String> getAuthenticationCode() {
+        return authenticationCode;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setAuthenticationCode(Optional<String> authenticationCode) {
+        this.authenticationCode = authenticationCode;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public BigInteger getPrice() {
+        return price;
+    }
 
-	public Optional<String> getAuthenticationCode() {
-		return authenticationCode;
-	}
+    public void setPrice(BigInteger price) {
+        this.price = price;
+    }
 
-	public void setAuthenticationCode(Optional<String> authenticationCode) {
-		this.authenticationCode = authenticationCode;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public BigInteger getPrice() {
-		return price;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setPrice(BigInteger price) {
-		this.price = price;
-	}
+    public String getFuelType() {
+        return fuelType;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setFuelType(String fuelType) {
+        this.fuelType = fuelType;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public Long getSpeedoMeterCondition() {
+        return speedoMeterCondition;
+    }
+
+    public void setSpeedoMeterCondition(Long speedoMeterCondition) {
+        this.speedoMeterCondition = speedoMeterCondition;
+    }
+
+    public Long getProductionYear() {
+        return productionYear;
+    }
+
+    public void setProductionYear(Long productionYear) {
+        this.productionYear = productionYear;
+    }
 }

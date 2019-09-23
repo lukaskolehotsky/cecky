@@ -1,10 +1,9 @@
 package com.example.model;
 
-import javax.persistence.*;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
+import javax.persistence.*;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 
@@ -12,106 +11,139 @@ import java.time.LocalDateTime;
 @Table(name = "items")
 public class DBItem {
 
-	@Id
+    @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private String id;	
-	
-	private String brand;
-	
-	private String type;	
-	
-	private String guid;
+    private String id;
+    private String brand;
+    private String type;
+    private String guid;
+    private LocalDateTime createdDateTime;
+    private String email;
+    private String authenticationCode;
+    private BigInteger price;
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    private String description;
+    private String fuelType;
+    private Long speedoMeterCondition;
+    private Long productionYear;
 
-	private LocalDateTime createdDateTime;
+    public DBItem() {
+    }
 
-	private String email;
+    public DBItem(
+            String brand,
+            String type,
+            String guid,
+            LocalDateTime createdDateTime,
+            String email,
+            String authenticationCode,
+            BigInteger price,
+            String description,
+            String fuelType,
+            Long speedoMeterCondition,
+            Long productionYear
+    ) {
+        super();
+        this.brand = brand;
+        this.type = type;
+        this.guid = guid;
+        this.createdDateTime = createdDateTime;
+        this.email = email;
+        this.authenticationCode = authenticationCode;
+        this.price = price;
+        this.description = description;
+        this.fuelType = fuelType;
+        this.speedoMeterCondition = speedoMeterCondition;
+        this.productionYear = productionYear;
+    }
 
-	private String authenticationCode;
+    public String getBrand() {
+        return brand;
+    }
 
-	private BigInteger price;
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
 
-	@Lob
-	@Type(type = "org.hibernate.type.TextType")
-	private String description;
-	
-	public DBItem() {
-	}
+    public String getType() {
+        return type;
+    }
 
-	public DBItem(String brand, String type, String guid,
-			LocalDateTime createdDateTime, String email, String authenticationCode, BigInteger price, String description) {
-		super();	
-		this.brand = brand;
-		this.type = type;
-		this.guid = guid;
-		this.createdDateTime = createdDateTime;
-		this.email = email;
-		this.authenticationCode = authenticationCode;
-		this.price = price;
-		this.description = description;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public String getBrand() {
-		return brand;
-	}
+    public String getGuid() {
+        return guid;
+    }
 
-	public void setBrand(String brand) {
-		this.brand = brand;
-	}
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public LocalDateTime getCreatedDateTime() {
+        return createdDateTime;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setCreatedDateTime(LocalDateTime createdDateTime) {
+        this.createdDateTime = createdDateTime;
+    }
 
-	public String getGuid() {
-		return guid;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setGuid(String guid) {
-		this.guid = guid;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public LocalDateTime getCreatedDateTime() {
-		return createdDateTime;
-	}
+    public String getAuthenticationCode() {
+        return authenticationCode;
+    }
 
-	public void setCreatedDateTime(LocalDateTime createdDateTime) {
-		this.createdDateTime = createdDateTime;
-	}
+    public void setAuthenticationCode(String authenticationCode) {
+        this.authenticationCode = authenticationCode;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public BigInteger getPrice() {
+        return price;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setPrice(BigInteger price) {
+        this.price = price;
+    }
 
-	public String getAuthenticationCode() {
-		return authenticationCode;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setAuthenticationCode(String authenticationCode) {
-		this.authenticationCode = authenticationCode;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public BigInteger getPrice() {
-		return price;
-	}
+    public String getFuelType() {
+        return fuelType;
+    }
 
-	public void setPrice(BigInteger price) {
-		this.price = price;
-	}
+    public void setFuelType(String fuelType) {
+        this.fuelType = fuelType;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public Long getSpeedoMeterCondition() {
+        return speedoMeterCondition;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setSpeedoMeterCondition(Long speedoMeterCondition) {
+        this.speedoMeterCondition = speedoMeterCondition;
+    }
+
+    public Long getProductionYear() {
+        return productionYear;
+    }
+
+    public void setProductionYear(Long productionYear) {
+        this.productionYear = productionYear;
+    }
 }

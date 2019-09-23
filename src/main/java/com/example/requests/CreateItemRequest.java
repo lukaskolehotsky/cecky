@@ -1,8 +1,5 @@
 package com.example.requests;
 
-import org.hibernate.annotations.Type;
-
-import javax.persistence.Lob;
 import java.math.BigInteger;
 import java.util.Optional;
 
@@ -14,17 +11,33 @@ public class CreateItemRequest {
     private Optional<String> authenticationCode;
     private BigInteger price;
     private String description;
+    private String fuelType;
+    private Long speedoMeterCondition;
+    private Long productionYear;
 
-    public CreateItemRequest(String brand, String type, String email, Optional<String> authenticationCode, BigInteger price, String description) {
-    	this.brand = brand;
+    public CreateItemRequest(
+            String brand,
+            String type,
+            String email,
+            Optional<String> authenticationCode,
+            BigInteger price,
+            String description,
+            String fuelType,
+            Long speedoMeterCondition,
+            Long productionYear
+    ) {
+        this.brand = brand;
         this.type = type;
         this.email = email;
         this.authenticationCode = authenticationCode;
         this.price = price;
         this.description = description;
+        this.fuelType = fuelType;
+        this.speedoMeterCondition = speedoMeterCondition;
+        this.productionYear = productionYear;
     }
 
-	public String getBrand() {
+    public String getBrand() {
         return brand;
     }
 
@@ -70,5 +83,29 @@ public class CreateItemRequest {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getFuelType() {
+        return fuelType;
+    }
+
+    public void setFuelType(String fuelType) {
+        this.fuelType = fuelType;
+    }
+
+    public Long getSpeedoMeterCondition() {
+        return speedoMeterCondition;
+    }
+
+    public void setSpeedoMeterCondition(Long speedoMeterCondition) {
+        this.speedoMeterCondition = speedoMeterCondition;
+    }
+
+    public Long getProductionYear() {
+        return productionYear;
+    }
+
+    public void setProductionYear(Long productionYear) {
+        this.productionYear = productionYear;
     }
 }

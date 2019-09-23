@@ -20,14 +20,17 @@ public class Utils {
 
     public DBItem generateDBItem(CreateItemRequest request) {
         return new DBItem(
-        		request.getBrand(),
-        		request.getType(),
-        		generateRandomUUID(),
-        		LocalDateTime.now(),
-        		request.getEmail(),
-        		generateAuthenticationCode(10),
+                request.getBrand(),
+                request.getType(),
+                generateRandomUUID(),
+                LocalDateTime.now(),
+                request.getEmail(),
+                generateAuthenticationCode(10),
                 request.getPrice(),
-                request.getDescription()
+                request.getDescription(),
+                request.getFuelType(),
+                request.getSpeedoMeterCondition(),
+                request.getProductionYear()
         );
     }
 
@@ -44,8 +47,11 @@ public class Utils {
                 item.getEmail(),
                 Optional.of(item.getAuthenticationCode()),
                 item.getPrice(),
-                item.getDescription()
-    );
+                item.getDescription(),
+                item.getFuelType(),
+                item.getSpeedoMeterCondition(),
+                item.getProductionYear()
+        );
     }
 
     public DBItem prepareModifiedItem(DBItem item, UpdateItemRequest request) {
