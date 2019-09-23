@@ -12,7 +12,7 @@ public class CreateItemRequest {
     private BigInteger price;
     private String description;
     private String fuelType;
-    private Long speedoMeterCondition;
+    private Long speedometerCondition;
     private Long productionYear;
 
     public CreateItemRequest(
@@ -23,7 +23,7 @@ public class CreateItemRequest {
             BigInteger price,
             String description,
             String fuelType,
-            Long speedoMeterCondition,
+            Long speedometerCondition,
             Long productionYear
     ) {
         this.brand = brand;
@@ -33,7 +33,7 @@ public class CreateItemRequest {
         this.price = price;
         this.description = description;
         this.fuelType = fuelType;
-        this.speedoMeterCondition = speedoMeterCondition;
+        this.speedometerCondition = speedometerCondition;
         this.productionYear = productionYear;
     }
 
@@ -93,12 +93,12 @@ public class CreateItemRequest {
         this.fuelType = fuelType;
     }
 
-    public Long getSpeedoMeterCondition() {
-        return speedoMeterCondition;
+    public Long getSpeedometerCondition() {
+        return speedometerCondition;
     }
 
-    public void setSpeedoMeterCondition(Long speedoMeterCondition) {
-        this.speedoMeterCondition = speedoMeterCondition;
+    public void setSpeedometerCondition(Long speedometerCondition) {
+        this.speedometerCondition = speedometerCondition;
     }
 
     public Long getProductionYear() {

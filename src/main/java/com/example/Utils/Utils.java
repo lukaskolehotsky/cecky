@@ -29,7 +29,7 @@ public class Utils {
                 request.getPrice(),
                 request.getDescription(),
                 request.getFuelType(),
-                request.getSpeedoMeterCondition(),
+                request.getSpeedometerCondition(),
                 request.getProductionYear()
         );
     }
@@ -49,7 +49,7 @@ public class Utils {
                 item.getPrice(),
                 item.getDescription(),
                 item.getFuelType(),
-                item.getSpeedoMeterCondition(),
+                item.getSpeedometerCondition(),
                 item.getProductionYear()
         );
     }

@@ -35,7 +35,7 @@ public class ItemController {
 				new ItemResponse("", "", "",
 						LocalDateTime.now(), "", Optional.of(""),
 						new BigInteger("0"),
-						""));
+						"", "", 0L, 0L));
 		return modelAndView;
 	}
 

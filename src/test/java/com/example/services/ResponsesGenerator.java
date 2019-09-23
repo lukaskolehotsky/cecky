@@ -19,7 +19,7 @@ public class ResponsesGenerator extends RequestsGenerator{
                 item.getPrice(),
                 item.getDescription(),
                 item.getFuelType(),
-                item.getSpeedoMeterCondition(),
+                item.getSpeedometerCondition(),
                 item.getProductionYear()
         );
     }

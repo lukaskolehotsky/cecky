@@ -26,7 +26,7 @@ public class DBItem {
     @Type(type = "org.hibernate.type.TextType")
     private String description;
     private String fuelType;
-    private Long speedoMeterCondition;
+    private Long speedometerCondition;
     private Long productionYear;
 
     public DBItem() {
@@ -42,7 +42,7 @@ public class DBItem {
             BigInteger price,
             String description,
             String fuelType,
-            Long speedoMeterCondition,
+            Long speedometerCondition,
             Long productionYear
     ) {
         super();
@@ -55,7 +55,7 @@ public class DBItem {
         this.price = price;
         this.description = description;
         this.fuelType = fuelType;
-        this.speedoMeterCondition = speedoMeterCondition;
+        this.speedometerCondition = speedometerCondition;
         this.productionYear = productionYear;
     }
 
@@ -131,12 +131,12 @@ public class DBItem {
         this.fuelType = fuelType;
     }
 
-    public Long getSpeedoMeterCondition() {
-        return speedoMeterCondition;
+    public Long getSpeedometerCondition() {
+        return speedometerCondition;
     }
 
-    public void setSpeedoMeterCondition(Long speedoMeterCondition) {
-        this.speedoMeterCondition = speedoMeterCondition;
+    public void setSpeedometerCondition(Long speedometerCondition) {
+        this.speedometerCondition = speedometerCondition;
     }
 
     public Long getProductionYear() {

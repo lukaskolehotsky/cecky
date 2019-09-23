@@ -101,6 +101,29 @@
                             </blockquote>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <blockquote class="blockquote">
+                              <p class="mb-0">Palivo</p>
+                              <footer class="blockquote-footer"> <c:out value="${itemWithFiles.getItemResponse().getFuelType()}"/></footer>
+                            </blockquote>
+                        </div>
+                        <div class="form-group">
+                            <blockquote class="blockquote">
+                              <p class="mb-0">Stav tachometra</p>
+                              <footer class="blockquote-footer"> <c:out value="${itemWithFiles.getItemResponse().getSpeedometerCondition()}"/></footer>
+                            </blockquote>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <blockquote class="blockquote">
+                              <p class="mb-0">Palivo</p>
+                              <footer class="blockquote-footer"> <c:out value="${itemWithFiles.getItemResponse().getProductionYear()}"/></footer>
+                            </blockquote>
+                        </div>
+
+                    </div>
                 </div>
 
                 <!-- GALLERY -->

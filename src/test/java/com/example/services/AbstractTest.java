@@ -29,7 +29,7 @@ public abstract class AbstractTest extends ResponsesGenerator {
         BigInteger price = new BigInteger("1500");
         String description = "description";
         String fuelType = "Diesel";
-        Long speedoMeterCondition = 100000L;
+        Long speedometerCondition = 100000L;
         Long productionYear = 2015L;
         return new DBItem(
                 brand,
@@ -41,7 +41,7 @@ public abstract class AbstractTest extends ResponsesGenerator {
                 price,
                 description,
                 fuelType,
-                speedoMeterCondition,
+                speedometerCondition,
                 productionYear
         );
     }
@@ -57,7 +57,7 @@ public abstract class AbstractTest extends ResponsesGenerator {
                 request.getPrice(),
                 request.getDescription(),
                 request.getFuelType(),
-                request.getSpeedoMeterCondition(),
+                request.getSpeedometerCondition(),
                 request.getProductionYear()
         );
     }
