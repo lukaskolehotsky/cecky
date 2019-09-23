@@ -17,5 +17,8 @@ id varchar(100) NULL,
  created_date_time timestamp default NULL,
  email varchar(100) NULL,
  authentication_code varchar(100) NULL,
+ price bigint NULL,
+ description BYTEA,
  PRIMARY KEY (id)
 );
+--ALTER TABLE public.items add COLUMN price bigint;

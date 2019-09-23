@@ -1,12 +1,11 @@
 package com.example.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @Entity
@@ -29,12 +28,18 @@ public class DBItem {
 	private String email;
 
 	private String authenticationCode;
+
+	private BigInteger price;
+
+	@Lob
+	@Type(type = "org.hibernate.type.TextType")
+	private String description;
 	
 	public DBItem() {
 	}
 
 	public DBItem(String brand, String type, String guid,
-			LocalDateTime createdDateTime, String email, String authenticationCode) {
+			LocalDateTime createdDateTime, String email, String authenticationCode, BigInteger price, String description) {
 		super();	
 		this.brand = brand;
 		this.type = type;
@@ -42,6 +47,8 @@ public class DBItem {
 		this.createdDateTime = createdDateTime;
 		this.email = email;
 		this.authenticationCode = authenticationCode;
+		this.price = price;
+		this.description = description;
 	}
 
 	public String getBrand() {
@@ -90,6 +97,21 @@ public class DBItem {
 
 	public void setAuthenticationCode(String authenticationCode) {
 		this.authenticationCode = authenticationCode;
-	}	
-	
+	}
+
+	public BigInteger getPrice() {
+		return price;
+	}
+
+	public void setPrice(BigInteger price) {
+		this.price = price;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }

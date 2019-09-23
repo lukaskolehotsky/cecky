@@ -81,7 +81,15 @@
                         <div class="form-group">
                             <form:input type="text" path="type" class="form-control" placeholder="Model *" value=""/>
                         </div>
-                        
+                        <div class="form-group">
+                            <form:input type="number" path="price" class="form-control" placeholder="Cena *" value=""/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group green-border-focus">
+                        <label for="exampleFormControlTextarea5">Description Colorful border on :focus state</label>
+                        <form:textarea path="description" class="form-control" id="exampleFormControlTextarea5" rows="3"/>
+                    </div>
                     </div>
                 </div>
                 <button type="submit" class="btnSubmit">Hotovo</button>

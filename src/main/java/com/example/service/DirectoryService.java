@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.config.ServerProperties;
+import org.imgscalr.Scalr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,6 +96,7 @@ public class DirectoryService {
         float quality = 0.5f;
 
         BufferedImage image = ImageIO.read(is);
+        BufferedImage scaledImage = Scalr.resize(image, 640, 480);
         Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpg");
 
         if (!writers.hasNext())
@@ -112,7 +114,7 @@ public class DirectoryService {
 
         // appends a complete image stream containing a single image and
         // associated stream and image metadata and thumbnails to the output
-        writer.write(null, new IIOImage(image, null, null), param);
+        writer.write(null, new IIOImage(scaledImage, null, null), param);
 
         // close all streams
         is.close();

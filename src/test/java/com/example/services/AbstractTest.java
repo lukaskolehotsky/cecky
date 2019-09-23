@@ -6,6 +6,7 @@ import com.example.payload.FileResponse;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,9 @@ public abstract class AbstractTest {
 		String type = "type";
 		String email = "email";
 		String authenticationCode = "authenticationCode";
-		return new DBItem(brand,type,guid, LocalDateTime.now(), email, authenticationCode);
+		BigInteger price = new BigInteger("1500");
+		String description = "description";
+		return new DBItem(brand,type,guid, LocalDateTime.now(), email, authenticationCode, price, description);
 	}
 
 	public DBItem generateDBItem(CreateItemRequest request) {
@@ -46,7 +49,9 @@ public abstract class AbstractTest {
 			generateRandomUUID(),
 			LocalDateTime.now(),
 			request.getEmail(),
-			request.getAuthenticationCode().get()
+			request.getAuthenticationCode().get(),
+			request.getPrice(),
+			request.getDescription()
 		);
 	}	
     
@@ -77,7 +82,7 @@ public abstract class AbstractTest {
 	}
 
 	public ItemResponse generateItemResponse(DBItem item) {
-		return new ItemResponse(item.getBrand(),item.getType(),item.getGuid(),item.getCreatedDateTime(), item.getEmail(), Optional.of(item.getAuthenticationCode()));
+		return new ItemResponse(item.getBrand(),item.getType(),item.getGuid(),item.getCreatedDateTime(), item.getEmail(), Optional.of(item.getAuthenticationCode()), item.getPrice(), item.getDescription());
 	}	
 	
 	public List<FileResponse> generateUploadFileResponses(List<DBFile> files) throws UnsupportedEncodingException {
@@ -114,7 +119,7 @@ public abstract class AbstractTest {
 	}
 	
 	public CreateItemRequest generateCreateItemRequest() {
-		return new CreateItemRequest("brand", "type", "email", Optional.of("authenticationCode"));
+		return new CreateItemRequest("brand", "type", "email", Optional.of("authenticationCode"), new BigInteger("1500"), "description");
 	}
 	
 	public List<MultipartFile> generateMockedMultipartFiles() {

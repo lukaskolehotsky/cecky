@@ -4,6 +4,7 @@ import com.example.requests.CreateItemRequest;
 import com.example.requests.UpdateItemRequest;
 import com.example.service.ItemService;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -30,8 +31,12 @@ public class ItemController {
 	public ModelAndView createItem1() {
 		logger.info("createItem1: ");
 
-		return new ModelAndView("createItem1", "item",
-				new ItemResponse("", "", "", LocalDateTime.now(), "", Optional.of("")));
+		ModelAndView modelAndView = new ModelAndView("createItem1", "item",
+				new ItemResponse("", "", "",
+						LocalDateTime.now(), "", Optional.of(""),
+						new BigInteger("0"),
+						""));
+		return modelAndView;
 	}
 
 	@PostMapping("/createItem2")

@@ -1,5 +1,6 @@
 package com.example.payload;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -16,8 +17,12 @@ public class ItemResponse {
 	private String email;
 
 	private Optional<String> authenticationCode;
+
+	private BigInteger price;
+
+	private String description;
 	
-	public ItemResponse(String brand, String type, String guid, LocalDateTime createdDateTime, String email, Optional<String> authenticationCode) {
+	public ItemResponse(String brand, String type, String guid, LocalDateTime createdDateTime, String email, Optional<String> authenticationCode, BigInteger price, String description) {
 		super();
 		this.brand = brand;
 		this.type = type;
@@ -25,6 +30,8 @@ public class ItemResponse {
 		this.createdDateTime = createdDateTime;
 		this.email = email;
 		this.authenticationCode = authenticationCode;
+		this.price = price;
+		this.description = description;
 	}
 
 	public String getBrand() {
@@ -73,5 +80,21 @@ public class ItemResponse {
 
 	public void setAuthenticationCode(Optional<String> authenticationCode) {
 		this.authenticationCode = authenticationCode;
+	}
+
+	public BigInteger getPrice() {
+		return price;
+	}
+
+	public void setPrice(BigInteger price) {
+		this.price = price;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

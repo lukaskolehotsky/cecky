@@ -94,7 +94,12 @@
                               <footer class="blockquote-footer"> <c:out value="${itemWithFiles.getItemResponse().getType()}"/></footer>
                             </blockquote>
                         </div>
-                        
+                        <div class="form-group">
+                            <blockquote class="blockquote">
+                              <p class="mb-0">Popis</p>
+                              <footer class="blockquote-footer"> <c:out value="${itemWithFiles.getItemResponse().getDescription()}"/></footer>
+                            </blockquote>
+                        </div>
                     </div>
                 </div>
 

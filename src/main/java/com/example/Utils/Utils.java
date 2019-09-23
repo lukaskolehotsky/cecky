@@ -25,7 +25,9 @@ public class Utils {
         		generateRandomUUID(),
         		LocalDateTime.now(),
         		request.getEmail(),
-        		generateAuthenticationCode(10)
+        		generateAuthenticationCode(10),
+                request.getPrice(),
+                request.getDescription()
         );
     }
 
@@ -40,7 +42,10 @@ public class Utils {
                 item.getGuid(),
                 item.getCreatedDateTime(),
                 item.getEmail(),
-                Optional.of(item.getAuthenticationCode()));
+                Optional.of(item.getAuthenticationCode()),
+                item.getPrice(),
+                item.getDescription()
+    );
     }
 
     public DBItem prepareModifiedItem(DBItem item, UpdateItemRequest request) {
