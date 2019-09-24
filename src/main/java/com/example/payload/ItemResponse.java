@@ -132,4 +132,21 @@ public class ItemResponse {
     public void setProductionYear(Long productionYear) {
         this.productionYear = productionYear;
     }
+
+    @Override
+    public String toString() {
+        return "ItemResponse{" +
+                "brand='" + brand + '\'' +
+                ", type='" + type + '\'' +
+                ", guid='" + guid + '\'' +
+                ", createdDateTime=" + createdDateTime +
+                ", email='" + email + '\'' +
+                ", authenticationCode=" + authenticationCode +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+                ", fuelType='" + fuelType + '\'' +
+                ", speedometerCondition=" + speedometerCondition +
+                ", productionYear=" + productionYear +
+                '}';
+    }
 }
