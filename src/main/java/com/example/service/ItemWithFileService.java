@@ -68,11 +68,11 @@ public class ItemWithFileService {
 
 			for (FileResponse fileResponse : fileResponses) {
 
-				String firstPath = imgPaths.get(0);
+				String firstPath = imgPaths.get(0).replace("/", "\\");
 				String secondPath = fileResponse.getImgPath().replace("/", "\\");
 
 				logger.info("!!! Pre tento fileResponse - " + fileResponse.toString());
-				logger.info("!!! Prvy cesta - " + firstPath + " CONTAINS " + secondPath);
+				logger.info("!!! Prvy cesta  - " + firstPath + " CONTAINS " + secondPath);
 				logger.info("!!! Porovnanie == " + firstPath.contains(secondPath));
 
 				if (firstPath.contains(secondPath)) {

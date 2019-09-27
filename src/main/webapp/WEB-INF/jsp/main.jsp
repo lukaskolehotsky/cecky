@@ -79,9 +79,18 @@
                                                 <img class="card-img-top" src="${itemWithFileResponse.getFileResponse().getImgPath()}" alt="Card image cap">
                                                 <div class="card-body">
                                                     <h4 class="card-title">${itemWithFileResponse.getItemResponse().getBrand()} ${itemWithFileResponse.getItemResponse().getType()}</h4>
-                                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                                    <div class="btn btn-primary" onclick="location.href='${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getItemWithFiles?guid=${itemWithFileResponse.getItemResponse().getGuid()}';">
-                                                        Detail
+                                                    <p class="card-text">
+                                                        <c:out value="${itemWithFileResponse.getItemResponse().getSpeedometerCondition()}"/> km, r.v.: <c:out value="${itemWithFileResponse.getItemResponse().getProductionYear()}"/>
+                                                    </p>
+                                                    <div class="d-flex bd-highlight mb-3">
+                                                        <div class="mr-auto p-2 bd-highlight">
+                                                            <div class="btn btn-primary" onclick="location.href='${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getItemWithFiles?guid=${itemWithFileResponse.getItemResponse().getGuid()}';">
+                                                                Detail
+                                                            </div>
+                                                        </div>
+                                                        <div class="my-auto p-2 bd-highlight text-danger">
+                                                            <h5><strong>${itemWithFileResponse.getItemResponse().getPrice()} Eur</strong></h5>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

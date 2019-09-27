@@ -41,7 +41,7 @@ public class ItemWithFileController {
 		return new ModelAndView("main", "itemWithFileResponses", response);
 	}
 
-	@GetMapping("/removeItemWithFilesTyKurva")
+	@GetMapping("/removeItemWithFiles")
 	public RedirectView removeItemWithFiles(@RequestParam("guid") String guid) {
 		logger.info("removeItemWithFiles");
 		itemWithFileService.removeItemWithFiles(guid);
