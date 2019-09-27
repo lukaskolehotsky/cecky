@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.data.domain.*;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ public class ItemServiceTest extends AbstractTest {
     @Test
     public void createItem() {
         CreateItemRequest createItemRequest = generateCreateItemRequest();
-        DBItem item = generateDBItem(createItemRequest);
+        DBItem item = generateItem(createItemRequest);
         ItemResponse itemResponse = generateItemResponse(item);
 
         Mockito.when(itemRepository.save(any(DBItem.class))).thenReturn(item);
@@ -103,7 +104,7 @@ public class ItemServiceTest extends AbstractTest {
     public void updateItem() {
         String guid = "guid";
         DBItem item = generateItem();
-        DBItem updatedItem = new DBItem("brand2", "type2", "guid2", LocalDateTime.now().plusDays(1), "email2", "authenticationCode");
+        DBItem updatedItem = new DBItem("brand2", "type2", "guid2", LocalDateTime.now().plusDays(1), "email2", "authenticationCode", new BigInteger("2000"), "description", "Diesel", 150000L, 2015L);
         UpdateItemRequest updateItemRequest = generateUpdateItemRequest(updatedItem);
         ItemResponse updatedItemResponse = generateItemResponse(updatedItem);
         ItemResponse itemResponse = generateItemResponse(item);

@@ -1,95 +1,149 @@
 package com.example.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.*;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "items")
 public class DBItem {
 
-	@Id
+    @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private String id;	
-	
-	private String brand;
-	
-	private String type;	
-	
-	private String guid;
+    private String id;
+    private String brand;
+    private String type;
+    private String guid;
+    private LocalDateTime createdDateTime;
+    private String email;
+    private String authenticationCode;
+    private BigInteger price;
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    private String description;
+    private String fuelType;
+    private Long speedometerCondition;
+    private Long productionYear;
 
-	private LocalDateTime createdDateTime;
+    public DBItem() {
+    }
 
-	private String email;
+    public DBItem(
+            String brand,
+            String type,
+            String guid,
+            LocalDateTime createdDateTime,
+            String email,
+            String authenticationCode,
+            BigInteger price,
+            String description,
+            String fuelType,
+            Long speedometerCondition,
+            Long productionYear
+    ) {
+        super();
+        this.brand = brand;
+        this.type = type;
+        this.guid = guid;
+        this.createdDateTime = createdDateTime;
+        this.email = email;
+        this.authenticationCode = authenticationCode;
+        this.price = price;
+        this.description = description;
+        this.fuelType = fuelType;
+        this.speedometerCondition = speedometerCondition;
+        this.productionYear = productionYear;
+    }
 
-	private String authenticationCode;
-	
-	public DBItem() {
-	}
+    public String getBrand() {
+        return brand;
+    }
 
-	public DBItem(String brand, String type, String guid,
-			LocalDateTime createdDateTime, String email, String authenticationCode) {
-		super();	
-		this.brand = brand;
-		this.type = type;
-		this.guid = guid;
-		this.createdDateTime = createdDateTime;
-		this.email = email;
-		this.authenticationCode = authenticationCode;
-	}
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
 
-	public String getBrand() {
-		return brand;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setBrand(String brand) {
-		this.brand = brand;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getGuid() {
+        return guid;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
 
-	public String getGuid() {
-		return guid;
-	}
+    public LocalDateTime getCreatedDateTime() {
+        return createdDateTime;
+    }
 
-	public void setGuid(String guid) {
-		this.guid = guid;
-	}
+    public void setCreatedDateTime(LocalDateTime createdDateTime) {
+        this.createdDateTime = createdDateTime;
+    }
 
-	public LocalDateTime getCreatedDateTime() {
-		return createdDateTime;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setCreatedDateTime(LocalDateTime createdDateTime) {
-		this.createdDateTime = createdDateTime;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getAuthenticationCode() {
+        return authenticationCode;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setAuthenticationCode(String authenticationCode) {
+        this.authenticationCode = authenticationCode;
+    }
 
-	public String getAuthenticationCode() {
-		return authenticationCode;
-	}
+    public BigInteger getPrice() {
+        return price;
+    }
 
-	public void setAuthenticationCode(String authenticationCode) {
-		this.authenticationCode = authenticationCode;
-	}	
-	
+    public void setPrice(BigInteger price) {
+        this.price = price;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getFuelType() {
+        return fuelType;
+    }
+
+    public void setFuelType(String fuelType) {
+        this.fuelType = fuelType;
+    }
+
+    public Long getSpeedometerCondition() {
+        return speedometerCondition;
+    }
+
+    public void setSpeedometerCondition(Long speedometerCondition) {
+        this.speedometerCondition = speedometerCondition;
+    }
+
+    public Long getProductionYear() {
+        return productionYear;
+    }
+
+    public void setProductionYear(Long productionYear) {
+        this.productionYear = productionYear;
+    }
 }

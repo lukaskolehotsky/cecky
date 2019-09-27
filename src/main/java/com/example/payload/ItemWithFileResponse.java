@@ -24,4 +24,12 @@ public class ItemWithFileResponse {
     public void setFileResponse(FileResponse fileResponse) {
         this.fileResponse = fileResponse;
     }
+
+    @Override
+    public String toString() {
+        return "ItemWithFileResponse{" +
+                "itemResponse=" + itemResponse.toString() +
+                ", fileResponse=" + fileResponse.toString() +
+                '}';
+    }
 }

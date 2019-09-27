@@ -37,11 +37,11 @@ public class ItemWithFileController {
 	public ModelAndView getItemWithFileResponses(Optional<Integer> page) throws UnsupportedEncodingException {
 		logger.info("/getItemWithFileResponses");
 
-		List<ItemWithFileResponse> response = itemWithFileService.getItemWithFileResponses((page.isPresent()) ? page.get() : 0);
+		List<ItemWithFileResponse> response = itemWithFileService.getItemWithFileResponses(page.orElse(0));
 		return new ModelAndView("main", "itemWithFileResponses", response);
 	}
 
-	@GetMapping("/removeItemWithFilesTyKurva")
+	@GetMapping("/removeItemWithFiles")
 	public RedirectView removeItemWithFiles(@RequestParam("guid") String guid) {
 		logger.info("removeItemWithFiles");
 		itemWithFileService.removeItemWithFiles(guid);

@@ -55,5 +55,15 @@ public class FileResponse {
 	public void setImgPath(String imgPath) {
 		this.imgPath = imgPath;
 	}
-	    
+
+    @Override
+    public String toString() {
+        return "FileResponse{" +
+                "fileName='" + fileName + '\'' +
+                ", fileDownloadUri='" + fileDownloadUri + '\'' +
+                ", fileType='" + fileType + '\'' +
+                ", size=" + size +
+                ", imgPath='" + imgPath + '\'' +
+                '}';
+    }
 }
