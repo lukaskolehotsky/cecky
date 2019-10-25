@@ -5,17 +5,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.payload.ItemResponse;
 import com.example.payload.ItemWithFileResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.example.payload.ItemWithFilesResponse;
+import com.example.requests.RemoveItemWithFilesRequest;
 import com.example.service.ItemWithFileService;
 
 @RestController
@@ -30,7 +35,10 @@ public class ItemWithFileController {
 	public ModelAndView getItemWithFiles(@RequestParam("guid") String guid) throws UnsupportedEncodingException {
 		logger.info("getItemWithFiles by guid: " + guid);
 		ItemWithFilesResponse response = itemWithFileService.getItemWithFiles(guid);
-		return new ModelAndView("viewItem", "itemWithFiles", response);
+		
+		ModelAndView view = new ModelAndView("viewItem", "itemWithFiles", response);
+		view.getModelMap().addAttribute("removeItemWithFilesRequest", new RemoveItemWithFilesRequest(""));
+		return view;
 	}
 
 	@GetMapping("/getItemWithFileResponses")
@@ -41,10 +49,10 @@ public class ItemWithFileController {
 		return new ModelAndView("main", "itemWithFileResponses", response);
 	}
 
-	@GetMapping("/removeItemWithFiles")
-	public RedirectView removeItemWithFiles(@RequestParam("guid") String guid) {
-		logger.info("removeItemWithFiles");
-		itemWithFileService.removeItemWithFiles(guid);
+	@PostMapping("/removeItemWithFiles")
+	public RedirectView removeItemWithFiles(@RequestParam("guid") String guid, RemoveItemWithFilesRequest removeItemWithFilesRequest) {
+		logger.info("removeItemWithFiles by guid " + guid + "and request " + removeItemWithFilesRequest.toString());
+		itemWithFileService.removeItemWithFiles(guid, removeItemWithFilesRequest.getAuthCode());
 		return new RedirectView("/getItemWithFileResponses");
 	}
 

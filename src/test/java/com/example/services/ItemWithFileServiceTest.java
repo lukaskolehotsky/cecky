@@ -114,6 +114,9 @@ public class ItemWithFileServiceTest extends AbstractTest {
 	public void removeItemWithFiles() {
 		String guid = "guid";
 		String imgPath = "imgPath";
+		String authCode = "authenticationCode";
+		DBItem item = generateItem();
+		ItemResponse itemResponse = generateItemResponse(item);
 		List<String> imgPaths = new ArrayList<>();
 		imgPaths.add(imgPath);
 
@@ -121,8 +124,9 @@ public class ItemWithFileServiceTest extends AbstractTest {
 		doNothing().when(fileService).removeFile(guid);
 		Mockito.when(directoryService.getAllFilesFromDirectory(guid)).thenReturn(imgPaths);
 		doNothing().when(directoryService).removeImageFromDirectory(imgPath);
+		Mockito.when(itemService.getItem(guid)).thenReturn(itemResponse);
 
-		itemWithFileService.removeItemWithFiles(guid);
+		itemWithFileService.removeItemWithFiles(guid, authCode);
 
 		verify(itemService).removeItem(guid);
 		verify(fileService).removeFile(guid);

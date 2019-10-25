@@ -32,15 +32,15 @@ public class ItemService extends Utils {
     public ItemResponse createItem(CreateItemRequest request) {
 
         String authenticationCode = generateAuthenticationCode(10);
-        request.setAuthenticationCode(Optional.of(authenticationCode));
+        request.setAuthenticationCode(authenticationCode);
 
         DBItem savedItem = itemRepository.save(generateDBItem(request));
         
-//        try {
-//        	emailSender.sendEmail(authenticationCode, request.getEmail());
-//        } catch (Exception e) {
-//			throw new IllegalArgumentException("Nepodarilo sa odoslat email.");
-//		} 
+        try {
+        	emailSender.sendEmail(authenticationCode, request.getEmail(), request.getBrand(), request.getType());
+        } catch (Exception e) {
+			throw new IllegalArgumentException("Nepodarilo sa odoslat email.");
+		} 
         
 
         return generateItemResponse(savedItem);
@@ -96,7 +96,7 @@ public class ItemService extends Utils {
             authenticationCode = generateAuthenticationCode(10);
             item.setAuthenticationCode(authenticationCode);
             itemRepository.save(item);
-            emailSender.sendEmail(authenticationCode, email);
+            emailSender.sendEmail(authenticationCode, email, item.getBrand(), item.getType());
             return authenticationCode;
         } else {
             throw new IllegalArgumentException("For your email does not exist any item.");

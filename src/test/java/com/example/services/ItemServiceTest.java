@@ -52,7 +52,7 @@ public class ItemServiceTest extends AbstractTest {
         ItemResponse itemResponse = generateItemResponse(item);
 
         Mockito.when(itemRepository.save(any(DBItem.class))).thenReturn(item);
-        doNothing().when(emailSender).sendEmail("ABCDE", createItemRequest.getEmail());
+        doNothing().when(emailSender).sendEmail("ABCDE", createItemRequest.getEmail(), createItemRequest.getBrand(), createItemRequest.getType());
 
         ItemResponse response = itemService.createItem(createItemRequest);
 
@@ -126,7 +126,7 @@ public class ItemServiceTest extends AbstractTest {
         Assert.assertEquals(updatedItemResponse.getEmail(), response.getEmail());
         Assert.assertNotEquals(itemResponse.getEmail(), response.getEmail());
 
-        Assert.assertEquals(updatedItemResponse.getAuthenticationCode().get(), response.getAuthenticationCode().get());
+        Assert.assertEquals(updatedItemResponse.getAuthenticationCode(), response.getAuthenticationCode());
 
         Assert.assertNotEquals(itemResponse.getCreatedDateTime(), response.getCreatedDateTime());
     }
@@ -142,7 +142,7 @@ public class ItemServiceTest extends AbstractTest {
 
         Mockito.when(itemRepository.findByGuidAndEmail(guid, email)).thenReturn(item);
         Mockito.when(itemRepository.save(updatedItem)).thenReturn(updatedItem);
-        doNothing().when(emailSender).sendEmail(authenticationCode, email);
+        doNothing().when(emailSender).sendEmail(authenticationCode, email, item.getBrand(), item.getType());
 
         String response = itemService.changeAuthenticationCode(guid, email);
 
