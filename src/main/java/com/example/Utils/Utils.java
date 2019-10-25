@@ -6,6 +6,8 @@ import com.example.model.DBItem;
 import com.example.payload.ItemResponse;
 import com.example.requests.CreateItemRequest;
 import com.example.requests.UpdateItemRequest;
+
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,7 +27,7 @@ public class Utils {
                 generateRandomUUID(),
                 LocalDateTime.now(),
                 request.getEmail(),
-                generateAuthenticationCode(10),
+                request.getAuthenticationCode(),
                 request.getPrice(),
                 request.getDescription(),
                 request.getFuelType(),
@@ -45,7 +47,7 @@ public class Utils {
                 item.getGuid(),
                 item.getCreatedDateTime(),
                 item.getEmail(),
-                Optional.of(item.getAuthenticationCode()),
+                item.getAuthenticationCode(),
                 item.getPrice(),
                 item.getDescription(),
                 item.getFuelType(),
@@ -55,7 +57,7 @@ public class Utils {
     }
 
     public DBItem prepareModifiedItem(DBItem item, UpdateItemRequest request) {
-
+    	
         if (request.getBrand() != null) {
             item.setBrand(request.getBrand());
         } else {
@@ -74,13 +76,43 @@ public class Utils {
             item.setGuid("guid");
         }
 
-        if (item.getEmail() != null) {
-            item.setEmail(item.getEmail());
+        if (request.getEmail() != null) {
+            item.setEmail(request.getEmail());
         } else {
             item.setEmail("email");
         }
 
         item.setCreatedDateTime(LocalDateTime.now());
+
+        if (request.getDescription() != null) {
+            item.setDescription(request.getDescription());
+        } else {
+            item.setDescription("description");
+        }
+
+        if (request.getPrice() != null) {
+            item.setPrice(request.getPrice());
+        } else {
+            item.setPrice(new BigInteger("1"));
+        }
+
+        if (request.getFuelType() != null) {
+            item.setFuelType(request.getFuelType());
+        } else {
+            item.setFuelType("Elektrika");
+        }
+
+        if (request.getProductionYear() != null) {
+            item.setProductionYear(request.getProductionYear());
+        } else {
+            item.setProductionYear(2200L);
+        }
+
+        if (request.getSpeedometerCondition() != null) {
+            item.setSpeedometerCondition(request.getSpeedometerCondition());
+        } else {
+            item.setSpeedometerCondition(180500L);
+        }
 
         return item;
     }

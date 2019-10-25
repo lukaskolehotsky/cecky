@@ -110,13 +110,24 @@ public class ItemWithFileService {
 	}
 
 	@Transactional
-	public void removeItemWithFiles(String guid) {
+	public void removeItemWithFiles(String guid, String authenticationCode) {
+		
+		verifyAuthenticationCode(guid, authenticationCode);
+		
 		itemService.removeItem(guid);
 		fileService.removeFile(guid);
 		List<String> images = directoryService.getAllFilesFromDirectory(guid);
 		for (String img : images) {
 			directoryService.removeImageFromDirectory(img);
 		}
+	}
+	
+	private void verifyAuthenticationCode(String guid, String authenticationCode) {
+		ItemResponse itemResponse = itemService.getItem(guid);
+		
+		if(!itemResponse.getAuthenticationCode().equals(authenticationCode)) {
+			throw new IllegalArgumentException("Nespravny authentifikacny kod.");
+		}		
 	}
 
 }

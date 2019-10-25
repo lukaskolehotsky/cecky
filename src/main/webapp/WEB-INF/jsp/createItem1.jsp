@@ -65,7 +65,15 @@
             Typ paliva:
         </div> 
         <div class="col-md-6 text-justify font-weight-bold">
-            <form:input type="text" path="fuelType" class="form-control" value=""/>
+            <form:select class="form-control" id="exampleFormControlSelect1" path="fuelType">
+                <form:option value="NONE">vyber</form:option>
+                <form:option value="Diesel">Diesel</form:option>
+                <form:option value="Benzin">Benzin</form:option>
+                <form:option value="Plyn">Plyn</form:option>
+                <form:option value="Elektrika">Elektrika</form:option>
+                <form:option value="Vodik">Vodik</form:option>
+                <form:option value="Hybrid">Hybrid</form:option>
+            </form:select>
         </div> 
         <div class="col-md-2"></div>    
       </div>  

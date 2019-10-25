@@ -10,7 +10,17 @@ import java.util.Optional;
 public class RequestsGenerator {
 
     public UpdateItemRequest generateUpdateItemRequest(DBItem item) {
-        return new UpdateItemRequest(item.getBrand(), item.getType(), item.getEmail(), Optional.of(item.getAuthenticationCode()));
+        return new UpdateItemRequest(
+                item.getBrand(),
+                item.getType(),
+                item.getEmail(),
+                Optional.of(item.getAuthenticationCode()),
+                item.getPrice(),
+                item.getDescription(),
+                item.getFuelType(),
+                item.getSpeedometerCondition(),
+                item.getProductionYear()
+        );
     }
 
     public CreateItemRequest generateCreateItemRequest() {
@@ -18,7 +28,7 @@ public class RequestsGenerator {
                 "brand",
                 "type",
                 "email",
-                Optional.of("authenticationCode"),
+                "authenticationCode",
                 new BigInteger("1500"),
                 "description",
                 "Diesel",

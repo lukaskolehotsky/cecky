@@ -17,9 +17,7 @@
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-
-        <style>
-            
+        <style>           
 
             @media (min-width: 768px) {
             .carousel-multi-item-2 .col-md-3 {
@@ -42,8 +40,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 
 
-    <script type="text/javascript">
-        
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script>
+      $('#myModal').on('shown.bs.modal', function () {
+        $('#myInput').trigger('focus')
+      })
     </script>
 
     <div class="container">
@@ -103,13 +105,16 @@
        <br>
        <br>
 
-
         <div class="row">
             <div class="col-md-2"></div> 
             <div class="col-md-8 text-center">
               <div class="btn-group" role="group" aria-label="Basic example">
-                  <button type="button" class="btn btn-secondary btn-warning" onclick="location.href='${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/updateItem1?guid=${itemWithFiles.getItemResponse().getGuid()}';">Upravit</button>
-                  <button type="button" class="btn btn-secondary btn-danger" onclick="location.href='${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/removeItemWithFiles?guid=${itemWithFiles.getItemResponse().getGuid()}';">Zmazat</button>
+				<button type="button" class="btn btn-secondary btn-warning" onclick="location.href='${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/updateItem1?guid=${itemWithFiles.getItemResponse().getGuid()}';">Upravit</button>
+				
+				<!-- Button trigger modal -->
+				<button type="button" class="btn btn-secondary btn-danger" data-toggle="modal" data-target="#exampleModal">
+				  Odstranit
+				</button>                
                 </div>
             </div>  
             <div class="col-md-2"></div>    
@@ -118,9 +123,34 @@
         <br>
        <br>
        
-    </div>
-
+    </div> 
    
+   	<form:form class="container register-form" method="post" modelAttribute="removeItemWithFilesRequest" action="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/removeItemWithFiles?guid=${itemWithFiles.getItemResponse().getGuid()}">
+ 		<!-- Modal -->
+	    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	      <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+	        
+	          <div class="modal-header">
+	            <h5 class="modal-title" id="exampleModalLabel">Naozaj odstranit?</h5>
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	              <span aria-hidden="true">&times;</span>
+	            </button>
+	          </div>
+	          <div class="modal-body">
+	            <div class="form-group">
+	              <label for="authCode">Autentifikacny kod:</label>
+	              <form:input type="text" id="authCode" path="authCode" class="form-control" value=""/>
+	            </div>            
+	          </div>
+	          <div class="modal-footer">
+	            <!--<button type="button" class="btn btn-danger" data-dismiss="modal">Nie</button>-->
+	            <button type="submit" class="btn btn-success">Ano</button>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+ 	</form:form>
 
 </body>
 

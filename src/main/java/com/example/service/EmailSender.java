@@ -11,13 +11,13 @@ public class EmailSender {
 	@Autowired
     private JavaMailSender javaMailSender;
 	
-	public void sendEmail(String authenticationCode, String email) {
+	public void sendEmail(String authenticationCode, String email, String brand, String type) {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setFrom("lukaskolehotsky@gmail.com");
         msg.setTo(email);
 
         msg.setSubject("Item Created");
-        msg.setText("Hello, \n Your authentication code for modification has been created - " + authenticationCode);
+        msg.setText("Hello, \n Your authentication code for modification " + brand + " " + type + " has been created - " + authenticationCode);
 
         javaMailSender.send(msg);
     }
