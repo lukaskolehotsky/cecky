@@ -140,7 +140,7 @@
 	          <div class="modal-body">
 	            <div class="form-group">
 	              <label for="authCode">Autentifikacny kod:</label>
-	              <form:input type="text" id="authCode" path="authCode" class="form-control" value=""></form:input>
+	              <form:input type="text" id="authCode" path="authCode" class="form-control" value=""/>
 	            </div>            
 	          </div>
 	          <div class="modal-footer">
