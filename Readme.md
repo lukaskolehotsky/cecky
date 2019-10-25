@@ -38,6 +38,11 @@ GMAIL ACCESS
 Make sure Less secure apps is TURNED ON https://www.google.com/settings/security/lesssecureapps
 Allow each app to send email Go to https://accounts.google.com/b/0/DisplayUnlockCaptcha and click on Continue.
 
+IP ADRESA: 195.210.29.236 
+LOGIN: root 
+HESLO: LiAsRQS0Pw
+PORT: 22
+
 Run locally:
 mvn spring-boot:run -Dspring-boot.run.profiles=dev
 

@@ -8,7 +8,7 @@ public class CreateItemRequest {
     private String brand;
     private String type;
     private String email;
-    private Optional<String> authenticationCode;
+    private String authenticationCode;
     private BigInteger price;
     private String description;
     private String fuelType;
@@ -19,7 +19,7 @@ public class CreateItemRequest {
             String brand,
             String type,
             String email,
-            Optional<String> authenticationCode,
+            String authenticationCode,
             BigInteger price,
             String description,
             String fuelType,
@@ -61,11 +61,11 @@ public class CreateItemRequest {
         this.email = email;
     }
 
-    public Optional<String> getAuthenticationCode() {
+    public String getAuthenticationCode() {
         return authenticationCode;
     }
 
-    public void setAuthenticationCode(Optional<String> authenticationCode) {
+    public void setAuthenticationCode(String authenticationCode) {
         this.authenticationCode = authenticationCode;
     }
 

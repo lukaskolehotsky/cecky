@@ -15,7 +15,7 @@ public class ResponsesGenerator extends RequestsGenerator{
                 item.getGuid(),
                 item.getCreatedDateTime(),
                 item.getEmail(),
-                Optional.of(item.getAuthenticationCode()),
+                item.getAuthenticationCode(),
                 item.getPrice(),
                 item.getDescription(),
                 item.getFuelType(),

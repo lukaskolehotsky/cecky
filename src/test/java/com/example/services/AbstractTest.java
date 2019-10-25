@@ -53,7 +53,7 @@ public abstract class AbstractTest extends ResponsesGenerator {
                 generateRandomUUID(),
                 LocalDateTime.now(),
                 request.getEmail(),
-                request.getAuthenticationCode().get(),
+                request.getAuthenticationCode(),
                 request.getPrice(),
                 request.getDescription(),
                 request.getFuelType(),

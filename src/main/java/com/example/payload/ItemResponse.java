@@ -11,7 +11,7 @@ public class ItemResponse {
     private String guid;
     private LocalDateTime createdDateTime;
     private String email;
-    private Optional<String> authenticationCode;
+    private String authenticationCode;
     private BigInteger price;
     private String description;
     private String fuelType;
@@ -24,7 +24,7 @@ public class ItemResponse {
             String guid,
             LocalDateTime createdDateTime,
             String email,
-            Optional<String> authenticationCode,
+            String authenticationCode,
             BigInteger price,
             String description,
             String fuelType,
@@ -85,11 +85,11 @@ public class ItemResponse {
         this.email = email;
     }
 
-    public Optional<String> getAuthenticationCode() {
+    public String getAuthenticationCode() {
         return authenticationCode;
     }
 
-    public void setAuthenticationCode(Optional<String> authenticationCode) {
+    public void setAuthenticationCode(String authenticationCode) {
         this.authenticationCode = authenticationCode;
     }
 

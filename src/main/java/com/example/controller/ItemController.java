@@ -33,7 +33,7 @@ public class ItemController {
 
 		ModelAndView modelAndView = new ModelAndView("createItem1", "item",
 				new ItemResponse("", "", "",
-						LocalDateTime.now(), "", Optional.of(""),
+						LocalDateTime.now(), "", "",
 						new BigInteger("0"),
 						"", "", 0L, 0L));
 		return modelAndView;
@@ -64,6 +64,7 @@ public class ItemController {
 		logger.info("updateItem1: ");
 
 		ItemResponse response = itemService.getItem(guid);
+		response.setAuthenticationCode("");
 
 		return new ModelAndView("updateItem1", "item", response);
 	}
