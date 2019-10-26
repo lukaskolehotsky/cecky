@@ -31,6 +31,7 @@ public abstract class AbstractTest extends ResponsesGenerator {
         String fuelType = "Diesel";
         Long speedometerCondition = 100000L;
         Long productionYear = 2015L;
+        Long mobileNumber = 421907397135L;
         return new DBItem(
                 brand,
                 type,
@@ -42,7 +43,8 @@ public abstract class AbstractTest extends ResponsesGenerator {
                 description,
                 fuelType,
                 speedometerCondition,
-                productionYear
+                productionYear,
+                mobileNumber
         );
     }
 
@@ -58,7 +60,8 @@ public abstract class AbstractTest extends ResponsesGenerator {
                 request.getDescription(),
                 request.getFuelType(),
                 request.getSpeedometerCondition(),
-                request.getProductionYear()
+                request.getProductionYear(),
+                request.getMobileNumber()
         );
     }
 

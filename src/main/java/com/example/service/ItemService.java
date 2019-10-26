@@ -1,15 +1,7 @@
 package com.example.service;
 
-import com.example.Utils.Utils;
-import com.example.model.DBItem;
-import com.example.payload.ItemResponse;
-import com.example.repository.ItemRepository;
-import com.example.requests.CreateItemRequest;
-import com.example.requests.UpdateItemRequest;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -19,6 +11,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import com.example.Utils.Utils;
+import com.example.model.DBItem;
+import com.example.payload.ItemResponse;
+import com.example.repository.ItemRepository;
+import com.example.requests.ContactOwnerRequest;
+import com.example.requests.CreateItemRequest;
+import com.example.requests.SearchRequest;
+import com.example.requests.UpdateItemRequest;
 
 @Service
 public class ItemService extends Utils {
@@ -57,6 +58,32 @@ public class ItemService extends Utils {
     public void removeItem(String guid) {    	
     	itemRepository.deleteByGuid(guid);
     } 
+    
+    public List<ItemResponse> search(SearchRequest searchRequest){    	
+    	List<DBItem> items = null;
+    	
+    	if(!searchRequest.getBrand().isEmpty() && !searchRequest.getType().isEmpty()) {
+    		items = itemRepository.findByBrandAndType(searchRequest.getBrand(), searchRequest.getType());
+    	}
+    	
+    	if(!searchRequest.getBrand().isEmpty() && searchRequest.getType().isEmpty()) {
+    		items = itemRepository.findByBrand(searchRequest.getBrand());
+    	}
+    	
+    	if(!searchRequest.getType().isEmpty() && searchRequest.getBrand().isEmpty()) {
+    		items = itemRepository.findByType(searchRequest.getType());
+    	}
+    	
+    	List<ItemResponse> itemResponses = new ArrayList<>();
+
+    	if(items != null) {
+    		for(DBItem item: items) {
+        		itemResponses.add(generateItemResponse(item));
+        	}
+    	}
+    	
+    	return itemResponses;
+    }  
     
     public List<ItemResponse> getAll(int pageNumber){
     	Pageable paging = PageRequest.of(pageNumber, 500, Sort.by("createdDateTime").descending());
@@ -102,5 +129,12 @@ public class ItemService extends Utils {
             throw new IllegalArgumentException("For your email does not exist any item.");
         }
     }
+    
+	
+	public void contactOwner(String guid, ContactOwnerRequest request) {
+		DBItem item = itemRepository.findByGuid(guid);
+		
+		emailSender.sendEmailToOwner(item.getEmail(), request);
+	}
 
 }

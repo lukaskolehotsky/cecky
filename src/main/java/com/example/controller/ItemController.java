@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.requests.ContactOwnerRequest;
 import com.example.requests.CreateItemRequest;
 import com.example.requests.UpdateItemRequest;
 import com.example.service.ItemService;
@@ -13,9 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.example.payload.ItemResponse;
 
@@ -35,7 +38,7 @@ public class ItemController {
 				new ItemResponse("", "", "",
 						LocalDateTime.now(), "", "",
 						new BigInteger("0"),
-						"", "", 0L, 0L));
+						"", "", 0L, 0L, 0L));
 		return modelAndView;
 	}
 
@@ -76,6 +79,14 @@ public class ItemController {
 		ItemResponse response = itemService.updateItem(guid, request);
 
 		return new ModelAndView("updateItem2", "item", response);
+	}
+	
+	@PostMapping("/contactOwner")
+	public RedirectView contactOwner(@RequestParam("guid") String guid, ContactOwnerRequest request) {
+		logger.info("contactOwner: ");
+
+		itemService.contactOwner(guid, request);
+		return new RedirectView("/getItemWithFileResponses");
 	}
 
 }

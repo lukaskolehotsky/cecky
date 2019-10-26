@@ -79,10 +79,10 @@
         </div>  
         <div class="col-md-2"></div>    
     </div>
-
-       <br>
-       <br>
-
+    
+    <br>
+    <br>    
+    
        <div class="row">
             <div class="col-md-2"></div> 
             <div class="col-md-8">
@@ -104,6 +104,32 @@
        </div>        
        <br>
        <br>
+       
+       <div class="row">
+        <div class="col-md-2"></div> 
+        <div class="col-md-1">Kontakt:</div> 
+        <div class="col-md-8 text-justify my-auto">
+	            <c:out value="${itemWithFiles.getItemResponse().getMobileNumber()}"/>
+	    </div>     
+      </div>
+
+      <br>
+      <br>
+       
+       <div class="row">
+	        <div class="col-md-2"></div> 
+	        <div class="col-md-2">
+	        	<!-- Button trigger modal -->
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal2">
+				  Posli spravu
+				</button> 
+	        </div>	        
+	        <div class="col-md-8"></div>    
+	    </div>
+	
+	       <br>
+	       <br>
+       
 
         <div class="row">
             <div class="col-md-2"></div> 
@@ -114,7 +140,8 @@
 				<!-- Button trigger modal -->
 				<button type="button" class="btn btn-secondary btn-danger" data-toggle="modal" data-target="#exampleModal">
 				  Odstranit
-				</button>                
+				</button> 			
+				              
                 </div>
             </div>  
             <div class="col-md-2"></div>    
@@ -144,8 +171,41 @@
 	            </div>            
 	          </div>
 	          <div class="modal-footer">
-	            <!--<button type="button" class="btn btn-danger" data-dismiss="modal">Nie</button>-->
 	            <button type="submit" class="btn btn-success">Ano</button>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+ 	</form:form>
+ 	
+ 	<form:form class="container register-form" method="post" modelAttribute="contactOwnerRequest" action="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/contactOwner?guid=${itemWithFiles.getItemResponse().getGuid()}">
+ 		<!-- Modal -->
+	    <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	      <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+	        
+	          <div class="modal-header">
+	            <h5 class="modal-title" id="exampleModalLabel">Posli spravu</h5>
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	              <span aria-hidden="true">&times;</span>
+	            </button>
+	          </div>
+	          <div class="modal-body">
+	            <div class="form-group">
+	              <label for="buyerEmail">Email:</label>
+	              <form:input type="text" id="buyerEmail" path="buyerEmail" class="form-control" value=""/>
+	            </div>  
+	            <div class="form-group">
+	              <label for="buyerMessage">Sprava:</label>
+	              <form:input type="text" id="buyerMessage" path="buyerMessage" class="form-control" value=""/>
+	            </div>       
+	            <div class="form-group">
+	              <label for="buyerMobile">Telefon:</label>
+	              <form:input type="number" id="buyerMobile" path="buyerMobile" class="form-control" value=""/>
+	            </div>     
+	          </div>
+	          <div class="modal-footer">
+	            <button type="submit" class="btn btn-success">Posli spravu</button>
 	          </div>
 	        </div>
 	      </div>

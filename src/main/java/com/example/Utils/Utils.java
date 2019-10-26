@@ -32,7 +32,8 @@ public class Utils {
                 request.getDescription(),
                 request.getFuelType(),
                 request.getSpeedometerCondition(),
-                request.getProductionYear()
+                request.getProductionYear(),
+                request.getMobileNumber()
         );
     }
 
@@ -52,7 +53,8 @@ public class Utils {
                 item.getDescription(),
                 item.getFuelType(),
                 item.getSpeedometerCondition(),
-                item.getProductionYear()
+                item.getProductionYear(),
+                item.getMobileNumber()
         );
     }
 
@@ -112,6 +114,12 @@ public class Utils {
             item.setSpeedometerCondition(request.getSpeedometerCondition());
         } else {
             item.setSpeedometerCondition(180500L);
+        }
+        
+        if (request.getMobileNumber() != null) {
+        	item.setMobileNumber(request.getMobileNumber());
+        } else {
+        	item.setMobileNumber(421907397135L);
         }
 
         return item;

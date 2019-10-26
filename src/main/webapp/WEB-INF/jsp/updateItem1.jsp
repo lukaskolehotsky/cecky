@@ -125,6 +125,17 @@
             	<form:input type="text" path="email" class="form-control" placeholder="${item.getEmail()}" value=""/>
         	</div>
         	<div class="col-md-2"></div>    
+      	</div>      	
+      	<br>
+      	<div class="row">
+        	<div class="col-md-2"></div> 
+        	<div class="col-md-2 text-justify font-weight-bold my-auto">
+            	Telefon:
+        	</div>  
+        	<div class="col-md-6 text-justify font-weight-bold">
+            	<form:input type="number" path="mobileNumber" class="form-control" placeholder="${item.getMobileNumber()}" value=""/>
+        	</div>
+        	<div class="col-md-2"></div>    
       	</div>
       	<br>
       	<div class="row">

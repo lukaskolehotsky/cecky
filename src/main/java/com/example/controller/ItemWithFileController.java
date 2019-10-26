@@ -20,7 +20,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.example.payload.ItemWithFilesResponse;
+import com.example.requests.ContactOwnerRequest;
 import com.example.requests.RemoveItemWithFilesRequest;
+import com.example.requests.SearchRequest;
 import com.example.service.ItemWithFileService;
 
 @RestController
@@ -30,7 +32,7 @@ public class ItemWithFileController {
 	private ItemWithFileService itemWithFileService;
 
 	private static final Logger logger = LoggerFactory.getLogger(ItemWithFileController.class);
-
+	
 	@GetMapping("/getItemWithFiles")
 	public ModelAndView getItemWithFiles(@RequestParam("guid") String guid) throws UnsupportedEncodingException {
 		logger.info("getItemWithFiles by guid: " + guid);
@@ -38,7 +40,17 @@ public class ItemWithFileController {
 		
 		ModelAndView view = new ModelAndView("viewItem", "itemWithFiles", response);
 		view.getModelMap().addAttribute("removeItemWithFilesRequest", new RemoveItemWithFilesRequest(""));
+		view.getModelMap().addAttribute("contactOwnerRequest", new ContactOwnerRequest("","",0L));
 		return view;
+	}
+	
+	@PostMapping("/search")
+	public ModelAndView search(SearchRequest searchRequest) {
+		logger.info("search : " + searchRequest.toString());
+		
+		List<ItemWithFileResponse> response = itemWithFileService.search(searchRequest);
+		
+		return new ModelAndView("main", "itemWithFileResponses", response);
 	}
 
 	@GetMapping("/getItemWithFileResponses")
@@ -46,7 +58,10 @@ public class ItemWithFileController {
 		logger.info("/getItemWithFileResponses");
 
 		List<ItemWithFileResponse> response = itemWithFileService.getItemWithFileResponses(page.orElse(0));
-		return new ModelAndView("main", "itemWithFileResponses", response);
+		
+		ModelAndView view = new ModelAndView("main", "itemWithFileResponses", response);
+		view.getModelMap().addAttribute("searchRequest", new SearchRequest("", ""));
+		return view;
 	}
 
 	@PostMapping("/removeItemWithFiles")

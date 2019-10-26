@@ -14,6 +14,7 @@ public class CreateItemRequest {
     private String fuelType;
     private Long speedometerCondition;
     private Long productionYear;
+    private Long mobileNumber;
 
     public CreateItemRequest(
             String brand,
@@ -24,7 +25,8 @@ public class CreateItemRequest {
             String description,
             String fuelType,
             Long speedometerCondition,
-            Long productionYear
+            Long productionYear,
+            Long mobileNumber
     ) {
         this.brand = brand;
         this.type = type;
@@ -35,6 +37,7 @@ public class CreateItemRequest {
         this.fuelType = fuelType;
         this.speedometerCondition = speedometerCondition;
         this.productionYear = productionYear;
+        this.mobileNumber = mobileNumber;
     }
 
     public String getBrand() {
@@ -108,4 +111,13 @@ public class CreateItemRequest {
     public void setProductionYear(Long productionYear) {
         this.productionYear = productionYear;
     }
+
+	public Long getMobileNumber() {
+		return mobileNumber;
+	}
+
+	public void setMobileNumber(Long mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}    
+    
 }

@@ -22,6 +22,7 @@ id varchar(100) NULL,
  fuel_type varchar(100) NULL,
  speedometer_condition numeric NULL,
  production_year numeric NULL,
+ mobile_number numeric NULL,
  PRIMARY KEY (id)
 );
---ALTER TABLE public.items add COLUMN price bigint;
+--ALTER TABLE public.items add COLUMN mobile_number numeric null;

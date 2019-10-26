@@ -2,12 +2,10 @@ package com.example.service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
-import com.example.payload.ItemWithFileResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,9 @@ import org.springframework.stereotype.Service;
 import com.example.config.ServerProperties;
 import com.example.payload.FileResponse;
 import com.example.payload.ItemResponse;
+import com.example.payload.ItemWithFileResponse;
 import com.example.payload.ItemWithFilesResponse;
+import com.example.requests.SearchRequest;
 
 @Service
 public class ItemWithFileService {
@@ -34,6 +34,31 @@ public class ItemWithFileService {
 	
 	@Autowired
 	private DirectoryService directoryService;
+	
+	@Transactional
+	public List<ItemWithFileResponse> search(SearchRequest searchRequest) {
+		List<ItemWithFileResponse> itemWithFileResponses = new ArrayList<>();
+		
+		List<ItemResponse> itemResponses = itemService.search(searchRequest);
+		
+		for (ItemResponse itemResponse : itemResponses) {
+			List<String> imgPaths = directoryService.getAllFilesFromDirectory(itemResponse.getGuid());
+			List<FileResponse> fileResponses = fileService.getFiles(itemResponse.getGuid());
+
+			for (FileResponse fileResponse : fileResponses) {
+				String firstPath = imgPaths.get(0).replace("/", "\\");
+				String secondPath = fileResponse.getImgPath().replace("/", "\\");
+
+				if (firstPath.contains(secondPath)) {
+					String finalPath = serverProperties.getServerPath() + imgPaths.get(0).replace(serverProperties.getRemovePath(), "");
+					fileResponse.setImgPath(finalPath);
+					ItemWithFileResponse itemWithFileResponse = new ItemWithFileResponse(itemResponse, fileResponse);
+					itemWithFileResponses.add(itemWithFileResponse);
+				}
+			}
+		}
+		return itemWithFileResponses;
+	}
 
 	public List<ItemWithFileResponse> getItemWithFileResponses(int pageNumber) {
 		List<ItemWithFileResponse> itemWithFileResponses = new ArrayList<>();
@@ -91,7 +116,7 @@ public class ItemWithFileService {
 			}
 		}
 		return itemWithFileResponses;
-	}
+	}	
 
 	@Transactional
 	public ItemWithFilesResponse getItemWithFiles(String guid) throws UnsupportedEncodingException {

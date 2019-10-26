@@ -28,6 +28,7 @@ public class DBItem {
     private String fuelType;
     private Long speedometerCondition;
     private Long productionYear;
+    private Long mobileNumber;
 
     public DBItem() {
     }
@@ -43,7 +44,8 @@ public class DBItem {
             String description,
             String fuelType,
             Long speedometerCondition,
-            Long productionYear
+            Long productionYear,
+            Long mobileNumber
     ) {
         super();
         this.brand = brand;
@@ -57,6 +59,7 @@ public class DBItem {
         this.fuelType = fuelType;
         this.speedometerCondition = speedometerCondition;
         this.productionYear = productionYear;
+        this.mobileNumber = mobileNumber;
     }
 
     public String getBrand() {
@@ -146,4 +149,13 @@ public class DBItem {
     public void setProductionYear(Long productionYear) {
         this.productionYear = productionYear;
     }
+
+	public Long getMobileNumber() {
+		return mobileNumber;
+	}
+
+	public void setMobileNumber(Long mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}    
+    
 }

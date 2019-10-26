@@ -104,7 +104,7 @@ public class ItemServiceTest extends AbstractTest {
     public void updateItem() {
         String guid = "guid";
         DBItem item = generateItem();
-        DBItem updatedItem = new DBItem("brand2", "type2", "guid2", LocalDateTime.now().plusDays(1), "email2", "authenticationCode", new BigInteger("2000"), "description", "Diesel", 150000L, 2015L);
+        DBItem updatedItem = new DBItem("brand2", "type2", "guid2", LocalDateTime.now().plusDays(1), "email2", "authenticationCode", new BigInteger("2000"), "description", "Diesel", 150000L, 2015L, 421907397135L);
         UpdateItemRequest updateItemRequest = generateUpdateItemRequest(updatedItem);
         ItemResponse updatedItemResponse = generateItemResponse(updatedItem);
         ItemResponse itemResponse = generateItemResponse(item);

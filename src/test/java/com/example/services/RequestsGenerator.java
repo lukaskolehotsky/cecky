@@ -19,7 +19,8 @@ public class RequestsGenerator {
                 item.getDescription(),
                 item.getFuelType(),
                 item.getSpeedometerCondition(),
-                item.getProductionYear()
+                item.getProductionYear(),
+                item.getMobileNumber()
         );
     }
 
@@ -33,7 +34,8 @@ public class RequestsGenerator {
                 "description",
                 "Diesel",
                 100000L,
-                2015L
+                2015L,
+                421907397135L
         );
     }
 
