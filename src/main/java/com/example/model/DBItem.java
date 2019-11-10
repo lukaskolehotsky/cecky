@@ -21,14 +21,14 @@ public class DBItem {
     private LocalDateTime createdDateTime;
     private String email;
     private String authenticationCode;
-    private BigInteger price;
+    private String price;
     @Lob
     @Type(type = "org.hibernate.type.TextType")
     private String description;
     private String fuelType;
-    private Long speedometerCondition;
+    private String speedometerCondition;
     private Long productionYear;
-    private Long mobileNumber;
+    private String mobileNumber;
 
     public DBItem() {
     }
@@ -40,12 +40,12 @@ public class DBItem {
             LocalDateTime createdDateTime,
             String email,
             String authenticationCode,
-            BigInteger price,
+            String price,
             String description,
             String fuelType,
-            Long speedometerCondition,
+            String speedometerCondition,
             Long productionYear,
-            Long mobileNumber
+            String mobileNumber
     ) {
         super();
         this.brand = brand;
@@ -108,17 +108,17 @@ public class DBItem {
 
     public void setAuthenticationCode(String authenticationCode) {
         this.authenticationCode = authenticationCode;
-    }
+    }    
 
-    public BigInteger getPrice() {
-        return price;
-    }
+    public String getPrice() {
+		return price;
+	}
 
-    public void setPrice(BigInteger price) {
-        this.price = price;
-    }
+	public void setPrice(String price) {
+		this.price = price;
+	}
 
-    public String getDescription() {
+	public String getDescription() {
         return description;
     }
 
@@ -134,14 +134,6 @@ public class DBItem {
         this.fuelType = fuelType;
     }
 
-    public Long getSpeedometerCondition() {
-        return speedometerCondition;
-    }
-
-    public void setSpeedometerCondition(Long speedometerCondition) {
-        this.speedometerCondition = speedometerCondition;
-    }
-
     public Long getProductionYear() {
         return productionYear;
     }
@@ -150,12 +142,28 @@ public class DBItem {
         this.productionYear = productionYear;
     }
 
-	public Long getMobileNumber() {
+	public String getSpeedometerCondition() {
+		return speedometerCondition;
+	}
+
+	public void setSpeedometerCondition(String speedometerCondition) {
+		this.speedometerCondition = speedometerCondition;
+	}
+
+	public String getMobileNumber() {
 		return mobileNumber;
 	}
 
-	public void setMobileNumber(Long mobileNumber) {
+	public void setMobileNumber(String mobileNumber) {
 		this.mobileNumber = mobileNumber;
-	}    
-    
+	}
+
+	@Override
+	public String toString() {
+		return "DBItem [id=" + id + ", brand=" + brand + ", type=" + type + ", guid=" + guid + ", createdDateTime="
+				+ createdDateTime + ", email=" + email + ", authenticationCode=" + authenticationCode + ", price="
+				+ price + ", description=" + description + ", fuelType=" + fuelType + ", speedometerCondition="
+				+ speedometerCondition + ", productionYear=" + productionYear + ", mobileNumber=" + mobileNumber + "]";
+	}       
+	
 }

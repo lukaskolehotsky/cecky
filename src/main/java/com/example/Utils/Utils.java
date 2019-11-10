@@ -95,7 +95,7 @@ public class Utils {
         if (request.getPrice() != null) {
             item.setPrice(request.getPrice());
         } else {
-            item.setPrice(new BigInteger("1"));
+            item.setPrice("1500");
         }
 
         if (request.getFuelType() != null) {
@@ -113,13 +113,13 @@ public class Utils {
         if (request.getSpeedometerCondition() != null) {
             item.setSpeedometerCondition(request.getSpeedometerCondition());
         } else {
-            item.setSpeedometerCondition(180500L);
+            item.setSpeedometerCondition("18500");
         }
         
         if (request.getMobileNumber() != null) {
         	item.setMobileNumber(request.getMobileNumber());
         } else {
-        	item.setMobileNumber(421907397135L);
+        	item.setMobileNumber("421907397135");
         }
 
         return item;

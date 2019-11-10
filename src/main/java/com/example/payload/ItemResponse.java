@@ -1,8 +1,6 @@
 package com.example.payload;
 
-import java.math.BigInteger;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 public class ItemResponse {
 
@@ -12,12 +10,12 @@ public class ItemResponse {
     private LocalDateTime createdDateTime;
     private String email;
     private String authenticationCode;
-    private BigInteger price;
+    private String price;
     private String description;
     private String fuelType;
-    private Long speedometerCondition;
+    private String speedometerCondition;
     private Long productionYear;
-    private Long mobileNumber;
+    private String mobileNumber;
 
     public ItemResponse(
             String brand,
@@ -26,12 +24,12 @@ public class ItemResponse {
             LocalDateTime createdDateTime,
             String email,
             String authenticationCode,
-            BigInteger price,
+            String price,
             String description,
             String fuelType,
-            Long speedometerCondition,
+            String speedometerCondition,
             Long productionYear,
-            Long mobileNumber
+            String mobileNumber
     ) {
         super();
         this.brand = brand;
@@ -94,17 +92,17 @@ public class ItemResponse {
 
     public void setAuthenticationCode(String authenticationCode) {
         this.authenticationCode = authenticationCode;
-    }
+    }    
 
-    public BigInteger getPrice() {
-        return price;
-    }
+    public String getPrice() {
+		return price;
+	}
 
-    public void setPrice(BigInteger price) {
-        this.price = price;
-    }
+	public void setPrice(String price) {
+		this.price = price;
+	}
 
-    public String getDescription() {
+	public String getDescription() {
         return description;
     }
 
@@ -120,27 +118,27 @@ public class ItemResponse {
         this.fuelType = fuelType;
     }
 
-    public Long getSpeedometerCondition() {
-        return speedometerCondition;
-    }
-
-    public void setSpeedometerCondition(Long speedometerCondition) {
-        this.speedometerCondition = speedometerCondition;
-    }
-
     public Long getProductionYear() {
         return productionYear;
     }
 
     public void setProductionYear(Long productionYear) {
         this.productionYear = productionYear;
-    }    
+    }     
 
-    public Long getMobileNumber() {
+	public String getSpeedometerCondition() {
+		return speedometerCondition;
+	}
+
+	public void setSpeedometerCondition(String speedometerCondition) {
+		this.speedometerCondition = speedometerCondition;
+	}
+
+	public String getMobileNumber() {
 		return mobileNumber;
 	}
 
-	public void setMobileNumber(Long mobileNumber) {
+	public void setMobileNumber(String mobileNumber) {
 		this.mobileNumber = mobileNumber;
 	}
 

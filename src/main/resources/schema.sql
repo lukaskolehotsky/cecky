@@ -26,3 +26,13 @@ id varchar(100) NULL,
  PRIMARY KEY (id)
 );
 --ALTER TABLE public.items add COLUMN mobile_number numeric null;
+
+--ALTER TABLE public.items DROP COLUMN price;
+--ALTER TABLE public.items DROP COLUMN speedometer_condition;
+--ALTER TABLE public.items DROP COLUMN mobile_number;
+--ALTER TABLE public.items ADD COLUMN price VARCHAR(100) null;
+--ALTER TABLE public.items ADD COLUMN speedometer_condition VARCHAR(100) null;
+--ALTER TABLE public.items ADD COLUMN mobile_number VARCHAR(100) null;
+--UPDATE public.items set price = '1500' where price is null;
+--UPDATE public.items set speedometer_condition = '150495' where speedometer_condition is null;
+--UPDATE public.items set mobile_number = '0907397135' where mobile_number is null;

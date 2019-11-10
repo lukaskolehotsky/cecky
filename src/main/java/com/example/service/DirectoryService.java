@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 @Service
 public class DirectoryService {
 
-    private static final Logger logger = LoggerFactory.getLogger(DirectoryService.class);
+//    private static final Logger logger = LoggerFactory.getLogger(DirectoryService.class);
 
     @Autowired
     private ServerProperties serverProperties;
@@ -32,12 +32,12 @@ public class DirectoryService {
     public List<String> getAllFilesFromDirectory(String guid) {
         String imagesPath = serverProperties.getUploadPath();
 
-        logger.info("getAllFilesFromDirectory - FROM DIRECTORY -" + imagesPath);
+//        logger.info("getAllFilesFromDirectory - FROM DIRECTORY -" + imagesPath);
 
         try (Stream<Path> walk = Files.walk(Paths.get(imagesPath))) {
             List<String> result = walk.map(x -> x.toString()).filter(f -> f.contains(guid))
                     .collect(Collectors.toList());
-            result.forEach(System.out::println);
+//            result.forEach(System.out::println);
 
             return result;
         } catch (IOException e) {
@@ -50,12 +50,12 @@ public class DirectoryService {
         File fff = new File(path);
         if (!fff.exists()) {
             if (fff.mkdir()) {
-                logger.info("Directory Images was created. " + path);
+//                logger.info("Directory Images was created. " + path);
             } else {
-                logger.info("Failed to create Images directory. " + path);
+//                logger.info("Failed to create Images directory. " + path);
             }
         } else {
-            logger.info("Directory Images already exist. " + path);
+//            logger.info("Directory Images already exist. " + path);
         }
     }
 
@@ -73,7 +73,7 @@ public class DirectoryService {
             inputStream.close();
             System.gc();
         }
-        System.out.println("Done");
+//        System.out.println("Done");
     }
 
     public String prepareAndSaveToDirectory(MultipartFile file, String guid, String fileName) throws IOException {
@@ -123,7 +123,7 @@ public class DirectoryService {
         writer.dispose();
         System.gc();
 
-        logger.info("Image should be compressed.");
+//        logger.info("Image should be compressed.");
         removeImageFromDirectory(imagePath);
     }
 
@@ -131,13 +131,13 @@ public class DirectoryService {
         try {
             Files.deleteIfExists(Paths.get(path));
         } catch (NoSuchFileException e) {
-            logger.info("No such file/directory exists");
+//            logger.info("No such file/directory exists");
         } catch (DirectoryNotEmptyException e) {
-            logger.info("Directory is not empty.");
+//            logger.info("Directory is not empty.");
         } catch (IOException e) {
-            logger.info("Invalid permissions.");
+//            logger.info("Invalid permissions.");
         }
-        logger.info("Deletion successful.");
+//        logger.info("Deletion successful.");
     }
 
 }

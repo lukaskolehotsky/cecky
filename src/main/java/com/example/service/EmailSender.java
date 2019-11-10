@@ -18,8 +18,8 @@ public class EmailSender {
         msg.setFrom("lukaskolehotsky@gmail.com");
         msg.setTo(email);
 
-        msg.setSubject("Inzerat vytvoreny - " + brand + " " + type);
-        msg.setText("Dobry den, \n autentifikacny kod pre odstranenie alebo upravu Vasho inzeratu je - " + authenticationCode);
+        msg.setSubject("Inzerát vytvorený - " + brand + " " + type);
+        msg.setText("Dobrý deň, \n autentifikačný kód pre odstránenie alebo úpravu Vášho inzerátu je - " + authenticationCode);
 
         javaMailSender.send(msg);
     }
@@ -29,8 +29,8 @@ public class EmailSender {
         msg.setFrom("lukaskolehotsky@gmail.com");
         msg.setTo(ownerEmail);
 
-        msg.setSubject("Gratulujeme, nasiel sa zaujemca o Vas inzerat.");
-        msg.setText("Zaujemca Vam nechal odkaz: \n \n" + request.getBuyerMessage() + "\n Mozete ho kontaktovat emailom - " + request.getBuyerEmail() + "\n alebo telefonicky - " + request.getBuyerMobile());
+        msg.setSubject("Gratulujeme, našiel sa záujemca o Váš inzerát.");
+        msg.setText("Záujemca Vám nechal odkaz: \n \n" + request.getBuyerMessage() + "\n Môžete ho kontaktovať emailom - " + request.getBuyerEmail() + "\n alebo telefonicky - " + request.getBuyerMobile());
 
         javaMailSender.send(msg);
 	}

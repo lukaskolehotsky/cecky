@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<! DOCTYPE HTML PUBLIC "- // W3C / DTD HTML 4.01 Transitional // SK">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -8,7 +9,7 @@
 <c:set var="url">${req.requestURL}</c:set>
 <c:set var="uri" value="${req.requestURI}" />
 
-<html lang="en">
+<html lang="sk">
     <head>
     <!-- Required meta tags -->
     <!--<meta charset="utf-8">-->
@@ -73,19 +74,26 @@
                 <c:set var="carouselItem" value="<div class='carousel-item'>" />
                 <c:set var="coldMd4" value="<div class='col-md-4'>" />
                 <c:set var="coldMd4Clearfix" value="<div class='col-md-4 clearfix d-none d-md-block'>" />
+                <c:set var="count" value="6" />
+				<c:if test="${itemWithFileResponses.size() % count == 0}">
+					<c:set var="iterationsCount" value="${itemWithFileResponses.size() / count}" />
+				</c:if>				
+				<c:if test="${itemWithFileResponses.size() % count != 0}">
+					<c:set var="iterationsCount" value="${itemWithFileResponses.size() / count + 1}" />
+				</c:if>
 
                 <br>
                 <br>
                 <!--Slides-->
                 <div class="carousel-inner" role="listbox">
-                    <c:forEach begin="1" end="${itemWithFileResponses.size() / 3 + 1}" varStatus="loop">
+					<c:forEach begin="1" end="${iterationsCount}" varStatus="loop">					
                         <c:if test="${loop.count == 1}">${carouselItemActive}</c:if>
                         <c:if test="${loop.count != 1}">${carouselItem}</c:if>
                             <div class="row">
-                                <c:forEach items="${itemWithFileResponses}" var="itemWithFileResponse" varStatus="loopCounter">
-                                    <c:if test="${loopCounter.count >= loop.count * 3 - 2 && loopCounter.count < loop.count * 3 + 1}">
-                                        <%--<c:if test="${loopCounter.count %3 == 0}">${coldMd4}</c:if>
-                                        <c:if test="${loopCounter.count %3 != 0}">${coldMd4Clearfix}</c:if>--%>
+                                <c:forEach items="${itemWithFileResponses}" var="itemWithFileResponse" varStatus="loopCounter">                                    
+                                    <c:if test="${loopCounter.count >= loop.count * count - 5 && loopCounter.count < loop.count * count + 1}">                                    
+                                        <%--<c:if test="${loopCounter.count % count == 0}">${coldMd4}</c:if>--%>
+                                        <%--<c:if test="${loopCounter.count % count != 0}">${coldMd4Clearfix}</c:if>--%>
                                         <div class="col-md-4 mb-4">
                                             <div class="card mb-2">
                                                 <img class="card-img-top" src="${itemWithFileResponse.getFileResponse().getImgPath()}" alt="Card image cap">
@@ -111,7 +119,7 @@
                                 </c:forEach>
                             </div>
                         </div>
-                    </c:forEach>
+					</c:forEach>
                 </div>
                 <!--/.Slides-->
                 <center>
@@ -140,7 +148,7 @@
 		          </div>
 		          <div class="modal-body">
 		            <div class="form-group">
-		              <label for="brand">Znacka:</label>
+		              <label for="brand">Značka:</label>
 		              <form:input type="text" id="brand" path="brand" class="form-control" value=""/>
 		            </div>            
 		          </div>

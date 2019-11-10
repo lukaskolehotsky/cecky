@@ -24,7 +24,7 @@ import javax.transaction.Transactional;
 @Service
 public class FileService extends Utils {
 
-	private static final Logger logger = LoggerFactory.getLogger(FileService.class);
+//	private static final Logger logger = LoggerFactory.getLogger(FileService.class);
 
 	@Autowired
 	private FileRepository fileRepository;
@@ -41,7 +41,7 @@ public class FileService extends Utils {
 	public List<FileResponse> getFiles(String guid) {
 		List<FileResponse> fileResponses = new ArrayList<>();
 		for (DBFile file : fileRepository.findByGuid(guid)) {
-			logger.info("findByGuid - FROM DATABASE - " + file.toString());
+//			logger.info("findByGuid - FROM DATABASE - " + file.toString());
 			fileResponses.add(new FileResponse(file.getFileName(), "", file.getFileType(), 1, file.getImgPath()));
 		}
 
