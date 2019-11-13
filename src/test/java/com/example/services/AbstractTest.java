@@ -1,19 +1,19 @@
 package com.example.services;
 
-import com.example.model.DBFile;
-import com.example.model.DBItem;
-import com.example.requests.CreateItemRequest;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.math.BigInteger;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import com.example.model.DBFile;
+import com.example.model.DBItem;
+import com.example.requests.CreateItemRequest;
 
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -26,11 +26,12 @@ public abstract class AbstractTest extends ResponsesGenerator {
         String type = "type";
         String email = "email";
         String authenticationCode = "authenticationCode";
-        BigInteger price = new BigInteger("1500");
+        String price = "1500";
         String description = "description";
         String fuelType = "Diesel";
-        Long speedometerCondition = 100000L;
+        String speedometerCondition = "2015";
         Long productionYear = 2015L;
+        String mobileNumber = "0907397135";
         return new DBItem(
                 brand,
                 type,
@@ -42,7 +43,8 @@ public abstract class AbstractTest extends ResponsesGenerator {
                 description,
                 fuelType,
                 speedometerCondition,
-                productionYear
+                productionYear,
+                mobileNumber
         );
     }
 
@@ -58,7 +60,8 @@ public abstract class AbstractTest extends ResponsesGenerator {
                 request.getDescription(),
                 request.getFuelType(),
                 request.getSpeedometerCondition(),
-                request.getProductionYear()
+                request.getProductionYear(),
+                request.getMobileNumber()
         );
     }
 

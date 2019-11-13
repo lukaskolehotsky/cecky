@@ -10,6 +10,8 @@ import com.example.service.DirectoryService;
 import com.example.service.FileService;
 import com.example.service.ItemService;
 import com.example.service.ItemWithFileService;
+
+import org.javatuples.Pair;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -57,24 +59,25 @@ public class ItemWithFileServiceTest extends AbstractTest {
 		int pageNumber = 0;
 		DBItem item = generateItem();
 		ItemResponse itemResponse = generateItemResponse(item);
-		List<ItemResponse> itemResponses = new ArrayList<>();
+		List<ItemResponse> itemResponses = new ArrayList<ItemResponse>();
 		itemResponses.add(itemResponse);
+		Pair<List<ItemResponse>,Integer> tuple = new Pair<List<ItemResponse>,Integer> (itemResponses, 1);
 		List<String> imgPaths = new ArrayList<>();
 		imgPaths.add("imgPath");
 		FileResponse fileResponse = generateFileResponse();
 		List<FileResponse> fileResponses = new ArrayList<>();
 		fileResponses.add(fileResponse);
-
-		Mockito.when(itemService.getAll(pageNumber)).thenReturn(itemResponses);
+		
+		Mockito.when(itemService.getAll(pageNumber)).thenReturn(tuple);
 		Mockito.when(directoryService.getAllFilesFromDirectory(itemResponse.getGuid())).thenReturn(imgPaths);
 		Mockito.when(fileService.getFiles(itemResponse.getGuid())).thenReturn(fileResponses);
 		Mockito.when(serverProperties.getServerPath()).thenReturn("serverPath");
 		Mockito.when(serverProperties.getRemovePath()).thenReturn("removePath");
 
-		List<ItemWithFileResponse> response = itemWithFileService.getItemWithFileResponses(pageNumber);
+		Pair<List<ItemWithFileResponse>, Integer> response = itemWithFileService.getItemWithFileResponses(pageNumber);
 
-		Assert.assertEquals("guid", response.get(0).getItemResponse().getGuid());
-		Assert.assertEquals("serverPathimgPath", response.get(0).getFileResponse().getImgPath());
+		Assert.assertEquals("guid", response.getValue0().get(0).getItemResponse().getGuid());
+		Assert.assertEquals("serverPathimgPath", response.getValue0().get(0).getFileResponse().getImgPath());
 	}
 
 	@Test

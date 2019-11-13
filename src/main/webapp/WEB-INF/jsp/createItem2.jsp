@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<! DOCTYPE HTML PUBLIC "- // W3C / DTD HTML 4.01 Transitional // SK">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -8,7 +9,7 @@
 <c:set var="url">${req.requestURL}</c:set>
 <c:set var="uri" value="${req.requestURI}" />
 
-<html lang="en">
+<html lang="sk">
 <head>
     <!-- Required meta tags -->
         <meta charset="utf-8">
@@ -33,11 +34,37 @@
       
       <br>
       <br>
+      
+      <div class="row">
+        <div class="col-md-2"></div> 
+        <div class="col-md-2">
+            
+        </div>
+        <div class="col-md-6 text-justify font-weight-bold text-success text-center">
+            <h4>Krok 2: Pridanie obrázkov</h4>
+        </div>  
+        <div class="col-md-2"></div>    
+      </div>
+      
+      <br>
+      
+      <div class="row">
+        <div class="col-md-2"></div> 
+        <div class="col-md-2">
+            
+        </div>
+        <div class="col-md-6 text-justify font-weight-bold text-danger text-center">
+            <h5>Pre úspešné vytvorenie inzerátu je potrebné vybrať minimálne 1 obrázok a maximálne 8 obrázkov.</h5>
+        </div>  
+        <div class="col-md-2"></div>    
+      </div>
+      
+      <br>
 
       <div class="row">
         <div class="col-md-2"></div> 
         <div class="col-md-2 text-justify font-weight-bold my-auto">
-            Vyber obrazky:
+            Vyber obrázky:
         </div>
         <div class="col-md-6 text-justify font-weight-bold">
             <input id="multipleFileUploadInput" type="file" name="files" class="file-input" multiple required />

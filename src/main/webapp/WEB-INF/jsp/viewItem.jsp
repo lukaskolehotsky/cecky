@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<! DOCTYPE HTML PUBLIC "- // W3C / DTD HTML 4.01 Transitional // SK">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -8,7 +9,7 @@
 <c:set var="url">${req.requestURL}</c:set>
 <c:set var="uri" value="${req.requestURI}" />
 
-<html lang="en">
+<html lang="sk">
 <head>
     <!-- Required meta tags -->
         <meta charset="utf-8">
@@ -79,10 +80,10 @@
         </div>  
         <div class="col-md-2"></div>    
     </div>
-
-       <br>
-       <br>
-
+    
+    <br>
+    <br>    
+    
        <div class="row">
             <div class="col-md-2"></div> 
             <div class="col-md-8">
@@ -104,17 +105,44 @@
        </div>        
        <br>
        <br>
+       
+       <div class="row">
+        <div class="col-md-2"></div> 
+        <div class="col-md-1">Kontakt:</div> 
+        <div class="col-md-8 text-justify my-auto">
+	            <c:out value="${itemWithFiles.getItemResponse().getMobileNumber()}"/>
+	    </div>     
+      </div>
+
+      <br>
+      <br>
+       
+       <div class="row">
+	        <div class="col-md-2"></div> 
+	        <div class="col-md-2">
+	        	<!-- Button trigger modal -->
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal2">
+				  Pošli správu
+				</button> 
+	        </div>	        
+	        <div class="col-md-8"></div>    
+	    </div>
+	
+	       <br>
+	       <br>
+       
 
         <div class="row">
             <div class="col-md-2"></div> 
             <div class="col-md-8 text-center">
               <div class="btn-group" role="group" aria-label="Basic example">
-				<button type="button" class="btn btn-secondary btn-warning" onclick="location.href='${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/updateItem1?guid=${itemWithFiles.getItemResponse().getGuid()}';">Upravit</button>
+				<button type="button" class="btn btn-secondary btn-warning" onclick="location.href='${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/updateItem1?guid=${itemWithFiles.getItemResponse().getGuid()}';">Upraviť</button>
 				
 				<!-- Button trigger modal -->
 				<button type="button" class="btn btn-secondary btn-danger" data-toggle="modal" data-target="#exampleModal">
-				  Odstranit
-				</button>                
+				  Odstrániť
+				</button> 			
+				              
                 </div>
             </div>  
             <div class="col-md-2"></div>    
@@ -132,20 +160,53 @@
 	        <div class="modal-content">
 	        
 	          <div class="modal-header">
-	            <h5 class="modal-title" id="exampleModalLabel">Naozaj odstranit?</h5>
+	            <h5 class="modal-title" id="exampleModalLabel">Naozaj odstrániť?</h5>
 	            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	              <span aria-hidden="true">&times;</span>
 	            </button>
 	          </div>
 	          <div class="modal-body">
 	            <div class="form-group">
-	              <label for="authCode">Autentifikacny kod:</label>
+	              <label for="authCode">Autentifikačný kód:</label>
 	              <form:input type="text" id="authCode" path="authCode" class="form-control" value=""/>
 	            </div>            
 	          </div>
 	          <div class="modal-footer">
-	            <!--<button type="button" class="btn btn-danger" data-dismiss="modal">Nie</button>-->
-	            <button type="submit" class="btn btn-success">Ano</button>
+	            <button type="submit" class="btn btn-success">Áno</button>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+ 	</form:form>
+ 	
+ 	<form:form class="container register-form" method="post" modelAttribute="contactOwnerRequest" action="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/contactOwner?guid=${itemWithFiles.getItemResponse().getGuid()}">
+ 		<!-- Modal -->
+	    <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	      <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+	        
+	          <div class="modal-header">
+	            <h5 class="modal-title" id="exampleModalLabel">Pošli správu</h5>
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	              <span aria-hidden="true">&times;</span>
+	            </button>
+	          </div>
+	          <div class="modal-body">
+	            <div class="form-group">
+	              <label for="buyerEmail">Email:</label>
+	              <form:input type="text" id="buyerEmail" path="buyerEmail" class="form-control" value=""/>
+	            </div>  
+	            <div class="form-group">
+	              <label for="buyerMessage">Správa:</label>
+	              <form:input type="text" id="buyerMessage" path="buyerMessage" class="form-control" value=""/>
+	            </div>       
+	            <div class="form-group">
+	              <label for="buyerMobile">Telefón:</label>
+	              <form:input type="number" id="buyerMobile" path="buyerMobile" class="form-control" value=""/>
+	            </div>     
+	          </div>
+	          <div class="modal-footer">
+	            <button type="submit" class="btn btn-success">Pošli správu</button>
 	          </div>
 	        </div>
 	      </div>
