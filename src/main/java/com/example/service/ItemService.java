@@ -1,24 +1,27 @@
 package com.example.service;
 
-import com.example.Utils.Utils;
-import com.example.model.DBItem;
-import com.example.payload.ItemResponse;
-import com.example.repository.ItemRepository;
-import com.example.requests.CreateItemRequest;
-import com.example.requests.UpdateItemRequest;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+import javax.persistence.Tuple;
 import javax.transaction.Transactional;
 
+import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import com.example.Utils.Utils;
+import com.example.model.DBItem;
+import com.example.payload.ItemResponse;
+import com.example.repository.ItemRepository;
+import com.example.requests.ContactOwnerRequest;
+import com.example.requests.CreateItemRequest;
+import com.example.requests.SearchRequest;
+import com.example.requests.UpdateItemRequest;
 
 @Service
 public class ItemService extends Utils {
@@ -58,8 +61,34 @@ public class ItemService extends Utils {
     	itemRepository.deleteByGuid(guid);
     } 
     
-    public List<ItemResponse> getAll(int pageNumber){
-    	Pageable paging = PageRequest.of(pageNumber, 500, Sort.by("createdDateTime").descending());
+    public List<ItemResponse> search(SearchRequest searchRequest){    	
+    	List<DBItem> items = null;
+    	
+    	if(!searchRequest.getBrand().isEmpty() && !searchRequest.getType().isEmpty()) {
+    		items = itemRepository.findByBrandAndType(searchRequest.getBrand(), searchRequest.getType());
+    	}
+    	
+    	if(!searchRequest.getBrand().isEmpty() && searchRequest.getType().isEmpty()) {
+    		items = itemRepository.findByBrand(searchRequest.getBrand());
+    	}
+    	
+    	if(!searchRequest.getType().isEmpty() && searchRequest.getBrand().isEmpty()) {
+    		items = itemRepository.findByType(searchRequest.getType());
+    	}
+    	
+    	List<ItemResponse> itemResponses = new ArrayList<>();
+
+    	if(items != null) {
+    		for(DBItem item: items) {
+        		itemResponses.add(generateItemResponse(item));
+        	}
+    	}
+    	
+    	return itemResponses;
+    }  
+    
+    public Pair<List<ItemResponse>, Integer> getAll(int pageNumber){
+    	Pageable paging = PageRequest.of(pageNumber, 12, Sort.by("createdDateTime").descending());
     	
     	Page<DBItem> items = itemRepository.findAll(paging);
     	List<ItemResponse> itemResponses = new ArrayList<>();
@@ -70,8 +99,24 @@ public class ItemService extends Utils {
         	}
     	}
     	
-    	return itemResponses;
-    }    
+    	return new Pair<List<ItemResponse>, Integer>(itemResponses, (int) (long) items.getTotalElements());
+    }  
+    
+	public Pair<List<ItemResponse>, Integer> search2(int pageNumber, SearchRequest request) {
+		Pageable paging = PageRequest.of(pageNumber, 12, Sort.by("created_Date_Time").descending());
+
+		Page<DBItem> items = itemRepository.search2(paging, request.getBrand(), request.getType());
+
+		List<ItemResponse> itemResponses = new ArrayList<>();
+
+		if (items != null) {
+			for (DBItem item : items.getContent()) {
+				itemResponses.add(generateItemResponse(item));
+			}
+		}
+
+		return new Pair<List<ItemResponse>, Integer>(itemResponses, (int) (long) items.getTotalElements());
+	}
         
     public ItemResponse updateItem(String guid, UpdateItemRequest request) {   
     	
@@ -102,5 +147,12 @@ public class ItemService extends Utils {
             throw new IllegalArgumentException("For your email does not exist any item.");
         }
     }
+    
+	
+	public void contactOwner(String guid, ContactOwnerRequest request) {
+		DBItem item = itemRepository.findByGuid(guid);
+		
+		emailSender.sendEmailToOwner(item.getEmail(), request);
+	}
 
 }

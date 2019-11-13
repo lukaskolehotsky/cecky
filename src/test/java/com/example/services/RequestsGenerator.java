@@ -1,11 +1,10 @@
 package com.example.services;
 
+import java.util.Optional;
+
 import com.example.model.DBItem;
 import com.example.requests.CreateItemRequest;
 import com.example.requests.UpdateItemRequest;
-
-import java.math.BigInteger;
-import java.util.Optional;
 
 public class RequestsGenerator {
 
@@ -19,7 +18,8 @@ public class RequestsGenerator {
                 item.getDescription(),
                 item.getFuelType(),
                 item.getSpeedometerCondition(),
-                item.getProductionYear()
+                item.getProductionYear(),
+                item.getMobileNumber()
         );
     }
 
@@ -29,11 +29,12 @@ public class RequestsGenerator {
                 "type",
                 "email",
                 "authenticationCode",
-                new BigInteger("1500"),
+                "1500",
                 "description",
                 "Diesel",
-                100000L,
-                2015L
+                "10000",
+                2015L,
+                "421907397135"
         );
     }
 

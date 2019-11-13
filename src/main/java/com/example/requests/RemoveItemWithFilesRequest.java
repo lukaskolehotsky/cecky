@@ -1,6 +1,5 @@
 package com.example.requests;
 
-
 public class RemoveItemWithFilesRequest {
 
 	private String authCode;
@@ -20,6 +19,6 @@ public class RemoveItemWithFilesRequest {
 	@Override
 	public String toString() {
 		return "RemoveItemWithFilesRequest [authCode=" + authCode + "]";
-	}	
-	
+	}
+
 }

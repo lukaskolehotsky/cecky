@@ -8,26 +8,29 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "items")
+@Table(name = "items", schema="public")
 public class DBItem {
 
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
+    
+    @Column(name = "brand")
     private String brand;
     private String type;
     private String guid;
     private LocalDateTime createdDateTime;
     private String email;
     private String authenticationCode;
-    private BigInteger price;
+    private String price;
     @Lob
     @Type(type = "org.hibernate.type.TextType")
     private String description;
     private String fuelType;
-    private Long speedometerCondition;
+    private String speedometerCondition;
     private Long productionYear;
+    private String mobileNumber;
 
     public DBItem() {
     }
@@ -39,11 +42,12 @@ public class DBItem {
             LocalDateTime createdDateTime,
             String email,
             String authenticationCode,
-            BigInteger price,
+            String price,
             String description,
             String fuelType,
-            Long speedometerCondition,
-            Long productionYear
+            String speedometerCondition,
+            Long productionYear,
+            String mobileNumber
     ) {
         super();
         this.brand = brand;
@@ -57,6 +61,7 @@ public class DBItem {
         this.fuelType = fuelType;
         this.speedometerCondition = speedometerCondition;
         this.productionYear = productionYear;
+        this.mobileNumber = mobileNumber;
     }
 
     public String getBrand() {
@@ -105,17 +110,17 @@ public class DBItem {
 
     public void setAuthenticationCode(String authenticationCode) {
         this.authenticationCode = authenticationCode;
-    }
+    }    
 
-    public BigInteger getPrice() {
-        return price;
-    }
+    public String getPrice() {
+		return price;
+	}
 
-    public void setPrice(BigInteger price) {
-        this.price = price;
-    }
+	public void setPrice(String price) {
+		this.price = price;
+	}
 
-    public String getDescription() {
+	public String getDescription() {
         return description;
     }
 
@@ -131,14 +136,6 @@ public class DBItem {
         this.fuelType = fuelType;
     }
 
-    public Long getSpeedometerCondition() {
-        return speedometerCondition;
-    }
-
-    public void setSpeedometerCondition(Long speedometerCondition) {
-        this.speedometerCondition = speedometerCondition;
-    }
-
     public Long getProductionYear() {
         return productionYear;
     }
@@ -146,4 +143,29 @@ public class DBItem {
     public void setProductionYear(Long productionYear) {
         this.productionYear = productionYear;
     }
+
+	public String getSpeedometerCondition() {
+		return speedometerCondition;
+	}
+
+	public void setSpeedometerCondition(String speedometerCondition) {
+		this.speedometerCondition = speedometerCondition;
+	}
+
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
+
+	@Override
+	public String toString() {
+		return "DBItem [id=" + id + ", brand=" + brand + ", type=" + type + ", guid=" + guid + ", createdDateTime="
+				+ createdDateTime + ", email=" + email + ", authenticationCode=" + authenticationCode + ", price="
+				+ price + ", description=" + description + ", fuelType=" + fuelType + ", speedometerCondition="
+				+ speedometerCondition + ", productionYear=" + productionYear + ", mobileNumber=" + mobileNumber + "]";
+	}       
+	
 }

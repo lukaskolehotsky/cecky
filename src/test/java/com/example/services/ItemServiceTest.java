@@ -1,5 +1,24 @@
 package com.example.services;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.javatuples.Pair;
+import org.junit.Assert;
+import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import com.example.model.DBItem;
 import com.example.payload.ItemResponse;
 import com.example.repository.ItemRepository;
@@ -7,146 +26,132 @@ import com.example.requests.CreateItemRequest;
 import com.example.requests.UpdateItemRequest;
 import com.example.service.EmailSender;
 import com.example.service.ItemService;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.data.domain.*;
-
-import java.math.BigInteger;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 
 public class ItemServiceTest extends AbstractTest {
 
-    @InjectMocks
-    private ItemService itemService;
+	@InjectMocks
+	private ItemService itemService;
 
-    @Mock
-    private ItemRepository itemRepository;
+	@Mock
+	private ItemRepository itemRepository;
 
-    @Mock
-    private EmailSender emailSender;
+	@Mock
+	private EmailSender emailSender;
 
-    @Before
-    public void setUp() {
-        //itemService.evictCache();
-    }
+	@Test
+	public void createItem() {
+		CreateItemRequest createItemRequest = generateCreateItemRequest();
+		DBItem item = generateItem(createItemRequest);
+		ItemResponse expected = generateItemResponse(item);
 
-    @After
-    public void tearDown() {
-        // Clean up after each test method.
-    }
+		Mockito.when(itemRepository.save(any(DBItem.class))).thenReturn(item);
+		doNothing().when(emailSender).sendEmail(item.getAuthenticationCode(), createItemRequest.getEmail(), createItemRequest.getBrand(), createItemRequest.getType());
 
-    @Test
-    public void createItem() {
-        CreateItemRequest createItemRequest = generateCreateItemRequest();
-        DBItem item = generateItem(createItemRequest);
-        ItemResponse itemResponse = generateItemResponse(item);
+		ItemResponse actual = itemService.createItem(createItemRequest);
 
-        Mockito.when(itemRepository.save(any(DBItem.class))).thenReturn(item);
-        doNothing().when(emailSender).sendEmail("ABCDE", createItemRequest.getEmail(), createItemRequest.getBrand(), createItemRequest.getType());
+		verifyItemResponse(expected, actual);
+		
+//		Mockito.verify(itemRepository, Mockito.times(1)).save(any(DBItem.class));
+//		Mockito.verify(emailSender, Mockito.times(1)).sendEmail(item.getAuthenticationCode(), createItemRequest.getEmail(), createItemRequest.getBrand(), createItemRequest.getType());
+	}
 
-        ItemResponse response = itemService.createItem(createItemRequest);
+	@Test
+	public void getItem() {
+		String guid = "guid";
+		DBItem item = generateItem();
+		ItemResponse expected = generateItemResponse(item);
 
-        Assert.assertEquals(itemResponse.getBrand(), response.getBrand());
-        Assert.assertEquals(itemResponse.getGuid(), response.getGuid());
-        Assert.assertEquals(itemResponse.getType(), response.getType());
-    }
+		Mockito.when(itemRepository.findByGuid(guid)).thenReturn(item);
 
-    @Test
-    public void getItem() {
-        String guid = "guid";
+		ItemResponse response = itemService.getItem(guid);
 
-        DBItem item = generateItem();
+		verifyItemResponse(expected, response);
+		
+		Mockito.verify(itemRepository, Mockito.times(1)).findByGuid(guid);
+	}
 
-        Mockito.when(itemRepository.findByGuid(guid)).thenReturn(item);
+	@Test
+	public void removeItem() {
+		String guid = "guid";
 
-        ItemResponse response = itemService.getItem(guid);
+		doNothing().when(itemRepository).deleteByGuid(guid);
 
-        Assert.assertEquals(response.getBrand(), item.getBrand());
-        Assert.assertEquals(response.getType(), item.getType());
-        Assert.assertEquals(response.getGuid(), item.getGuid());
-    }
+		itemService.removeItem(guid);
+		
+		Mockito.verify(itemRepository, Mockito.times(1)).deleteByGuid(guid);
+	}
 
-    @Test
-    public void removeItem() {
-        String guid = "guid";
+	@Test
+	public void getAll() {
+		List<DBItem> items = new ArrayList<>();
+		items.add(generateItem());
+		Page<DBItem> pagedResponse = new PageImpl<DBItem>(items);
 
-        doNothing().when(itemRepository).deleteByGuid(guid);
+		Pageable sortedByCreateDateTimeAsc = PageRequest.of(0, 12, Sort.by("createdDateTime").descending());
+		Mockito.when(itemRepository.findAll(sortedByCreateDateTimeAsc)).thenReturn(pagedResponse);
 
-        itemService.removeItem(guid);
-    }
+		Pair<List<ItemResponse>, Integer> response = itemService.getAll(0);
 
-    @Test
-    public void getAll() {
-        List<DBItem> items = new ArrayList<>();
-        items.add(generateItem());
-        Page<DBItem> pagedResponse = new PageImpl(items);
+		Assert.assertEquals(pagedResponse.getTotalElements(), response.getValue0().size());
+		
+		Mockito.verify(itemRepository, Mockito.times(1)).findAll(sortedByCreateDateTimeAsc);
+	}
 
-        Pageable sortedByCreateDateTimeAsc =
-                PageRequest.of(0, 500, Sort.by("createdDateTime").descending());
-        Mockito.when(itemRepository.findAll(sortedByCreateDateTimeAsc)).thenReturn(pagedResponse);
+	@Test
+	public void updateItem() {
+		String guid = "guid";
+		DBItem item = generateItem();
+		DBItem updatedItem = new DBItem("brand2", "type2", "guid2", LocalDateTime.now().plusDays(1), "email2",
+				"authenticationCode", "2000", "description", "Diesel", "15000", 2015L, "421907397135");
+		UpdateItemRequest updateItemRequest = generateUpdateItemRequest(updatedItem);
+		ItemResponse updatedItemResponse = generateItemResponse(updatedItem);
 
-        List<ItemResponse> response = itemService.getAll(0);
+		Mockito.when(itemRepository.findByGuid(guid)).thenReturn(item);
+		Mockito.when(itemRepository.save(any())).thenReturn(updatedItem);
 
-        Assert.assertEquals(pagedResponse.getTotalElements(), response.size());
-    }
+		ItemResponse response = itemService.updateItem(guid, updateItemRequest);
 
-    @Test
-    public void updateItem() {
-        String guid = "guid";
-        DBItem item = generateItem();
-        DBItem updatedItem = new DBItem("brand2", "type2", "guid2", LocalDateTime.now().plusDays(1), "email2", "authenticationCode", new BigInteger("2000"), "description", "Diesel", 150000L, 2015L);
-        UpdateItemRequest updateItemRequest = generateUpdateItemRequest(updatedItem);
-        ItemResponse updatedItemResponse = generateItemResponse(updatedItem);
-        ItemResponse itemResponse = generateItemResponse(item);
+		verifyItemResponse(updatedItemResponse, response);
+		
+		Mockito.verify(itemRepository, Mockito.times(1)).findByGuid(guid);
+		Mockito.verify(itemRepository, Mockito.times(1)).save(any());
+	}
 
-        Mockito.when(itemRepository.findByGuid(guid)).thenReturn(item);
-        Mockito.when(itemRepository.save(any())).thenReturn(updatedItem);
+	@Test
+	public void changeAuthenticationCode() {
+		String guid = "guid";
+		String email = "email";
+		String authenticationCode = "ABCDEFGHIJ";
+		DBItem item = generateItem();
+		DBItem updatedItem = item;
+		updatedItem.setAuthenticationCode(authenticationCode);
 
-        ItemResponse response = itemService.updateItem(guid, updateItemRequest);
+		Mockito.when(itemRepository.findByGuidAndEmail(guid, email)).thenReturn(item);
+		Mockito.when(itemRepository.save(updatedItem)).thenReturn(updatedItem);
+		doNothing().when(emailSender).sendEmail(authenticationCode, email, item.getBrand(), item.getType());
 
-        Assert.assertEquals(updatedItemResponse.getBrand(), response.getBrand());
-        Assert.assertNotEquals(itemResponse.getBrand(), response.getBrand());
+		String response = itemService.changeAuthenticationCode(guid, email);
 
-        Assert.assertEquals(updatedItemResponse.getType(), response.getType());
-        Assert.assertNotEquals(itemResponse.getType(), response.getType());
+		Assert.assertEquals(updatedItem.getAuthenticationCode(), response);
+		
+		Mockito.verify(itemRepository, Mockito.times(1)).findByGuidAndEmail(guid, email);
+		Mockito.verify(itemRepository, Mockito.times(1)).save(updatedItem);
+		Mockito.verify(emailSender, Mockito.times(1)).sendEmail(updatedItem.getAuthenticationCode(), email, item.getBrand(), item.getType());
+	}
 
-        Assert.assertEquals(updatedItemResponse.getGuid(), response.getGuid());
-        Assert.assertNotEquals(itemResponse.getGuid(), response.getGuid());
-
-        Assert.assertEquals(updatedItemResponse.getEmail(), response.getEmail());
-        Assert.assertNotEquals(itemResponse.getEmail(), response.getEmail());
-
-        Assert.assertEquals(updatedItemResponse.getAuthenticationCode(), response.getAuthenticationCode());
-
-        Assert.assertNotEquals(itemResponse.getCreatedDateTime(), response.getCreatedDateTime());
-    }
-
-    @Test
-    public void changeAuthenticationCode() {
-        String guid = "guid";
-        String email = "email";
-        String authenticationCode = "ABCDEFGHIJ";
-        DBItem item = generateItem();
-        DBItem updatedItem = item;
-        updatedItem.setAuthenticationCode(authenticationCode);
-
-        Mockito.when(itemRepository.findByGuidAndEmail(guid, email)).thenReturn(item);
-        Mockito.when(itemRepository.save(updatedItem)).thenReturn(updatedItem);
-        doNothing().when(emailSender).sendEmail(authenticationCode, email, item.getBrand(), item.getType());
-
-        String response = itemService.changeAuthenticationCode(guid, email);
-
-        Assert.assertEquals(updatedItem.getAuthenticationCode(), response);
-    }
+	private void verifyItemResponse(ItemResponse expected, ItemResponse actual) {
+		Assert.assertEquals(expected.getBrand(), actual.getBrand());
+		Assert.assertEquals(expected.getType(), actual.getType());
+		Assert.assertEquals(expected.getGuid(), actual.getGuid());
+		Assert.assertEquals(expected.getCreatedDateTime(), actual.getCreatedDateTime());
+		Assert.assertEquals(expected.getEmail(), actual.getEmail());
+		Assert.assertEquals(expected.getAuthenticationCode(), actual.getAuthenticationCode());
+		Assert.assertEquals(expected.getPrice(), actual.getPrice());
+		Assert.assertEquals(expected.getDescription(), actual.getDescription());
+		Assert.assertEquals(expected.getFuelType(), actual.getFuelType());
+		Assert.assertEquals(expected.getSpeedometerCondition(), actual.getSpeedometerCondition());
+		Assert.assertEquals(expected.getProductionYear(), actual.getProductionYear());
+		Assert.assertEquals(expected.getMobileNumber(), actual.getMobileNumber());
+	}
 
 }

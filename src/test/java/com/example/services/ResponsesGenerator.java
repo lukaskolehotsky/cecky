@@ -20,7 +20,8 @@ public class ResponsesGenerator extends RequestsGenerator{
                 item.getDescription(),
                 item.getFuelType(),
                 item.getSpeedometerCondition(),
-                item.getProductionYear()
+                item.getProductionYear(),
+                item.getMobileNumber()
         );
     }
 
