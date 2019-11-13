@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,11 +60,34 @@ public class ItemWithFileService {
 		}
 		return itemWithFileResponses;
 	}
+	
+	public Pair<List<ItemWithFileResponse>, Integer> search2(int pageNumber, SearchRequest searchRequest) {
+		List<ItemWithFileResponse> itemWithFileResponses = new ArrayList<>();
+		Pair<List<ItemResponse>, Integer> itemResponses = itemService.search2(pageNumber, searchRequest);
+		
+		for (ItemResponse itemResponse : itemResponses.getValue0()) {
+			List<String> imgPaths = directoryService.getAllFilesFromDirectory(itemResponse.getGuid());
+			List<FileResponse> fileResponses = fileService.getFiles(itemResponse.getGuid());
 
-	public List<ItemWithFileResponse> getItemWithFileResponses(int pageNumber) {
+			for (FileResponse fileResponse : fileResponses) {
+				String firstPath = imgPaths.get(0).replace("/", "\\");
+				String secondPath = fileResponse.getImgPath().replace("/", "\\");
+
+				if (firstPath.contains(secondPath)) {
+					String finalPath = serverProperties.getServerPath() + imgPaths.get(0).replace(serverProperties.getRemovePath(), "");
+					fileResponse.setImgPath(finalPath);
+					ItemWithFileResponse itemWithFileResponse = new ItemWithFileResponse(itemResponse, fileResponse);
+					itemWithFileResponses.add(itemWithFileResponse);
+				}
+			}
+		}
+		return new Pair<List<ItemWithFileResponse>, Integer>(itemWithFileResponses, itemResponses.getValue1());
+	}
+
+	public Pair<List<ItemWithFileResponse>,Integer> getItemWithFileResponses(int pageNumber) {
 		List<ItemWithFileResponse> itemWithFileResponses = new ArrayList<>();
 
-		List<ItemResponse> itemResponses = itemService.getAll(pageNumber);
+		Pair<List<ItemResponse>, Integer> itemResponses = itemService.getAll(pageNumber);
 
 //		if(!itemResponses.isEmpty()) {
 //			logger.info("!!! itemService.getAll(pageNumber).size() == " + itemService.getAll(pageNumber).size());
@@ -71,7 +95,7 @@ public class ItemWithFileService {
 //			logger.info("!!! itemService.getAll(pageNumber).size() == 0");
 //		}
 
-		for (ItemResponse itemResponse : itemResponses) {
+		for (ItemResponse itemResponse : itemResponses.getValue0()) {
 
 //			logger.info("!!! Pre tento itemResponse hladame vsetky files v directory - " + itemResponse.toString());
 
@@ -119,7 +143,7 @@ public class ItemWithFileService {
 				}
 			}
 		}
-		return itemWithFileResponses;
+		return new Pair<List<ItemWithFileResponse>,Integer> (itemWithFileResponses, itemResponses.getValue1());
 	}	
 
 	@Transactional

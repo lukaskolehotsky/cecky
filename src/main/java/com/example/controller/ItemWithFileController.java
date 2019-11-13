@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
 
+import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,22 +42,48 @@ public class ItemWithFileController {
 	}
 	
 	@PostMapping("/search")
-	public ModelAndView search(SearchRequest searchRequest) {
-		logger.info("ItemWithFileController - search : " + searchRequest.toString());
+	public ModelAndView search2(Optional<Integer> page, SearchRequest searchRequest) {
+		logger.info("ItemWithFileController - search with page: " + page + " and request: " + searchRequest.toString());
 		
-		List<ItemWithFileResponse> response = itemWithFileService.search(searchRequest);
+		Pair<List<ItemWithFileResponse>, Integer> response = itemWithFileService.search2(page.orElse(0), searchRequest);
 		
-		return new ModelAndView("main", "itemWithFileResponses", response);
+		ModelAndView view = new ModelAndView("main", "itemWithFileResponses", response.getValue0());
+		view.getModelMap().addAttribute("search", true);
+		view.getModelMap().addAttribute("searchRequest100", searchRequest);
+		view.getModelMap().addAttribute("page", page.orElse(0));
+		view.getModelMap().addAttribute("responseSize", response.getValue1());
+		return view;
+	}
+	
+	@GetMapping("/search100")
+	public ModelAndView search100(Optional<Integer> page, String brand, String type) {
+		logger.info("ItemWithFileController - search with page: " + page + " and brand: " + brand + " and type: " + type);
+		
+		SearchRequest searchRequest = new SearchRequest(brand, type);
+		Pair<List<ItemWithFileResponse>, Integer> response = itemWithFileService.search2(page.orElse(0), searchRequest);
+		
+		
+		ModelAndView view = new ModelAndView("main", "itemWithFileResponses", response.getValue0());
+		view.getModelMap().addAttribute("searchRequest", new SearchRequest("", ""));
+		view.getModelMap().addAttribute("search", true);
+		view.getModelMap().addAttribute("searchRequest100", searchRequest);
+		view.getModelMap().addAttribute("page", page.orElse(0));
+		view.getModelMap().addAttribute("responseSize", response.getValue1());
+		return view;
 	}
 
 	@GetMapping("/getItemWithFileResponses")
 	public ModelAndView getItemWithFileResponses(Optional<Integer> page) throws UnsupportedEncodingException {
 		logger.info("ItemWithFileController - getItemWithFileResponses with page: " + page);
 
-		List<ItemWithFileResponse> response = itemWithFileService.getItemWithFileResponses(page.orElse(0));
+		Pair<List<ItemWithFileResponse>,Integer> response = itemWithFileService.getItemWithFileResponses(page.orElse(0));
 		
-		ModelAndView view = new ModelAndView("main", "itemWithFileResponses", response);
+		ModelAndView view = new ModelAndView("main", "itemWithFileResponses", response.getValue0());
 		view.getModelMap().addAttribute("searchRequest", new SearchRequest("", ""));
+		view.getModelMap().addAttribute("page", page.orElse(0));
+		view.getModelMap().addAttribute("search", false);
+		view.getModelMap().addAttribute("responseSize", response.getValue1());
+		logger.info("size" + response.getValue1());
 		return view;
 	}
 

@@ -32,6 +32,13 @@
             .carousel-multi-item-2 .card img {
                 border-radius: 2px;
             }
+            
+            .carousel-indicators li {
+            	text-indent: 0px;
+            }
+            .carousel-indicators {
+            	bottom: -50;
+            }
         </style>
     </head>
     <body>
@@ -51,30 +58,20 @@
 	    
         <div class="container my-4">
             <!--Carousel Wrapper-->
-            <div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel">
+            <div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel" data-interval="false">
                 <button type="button" class="btn btn-success" onclick="location.href='${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/createItem1';">Pridaj</button>
 
 				<!-- Button trigger modal -->
 				<button type="button" class="btn btn-secondary btn-info" data-toggle="modal" data-target="#exampleModal">
 				  Filter
-				</button> 
-
-                <!--Multi itemy - posuvne gulicky pod galeriou -->
-                <!--Indicators-->
-                <!--<ol class="carousel-indicators">
-                    <li data-target="#multi-item-example" data-slide-to="0" class="active"></li>
-                    <li data-target="#multi-item-example" data-slide-to="1"></li>
-                    <li data-target="#multi-item-example" data-slide-to="2"></li>
-                    <li data-target="#multi-item-example" data-slide-to="3"></li>
-                    <li data-target="#multi-item-example" data-slide-to="4"></li>
-                </ol>-->
-                <!--/.Indicators-->
+				</button>                 
 
                 <c:set var="carouselItemActive" value="<div class='carousel-item active'>" />
                 <c:set var="carouselItem" value="<div class='carousel-item'>" />
                 <c:set var="coldMd4" value="<div class='col-md-4'>" />
                 <c:set var="coldMd4Clearfix" value="<div class='col-md-4 clearfix d-none d-md-block'>" />
                 <c:set var="count" value="6" />
+                <c:set var="sz" value="${responseSize}" />
 				<c:if test="${itemWithFileResponses.size() % count == 0}">
 					<c:set var="iterationsCount" value="${itemWithFileResponses.size() / count}" />
 				</c:if>				
@@ -122,14 +119,43 @@
 					</c:forEach>
                 </div>
                 <!--/.Slides-->
+                
+                <!--Multi itemy - posuvne gulicky pod galeriou -->
                 <center>
-                    <!--Controls-->
-                    <div class="controls-top">
-                        <a class="btn-floating" href="#multi-item-example" data-slide="prev"><i class="fa fa-chevron-left"></i><button type="button" class="btn btn-info">Spat</button></a>
-                        <a class="btn-floating" href="#multi-item-example" data-slide="next"><i class="fa fa-chevron-right"></i><button type="button" class="btn btn-info">Dalsi</button></a>
-                    </div>
-                    <!--/.Controls-->
+	                <!--Indicators-->
+	                <ol class="carousel-indicators">
+
+	                    <c:if test="${page-1 >= 0}">
+	                    	<c:if test="${search == true}">
+	                    		<li><p onclick="location.href='${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/search100?page=${page-1}&brand=${searchRequest100.getBrand()}&type=${searchRequest.getType()}'"> << </p></li>
+	                    	</c:if>
+	                    	<c:if test="${search == false}">
+	                    		<li><p onclick="location.href='${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getItemWithFileResponses?page=${page-1}'"> << </p></li>
+	                    	</c:if>
+	                    </c:if>
+	                    
+	                    <c:forEach begin="1" end="${iterationsCount}" varStatus="loop">
+	                    	<c:if test="${loop.count == 1}">
+	                    		<li data-target="#multi-item-example" data-slide-to="${loop.count-1}" class="active">${loop.count + page * 2}</li>
+	                    	</c:if>
+                        	<c:if test="${loop.count != 1}">
+                        		<li data-target="#multi-item-example" data-slide-to="${loop.count-1}">${loop.count + page * 2}</li>
+                        	</c:if>
+	                    </c:forEach>
+	                    
+	                    <c:if test="${(page+1)*12 < sz}">
+	                    	<c:if test="${search == true}">
+	                    		<li><p onclick="location.href='${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/search100?page=${page+1}&brand=${searchRequest100.getBrand()}&type=${searchRequest100.getType()}'"> >> </p></li>
+	                    	</c:if>
+	                    	<c:if test="${search == false}">
+	                    		<li><p onclick="location.href='${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/getItemWithFileResponses?page=${page+1}'"> >> </p></li>
+	                    	</c:if>
+	                    </c:if>
+             
+	                </ol>
+	                <!--/.Indicators-->
                 </center>
+                
             </div>
             <!--/.Carousel Wrapper-->
         </div>

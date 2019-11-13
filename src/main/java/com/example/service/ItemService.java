@@ -3,8 +3,10 @@ package com.example.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Tuple;
 import javax.transaction.Transactional;
 
+import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -85,8 +87,8 @@ public class ItemService extends Utils {
     	return itemResponses;
     }  
     
-    public List<ItemResponse> getAll(int pageNumber){
-    	Pageable paging = PageRequest.of(pageNumber, 500, Sort.by("createdDateTime").descending());
+    public Pair<List<ItemResponse>, Integer> getAll(int pageNumber){
+    	Pageable paging = PageRequest.of(pageNumber, 12, Sort.by("createdDateTime").descending());
     	
     	Page<DBItem> items = itemRepository.findAll(paging);
     	List<ItemResponse> itemResponses = new ArrayList<>();
@@ -97,8 +99,24 @@ public class ItemService extends Utils {
         	}
     	}
     	
-    	return itemResponses;
-    }    
+    	return new Pair<List<ItemResponse>, Integer>(itemResponses, (int) (long) items.getTotalElements());
+    }  
+    
+	public Pair<List<ItemResponse>, Integer> search2(int pageNumber, SearchRequest request) {
+		Pageable paging = PageRequest.of(pageNumber, 12, Sort.by("created_Date_Time").descending());
+
+		Page<DBItem> items = itemRepository.search2(paging, request.getBrand(), request.getType());
+
+		List<ItemResponse> itemResponses = new ArrayList<>();
+
+		if (items != null) {
+			for (DBItem item : items.getContent()) {
+				itemResponses.add(generateItemResponse(item));
+			}
+		}
+
+		return new Pair<List<ItemResponse>, Integer>(itemResponses, (int) (long) items.getTotalElements());
+	}
         
     public ItemResponse updateItem(String guid, UpdateItemRequest request) {   
     	

@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.javatuples.Pair;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -84,14 +85,14 @@ public class ItemServiceTest extends AbstractTest {
 	public void getAll() {
 		List<DBItem> items = new ArrayList<>();
 		items.add(generateItem());
-		Page<DBItem> pagedResponse = new PageImpl(items);
+		Page<DBItem> pagedResponse = new PageImpl<DBItem>(items);
 
-		Pageable sortedByCreateDateTimeAsc = PageRequest.of(0, 500, Sort.by("createdDateTime").descending());
+		Pageable sortedByCreateDateTimeAsc = PageRequest.of(0, 12, Sort.by("createdDateTime").descending());
 		Mockito.when(itemRepository.findAll(sortedByCreateDateTimeAsc)).thenReturn(pagedResponse);
 
-		List<ItemResponse> response = itemService.getAll(0);
+		Pair<List<ItemResponse>, Integer> response = itemService.getAll(0);
 
-		Assert.assertEquals(pagedResponse.getTotalElements(), response.size());
+		Assert.assertEquals(pagedResponse.getTotalElements(), response.getValue0().size());
 		
 		Mockito.verify(itemRepository, Mockito.times(1)).findAll(sortedByCreateDateTimeAsc);
 	}

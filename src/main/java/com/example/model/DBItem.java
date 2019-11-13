@@ -8,13 +8,15 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "items")
+@Table(name = "items", schema="public")
 public class DBItem {
 
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
+    
+    @Column(name = "brand")
     private String brand;
     private String type;
     private String guid;
